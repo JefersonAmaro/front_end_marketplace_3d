@@ -1,7 +1,9 @@
+import SectionOne from "../../components/home/sectionOne"
+
 function Home () {
     return (
         <>
-            <h1>Home</h1>
+            <SectionOne />
         </>
     )
 }
