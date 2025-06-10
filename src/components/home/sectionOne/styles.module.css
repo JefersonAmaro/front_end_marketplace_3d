@@ -16,7 +16,7 @@
     width: 100%;
     height: 80vh;
     background-color: #F5F5F5;
-    padding-top: 5rem;
+    padding-top: 3rem;
 }
 
 .contentContainer img {
@@ -39,6 +39,7 @@
     width: 50vw;
     text-align: center;
     z-index: 1;
+    padding-top: 2rem;
 }
 
 .content h1 .spanModelos {
@@ -46,16 +47,16 @@
 }
 
 .spanModelos::after {
-  content: '';
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 130%;
-  height: 160%;
-  border: 2px solid blue;
-  border-radius: 50%;
-  transform: translate(-50%, -50%) rotate(-10deg);
-  z-index: -1;
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 130%;
+    height: 160%;
+    border: 2px solid blue;
+    border-radius: 50%;
+    transform: translate(-50%, -50%) rotate(-10deg);
+    z-index: -1;
 }
 
 .content h3 {
@@ -89,13 +90,12 @@
     align-items: center;
     margin: 0 5%;
     background-color: #111827;
-    padding: 2rem 5rem;
+    padding: 2rem 3rem;
     position: absolute;
     bottom: 2rem;
     border-radius: 10px;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-    /* gap: 2rem; */
-    width: 80%;
+    width: 75%;
 }
 
 .card {
