@@ -9,7 +9,6 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    gap: .5rem;
 }
 
 .contentTitle h3 {
@@ -18,70 +17,62 @@
     color: #fff;
 }
 
-.contentTitle h4 {
-    font-weight: 400;
-    font-size: 24px;
-    color: #fff;
-}
-
-.contentCategories {
+.contentCards {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    gap: 2rem;
-    padding: 2rem 5% 1% 5%;
+    padding: 2rem 5rem;
 }
 
-.category {
+.card {
     display: flex;
     flex-direction: column;
-    justify-content: start;
+    justify-content: center;
     align-items: center;
-    gap: 1rem;
     width: 30rem;
     height: 25rem;
     background-color: #1F2937;
+    box-shadow: rgba(0, 0, 0, 0.25) 0px 4px 4px;
+    gap: 1rem;
     border-radius: 10px;
-    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-    transition: all 0.3s ease-in-out;
+    padding: 1.5rem 3.5rem;
+    transition: 0.3s ease-in-out;
 }
 
-.category:hover {
+.card:hover {
     transform: scale(1.05);
 }
 
-.category img {
-    width: 100%;
-    height: auto;
+.img {
+    background-color: #4D00FF;
+    border-radius: 50%;
+    padding: 1rem;
 }
 
-.category h3 {
+.card img {
+    width: 100px;
+    height: 100px;
+}
+
+.card h4 {
     font-weight: 600;
     font-size: 26px;
     color: #fff;
     text-align: center;
 }
 
-.category p {
+.card p {
     font-weight: 400;
     font-size: 20px;
     color: #fff;
     text-align: center;
 }
 
-.contentButton{
+.contentButton {
     display: flex;
     justify-content: center;
     align-items: center;
-    flex-direction: column;
-    padding-top: 2rem;
-    gap: 1rem;
-}
-
-.contentButton h3 {
-    font-weight: 600;
-    font-size: 32px;
-    color: #fff;
+    margin-top: 2rem;
 }
 
 .contentButton button {
@@ -99,4 +90,3 @@
 .contentButton button:hover {
     opacity: 0.8;
 }
-
