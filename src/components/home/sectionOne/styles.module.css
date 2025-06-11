@@ -1,0 +1,133 @@
+.sectionOne {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    height: 100vh;
+    width: 100vw;
+    position: relative;
+}
+
+.contentContainer {
+    display: flex;
+    justify-content: space-between;
+    align-items: start;
+    gap: 5rem;
+    width: 100%;
+    height: 80vh;
+    background-color: #F5F5F5;
+    padding-top: 3rem;
+}
+
+.contentContainer img {
+    width: 20vw;
+    height: auto;
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 2rem;
+}
+
+.content h1 {
+    font-weight: 700;
+    font-size: 64px;
+    color: #000;
+    width: 50vw;
+    text-align: center;
+    z-index: 1;
+    padding-top: 2rem;
+}
+
+.content h1 .spanModelos {
+    position: relative;
+}
+
+.spanModelos::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 130%;
+    height: 160%;
+    border: 2px solid blue;
+    border-radius: 50%;
+    transform: translate(-50%, -50%) rotate(-10deg);
+    z-index: -1;
+}
+
+.content h3 {
+    font-weight: 400;
+    font-size: 32px;
+    color: #000;
+    width: 50vw;
+    text-align: center;
+}
+
+.content button {
+    font-weight: 350;
+    font-size: 32px;
+    color: #fff;
+    background: #4D00FF;
+    border: none;
+    border-radius: 10px;
+    padding: 1rem 4rem;
+    cursor: pointer;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    transition: all 0.3s ease-in-out;
+}
+
+.content button:hover {
+    opacity: 0.8;
+}
+
+.sectionCards {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0 5%;
+    background-color: #111827;
+    padding: 2rem 3rem;
+    position: absolute;
+    bottom: 2rem;
+    border-radius: 10px;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    width: 75%;
+}
+
+.card {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: start;
+    background-color: #1F2937;
+    border-radius: 5px;
+    gap: .5rem;
+    padding-bottom: 1rem;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    transition: all 0.3s ease-in-out
+}
+
+.card:hover {
+    transform: scale(1.05);
+}
+
+.card img {
+    width: 15vw;
+    height: auto;
+    border-radius: 5px 5px 0 0;
+}
+
+.card p {
+    font-weight: 300;
+    font-size: 24px;
+    color: #fff;
+    margin-left: 1rem;
+}
+
+.card .price {
+    font-weight: 400;
+}
