@@ -6,6 +6,19 @@ import Instagram from "../../assets/footer/instagram.png";
 import Facebook from "../../assets/footer/facebook.png";
 
 function Footer() {
+  function scrollToWithOffset(id) {
+    const element = document.getElementById(id);
+    if (!element) return;
+
+    const offset = window.innerHeight * 0.1; // 10% da altura da tela
+    const elementPosition =
+      element.getBoundingClientRect().top + window.pageYOffset;
+
+    window.scrollTo({
+      top: elementPosition - offset,
+      behavior: "smooth",
+    });
+  }
   return (
     <footer className={styles.footer}>
       <div className={styles.content}>
@@ -19,8 +32,8 @@ function Footer() {
         <div className={styles.links}>
           <h1>Links Úteis</h1>
           <Link>Sobre nós</Link>
-          <Link>Como Funciona</Link>
-          <Link>Quero Vender</Link>
+          <Link onClick={() => scrollToWithOffset("como-funciona")}>Como Funciona?</Link>
+          <Link onClick={() => scrollToWithOffset("quero-vender")}>Quero Vender</Link>
           <Link>Termos de Uso</Link>
           <Link>Politica de Privacidade</Link>
         </div>
@@ -34,16 +47,40 @@ function Footer() {
       <div className={styles.line}></div>
       <div className={styles.content}>
         <div className={styles.copyright}>
+          <p>© 2025 Market3D. Todos os direitos reservados.</p>
           <p>
-            © 2025 Market3D. Todos os direitos reservados.
+            Desenvolvido por{" "}
+            <a href="https://www.gnconnectionsystem.com.br/" target="_blank">
+              GNConnection System
+            </a>
           </p>
-          <p>Desenvolvido por <a href="https://www.gnconnectionsystem.com.br/" target="_blank">GNConnection System</a></p>
         </div>
 
         <div className={styles.socialMedia}>
-          <img src={Linkedin} alt="Linkedin" onClick={() => {window.open("https://www.linkedin.com/company/market3d/", "_blank")}}/>
-          <img src={Instagram} alt="Instagram" onClick={() => {window.open("https://www.instagram.com/market3d/", "_blank")}}/>
-          <img src={Facebook} alt="Facebook" onClick={() => {window.open("https://www.facebook.com/market3d/", "_blank")}}/>
+          <img
+            src={Linkedin}
+            alt="Linkedin"
+            onClick={() => {
+              window.open(
+                "https://www.linkedin.com/company/market3d/",
+                "_blank"
+              );
+            }}
+          />
+          <img
+            src={Instagram}
+            alt="Instagram"
+            onClick={() => {
+              window.open("https://www.instagram.com/market3d/", "_blank");
+            }}
+          />
+          <img
+            src={Facebook}
+            alt="Facebook"
+            onClick={() => {
+              window.open("https://www.facebook.com/market3d/", "_blank");
+            }}
+          />
         </div>
       </div>
     </footer>
