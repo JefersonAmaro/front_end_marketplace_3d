@@ -25,7 +25,7 @@ function SectionFour() {
     },
   ];
   return (
-    <div className={styles.container}>
+    <div className={styles.container} id="como-funciona">
       <div className={styles.contentTitle}>
         <h3>Como Funciona?</h3>
       </div>
