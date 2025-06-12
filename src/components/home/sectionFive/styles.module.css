@@ -13,7 +13,7 @@
 
 .contentTitle h3 {
     font-weight: 600;
-    font-size: 32px;
+    font-size: 28px;
     color: #fff;
 }
 
@@ -56,14 +56,14 @@
 
 .card h4 {
     font-weight: 600;
-    font-size: 26px;
+    font-size: 24px;
     color: #fff;
     text-align: center;
 }
 
 .card p {
     font-weight: 400;
-    font-size: 20px;
+    font-size: 18px;
     color: #fff;
     text-align: center;
 }
@@ -77,7 +77,7 @@
 
 .contentButton button {
     font-weight: 400;
-    font-size: 24px;
+    font-size: 20px;
     color: #fff;
     background: #4D00FF;
     border: none;
