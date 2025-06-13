@@ -44,7 +44,7 @@ function SectionOne() {
         return newOrder;
       });
       setActiveIndex((prev) => (prev + 1) % 2); // alterna entre 0 e 1
-    }, 5000);
+    }, 7000);
 
     return () => clearInterval(interval);
   }, []);
@@ -67,10 +67,10 @@ function SectionOne() {
                     " " +
                     styles[`card-layer-${layerIndex}`]
                   }
-                  initial={{ filter: "blur(4px) brightness(0.5)", opacity: 0 }}
+                  initial={{ filter: "blur(2px) brightness(0.9)", opacity: 0.5 }}
                   animate={{ filter: "blur(0px) brightness(1)", opacity: 1 }}
-                  exit={{ filter: "blur(2px) brightness(0.7)", opacity: 0 }}
-                  transition={{ duration: 1.2, ease: "easeInOut" }}
+                  exit={{ filter: "blur(1px) brightness(0.7)", opacity: 0.2 }}
+                  transition={{ duration: 1, ease: "easeInOut" }}
                 >
                   <div className={styles.cardPrincipal}>
                     <img src={cardPrincipal.img} alt={cardPrincipal.title} />
