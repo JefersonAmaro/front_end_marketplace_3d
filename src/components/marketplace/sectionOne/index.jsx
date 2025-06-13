@@ -7,6 +7,10 @@ import Brinquedos from "../../../assets/marketplace/sectionOne/brinquedo.png";
 import Engrenagem from "../../../assets/marketplace/sectionOne/engrenagem.png";
 import DecoracaoArte from "../../../assets/marketplace/sectionOne/decoracaoarte.png";
 
+import Loja from "../../../assets/marketplace/sectionOne/loja.png";
+import Experiencia from "../../../assets/marketplace/sectionOne/experiencia.png";
+import Otimize from "../../../assets/marketplace/sectionOne/otimize.png";
+
 function SectionOne() {
   const initialCards = [
     {
@@ -114,6 +118,29 @@ function SectionOne() {
             </AnimatePresence>
           );
         })}
+      </div>
+      <div className={styles.contentContainer}>
+          <div className={styles.content}>
+            <img src={Loja} alt="Loja" />
+            <div className={styles.contentTitle}>
+              <h3>Loja</h3>
+              <p>100% Criativa e Personalizada</p>
+            </div>
+          </div>
+          <div className={styles.content}>
+            <img src={Experiencia} alt="Experiencia" />
+            <div className={styles.contentTitle}>
+              <h3>Experiência</h3>
+              <p>Precisa, confiável e sob medida</p>
+            </div>
+          </div>
+          <div className={styles.content}>
+            <img src={Otimize} alt="Otimize" />
+            <div className={styles.contentTitle}>
+              <h3>Otimize sua produção</h3>
+              <p>Soluções em impressão sob demanda</p>
+            </div>
+          </div>
       </div>
     </div>
   );

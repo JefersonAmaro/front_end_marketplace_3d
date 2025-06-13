@@ -1,8 +1,11 @@
 .sectionOne {
-    padding: 7% 5%;
+    padding: 6.5% 5% 0 5%;
     width: 100vw;
     height: 100vh;
     position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
 }
 
 .cardWrapper {
@@ -131,4 +134,37 @@
     font-size: 14px;
     font-weight: 400;
     padding: .6rem 2rem;
+}
+
+.contentContainer{
+    background-color: #1F2937;
+    border-radius: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 2.5rem;
+}
+
+.content{
+    display: flex;
+    gap: 1.5rem;
+    align-items: center
+}
+
+.contentTitle{
+    display: flex;
+    flex-direction: column;
+    gap: .5rem;
+
+    h3{
+        font-weight: 600;
+        font-size: 28px;
+        color: #fff;
+    }
+
+    p{
+        font-weight: 400;
+        font-size: 20px;
+        color: #fff;
+    }
 }
