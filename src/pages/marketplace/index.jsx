@@ -1,6 +1,10 @@
+import SectionOne from "../../components/marketplace/sectionOne"
+
 function Marketplace () {
     return (
-        <h1>Marketplace</h1>
+        <>
+            <SectionOne />
+        </>
     )
 }
 

@@ -1,0 +1,134 @@
+.sectionOne {
+    padding: 7% 5%;
+    width: 100vw;
+    height: 100vh;
+    position: relative;
+}
+
+.cardWrapper {
+  position: relative;
+  height: 60vh;
+}
+
+.contentCardContainer {
+    display: flex;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+    height: 60vh;
+}
+
+.card-layer-0,
+.card-layer-1 {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.cardPrincipal {
+    flex: 2;
+    position: relative;
+    border-radius: 12px;
+    overflow: hidden;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    border: 2px solid #111827;
+}
+
+
+.cardsSecundary {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.cardSmall {
+    position: relative;
+    border-radius: 12px;
+    overflow: hidden;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    height: 50%;
+    border: 2px solid #111827;
+}
+
+.cardPrincipal img,
+.cardSmall img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 0;
+}
+
+.cardContent {
+    position: relative;
+    z-index: 1;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    background: linear-gradient(to top, rgb(0, 0, 0) 0%, rgba(0, 0, 0, 0.842) 50%, rgba(0, 0, 0, 0) 100%, transparent);
+}
+
+.cardPrincipalContent {
+    gap: 1rem;
+}
+
+.cardSmallContent {
+    gap: .5rem;
+}
+
+.cardContent h2 {
+    font-size: 28px;
+    font-weight: 600;
+}
+
+.cardContent h3 {
+    font-size: 20px;
+    font-weight: 400;
+}
+
+.cardPrincipalDescription {
+    font-size: 18px;
+    font-weight: 400;
+}
+
+.cardSmallDescription {
+    font-size: 14px;
+    font-weight: 400;
+}
+
+.cardContent button {
+    background: #4D00FF;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    width: fit-content;
+    align-self: flex-start;
+    transition: all 0.3s ease-in-out;
+}
+
+.cardContent button:hover {
+    opacity: 0.8;
+}
+
+.cardPrincipalButton {
+    font-size: 18px;
+    font-weight: 400;
+    padding: .8rem 3rem;
+}
+
+.cardSmallButton {
+    font-size: 14px;
+    font-weight: 400;
+    padding: .6rem 2rem;
+}
