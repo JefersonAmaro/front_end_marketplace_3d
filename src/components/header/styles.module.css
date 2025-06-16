@@ -54,7 +54,7 @@
 }
 
 .buttonsMarketplace {
-    width: 75%;
+    width: 80%;
     display: flex;
     justify-content: space-between;
 
@@ -76,13 +76,13 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 40%;
+    width: 45%;
     position: relative;
 
     input {
-        padding: 0.5rem 5rem 0.5rem 0.5rem;
+        padding: 0.5rem 6rem 0.5rem 0.5rem;
         font-size: 20px;
-        border: 1px solid #000;
+        border: 1px solid #0000002f;
         border-radius: 5px;
         width: 100%;
         transition: border 0.3s ease;
