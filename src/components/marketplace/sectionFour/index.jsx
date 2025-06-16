@@ -37,10 +37,9 @@ function SectionFour() {
         <div className={styles.container}>
           <div className={styles.containerTitle}>
             <div className={styles.contentTitle}>
-              <h2>Brinquedos</h2>
+              <h2>Casa e Decoração</h2>
               <p>
-                Modelos criativos e divertidos para todas as idades. Perfeitos para
-                brincar, aprender ou colecionar.
+                Deixe seu ambiente mais criativo com peças de decoração feitas camadas por camadas, modernas e personalizadas.
               </p>
             </div>
             <div className={styles.contentButton}>
