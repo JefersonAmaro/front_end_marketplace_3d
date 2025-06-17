@@ -1,5 +1,5 @@
 import styles from "./styles.module.css";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 import Linkedin from "../../assets/footer/linkedin.png";
 import Instagram from "../../assets/footer/instagram.png";
@@ -19,34 +19,42 @@ function Footer() {
       behavior: "smooth",
     });
   }
+
+  const location = useLocation();
+  const isHome = location.pathname === "/";
+
   return (
-    <footer className={styles.footer}>
+    <footer className={styles[isHome ? "footer" : "footer1"]}>
       <div className={styles.content}>
-        <div className={styles.text}>
+        <div className={styles[isHome ? "text" : "text1"]}>
           <h1>Market3D</h1>
           <p>
             O maior marketplace de impressão 3D do Brasil. Conectamos criadores,
             fornecedores e clientes em uma única plataforma.
           </p>
         </div>
-        <div className={styles.links}>
+        <div className={styles[isHome ? "links" : "links1"]}>
           <h1>Links Úteis</h1>
           <Link>Sobre nós</Link>
-          <Link onClick={() => scrollToWithOffset("como-funciona")}>Como Funciona?</Link>
-          <Link onClick={() => scrollToWithOffset("quero-vender")}>Quero Vender</Link>
+          <Link onClick={() => scrollToWithOffset("como-funciona")}>
+            Como Funciona?
+          </Link>
+          <Link onClick={() => scrollToWithOffset("quero-vender")}>
+            Quero Vender
+          </Link>
           <Link>Termos de Uso</Link>
           <Link>Politica de Privacidade</Link>
         </div>
-        <div className={styles.support}>
+        <div className={styles[isHome ? "support" : "support1"]}>
           <h1>Suporte</h1>
           <Link>Central de Ajuda</Link>
           <Link>Contato</Link>
           <Link>FAQ</Link>
         </div>
       </div>
-      <div className={styles.line}></div>
+      <div className={styles[isHome ? "line" : "line1"]}></div>
       <div className={styles.content}>
-        <div className={styles.copyright}>
+        <div className={styles[isHome ? "copyright" : "copyright1"]}>
           <p>© 2025 Market3D. Todos os direitos reservados.</p>
           <p>
             Desenvolvido por{" "}
@@ -56,7 +64,7 @@ function Footer() {
           </p>
         </div>
 
-        <div className={styles.socialMedia}>
+        <div className={styles[isHome ? "socialMedia" : "socialMedia1"]}>
           <img
             src={Linkedin}
             alt="Linkedin"

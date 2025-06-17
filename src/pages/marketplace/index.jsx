@@ -1,6 +1,22 @@
+import SectionOne from "../../components/marketplace/sectionOne"
+import SectionTwo from "../../components/marketplace/sectionTwo"
+import SectionThree from "../../components/marketplace/sectionThree"
+import SectionFour from "../../components/marketplace/sectionFour"
+import SectionFive from "../../components/marketplace/sectionFive"
+import SectionSix from "../../components/marketplace/sectionSix"
+import SectionSeven from "../../components/marketplace/sectionSeven"
+
 function Marketplace () {
     return (
-        <h1>Marketplace</h1>
+        <>
+            <SectionOne />
+            <SectionTwo />
+            <SectionThree />
+            <SectionFour />
+            <SectionFive />
+            <SectionSix />
+            <SectionSeven />
+        </>
     )
 }
 
