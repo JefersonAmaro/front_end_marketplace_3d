@@ -167,3 +167,62 @@
         color: #fff;
     }
 }
+
+@media screen and (max-width: 1919px) {
+    .sectionOne {
+        gap: 1rem;
+        padding: 6% 5% 0 5%;
+    }
+
+    .contentCardContainer{
+        gap: 1rem;
+    }
+
+    .cardPrincipalButton{
+        font-size: 16px;
+    }
+
+    .cardsSecundary{
+        gap: 1rem;
+    }
+
+    .cardPrincipalDescription{
+        font-size: 16px;
+    }
+
+    .cardContent{
+        padding: 1.5rem;
+    }
+
+    .cardContent h3{
+        font-size: 18px;
+    }
+
+    .cardContent h2{
+        font-size: 24px;
+    }
+
+    .cardSmallDescription{
+        font-size: 12px;
+    }
+
+    .cardSmallButton{
+        font-size: 12px;
+    }
+
+    .contentContainer{
+        padding: 2rem 1.5rem;
+    }
+
+    .content img{
+        width: 60px;
+    }
+
+    .contentTitle h3{
+        font-size: 24px;
+    }
+
+    .contentTitle p{
+        font-size: 16px;
+    }
+}

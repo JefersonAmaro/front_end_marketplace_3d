@@ -68,3 +68,18 @@
 .button:hover {
     opacity: 0.8;
 }
+
+@media screen and (max-width: 1919px) {
+    .content h3 {
+        font-size: 24px;
+    }
+
+    .content p {
+        font-size: 16px;
+    }
+
+    .button {
+        font-size: 16px;
+        padding: 1rem 3rem;
+    }
+}
