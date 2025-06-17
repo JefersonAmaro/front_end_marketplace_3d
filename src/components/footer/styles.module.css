@@ -225,3 +225,97 @@
         filter: invert(1);
     }
 }
+
+@media screen and (max-width: 1919px) {
+    .content {
+        gap: 1rem;
+    }
+
+    .text {
+        width: 20%;
+
+        h1{
+            font-size: 30px;
+        }
+
+        p{
+            font-size: 18px;
+        }
+    }
+
+    .text1 {
+        width: 20%;
+
+        h1{
+            font-size: 30px;
+        }
+
+        p{
+            font-size: 18px;
+        }
+    }
+
+    .links {
+        gap: 0.5rem;
+
+        h1{
+            font-size: 24px;
+        }
+
+        a{
+            font-size: 18px;
+        }
+    }
+
+    .links1 {
+        gap: 0.5rem;
+
+        h1{
+            font-size: 24px;
+        }
+
+        a{
+            font-size: 18px;
+        }
+    }
+
+    .support {
+        gap: 0.5rem;
+
+        h1{
+            font-size: 24px;
+        }
+
+        a{
+            font-size: 18px;
+        }
+    }
+
+    .support1 {
+        gap: 0.5rem;
+
+        h1{
+            font-size: 24px;
+        }
+
+        a{
+            font-size: 18px;
+        }
+    }
+
+    .copyright p {
+        font-size: 16px;
+    }
+
+    .copyright1 p {
+        font-size: 16px;
+    }
+
+    .socialMedia {
+        gap: 0.5rem;
+    }
+
+    .socialMedia1 {
+        gap: 0.5rem;
+    }
+}

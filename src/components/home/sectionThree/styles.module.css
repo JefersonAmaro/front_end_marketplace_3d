@@ -100,3 +100,35 @@
     opacity: 0.8;
 }
 
+@media screen and (max-width: 1919px) {
+    .contentTitle h3 {
+        font-size: 24px;
+    }
+
+    .contentTitle h4 {
+        font-size: 18px;
+    }
+
+    .category {
+        width: 23rem;
+        height: 20rem;
+    }
+
+    .category h3 {
+        font-size: 18px;
+    }
+
+    .category p {
+        font-size: 16px;
+    }
+
+    .contentButton h3 {
+        font-size: 24px;
+    }
+
+    .contentButton button {
+        font-size: 18px;
+        padding: 1rem 3rem;
+    }
+}
+

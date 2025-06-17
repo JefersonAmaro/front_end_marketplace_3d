@@ -131,3 +131,43 @@
 .card .price {
     font-weight: 400;
 }
+
+@media screen and (max-width: 1919px) {
+    .contentContainer {
+        padding-top: 1rem;
+    }
+
+    .contentContainer img {
+        width: 17vw;
+        height: auto;
+    }
+
+    .content{
+        gap: .5rem;
+    }
+
+    .content h1 {
+        font-size: 50px;
+    }
+
+    .content h3 {
+        font-size: 24px;
+    }
+
+    .content button {
+        font-size: 20px;
+        padding: 1rem 3rem;
+    }
+
+    .sectionCards {
+        padding: 1rem 2rem;
+        bottom: 1rem;
+    }
+
+    .card p{
+        font-size: 18px;
+    }
+
+
+    
+}

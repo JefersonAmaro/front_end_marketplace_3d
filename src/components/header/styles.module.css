@@ -157,3 +157,41 @@
 .sacolaButton:hover {
     opacity: 0.8;
 }
+
+@media screen and (max-width: 1919px) {
+    .title {
+        font-size: 30px;
+    }
+
+    .button {
+        font-size: 18px;
+    }
+
+    .buttonsMarketplace{
+        width: 85%;
+    }
+
+    .loginButton {
+        font-size: 18px;
+        padding: .8rem 3rem;
+    }
+
+    .inputBusca {
+        input {
+
+            font-size: 18px;
+        }
+    }
+
+    .orcamentoButton{
+        font-size: 16px;
+        padding: 0 .5rem;
+        width: fit-content;
+    }
+
+    .sacolaButton{
+        font-size: 16px;
+        padding: 0 1rem;
+    }
+
+}
