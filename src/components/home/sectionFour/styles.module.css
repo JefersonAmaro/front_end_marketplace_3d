@@ -91,3 +91,43 @@
         font-size: 16px;
     }
 }
+
+@media screen and (max-width: 699px) {
+    .container{
+        padding: 7% 5%;
+    }
+
+    .contentTitle {
+        align-items: start;
+
+        h3{
+            font-size: 20px;
+        }
+        
+    }
+    .contentCards {
+        flex-wrap: wrap;
+        gap: 3rem;
+        padding: 2rem 5% 1% 5%;
+    }
+
+    .card {
+        width: 23rem;
+        height: 20rem;
+        padding: 0% 1.5rem;
+    }
+
+    .card img {
+        width: 60px;
+        height: 60px;
+    }
+
+    .card h4 {
+        font-size: 18px;
+    }
+
+    .card p {
+        font-size: 16px;
+    }
+
+}

@@ -132,3 +132,42 @@
     }
 }
 
+@media screen and (max-width: 699px) {
+    .container{
+        padding: 7% 5%;
+    }
+    .contentTitle{
+        align-items: start;
+    }
+    .contentTitle h3 {
+        font-size: 20px;
+    }
+
+    .contentTitle h4 {
+        font-size: 16px;
+    }
+
+    .contentCategories{
+        gap: 3rem;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .category {
+        width: 23rem;
+        height: 20rem;
+    }
+
+    .category h3 {
+        font-size: 18px;
+    }
+
+    .category p {
+        font-size: 16px;
+    }
+
+    .contentButton h3 {
+        font-size: 20px;
+    }
+}
+

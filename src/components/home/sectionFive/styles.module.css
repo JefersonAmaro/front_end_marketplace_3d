@@ -120,3 +120,32 @@
         padding: 1rem 3rem;
     }
 }
+
+@media screen and (max-width: 699px) {
+    .container {
+        padding: 7% 5%;
+    }
+
+    .contentTitle {
+        align-items: start;
+
+        h3 {
+            font-size: 20px;
+        }
+    }
+
+    .contentCards {
+        flex-wrap: wrap;
+        gap: 3rem;
+    }
+
+    .card {
+        width: 23rem;
+        height: 20rem;
+        padding: 0% 1.5rem;
+    }
+
+    .contentButton{
+        margin-top: 0;
+    }
+}
