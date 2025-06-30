@@ -319,3 +319,20 @@
         gap: 0.5rem;
     }
 }
+
+@media screen and (max-width: 699px) {
+    .content {
+        flex-direction: column;
+    }
+
+    .text, .text1 {
+        width: 100%;
+    }
+
+    .socialMedia, .socialMedia1 {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+}
