@@ -1,37 +1,18 @@
 import styles from "./styles.module.css";
 
-import Chave from "../../../assets/marketplace/sectionFive/chave.png";
-import Suporte from "../../../assets/marketplace/sectionFive/suporte.png";
-import Estilete from "../../../assets/marketplace/sectionFive/estilete.png";
-import Abridor from "../../../assets/marketplace/sectionFive/abridor.png";
+import { useContext } from "react";
+import { DataContext } from "../../../context/dataContext";
+
+import Loading from "../../loading";
 
 function SectionFive() {
-  const cards = [
-    {
-      title: "Chave inglesa de boca ajustavel",
-      tag: "Ferramentas",
-      price: "25,00",
-      img: Chave,
-    },
-    {
-      title: "Suporte de prateleira mão francesa",
-      tag: "Ferramentas",
-      price: "15,00",
-      img: Suporte,
-    },
-    {
-      title: "Corpo do estilete, suporte de lâmina",
-      tag: "Ferramentas",
-      price: "45,00",
-      img: Estilete,
-    },
-    {
-      title: " Abridores de caixas, cortadores de fita e embalagem",
-      tag: "Ferramentas",
-      price: "85,00",
-      img: Abridor,
-    },
-  ];
+  const { data, loading } = useContext(DataContext);
+  const cards = data.ferramentas;
+
+  if (loading) {
+    return <Loading />;
+  }
+
   return (
     <div className={styles.container}>
       <div className={styles.containerTitle}>

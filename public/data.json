@@ -1,0 +1,152 @@
+{
+  "lancamentosRecentes": [
+    {
+      "id": 1,
+      "title": "Boneco Lilo e Stitch articulado brinquedo plástico coleção Disney figura decoraçao Stitch",
+      "tag": "Brinquedos",
+      "price": "65,00",
+      "img": "./images/marketplace/sectionTwo/lilo.png"
+    },
+    {
+      "id": 2,
+      "title": "Escultura postura meditação com vaso para suculentas",
+      "tag": "Casa e Decoração",
+      "price": "30,00",
+      "img": "./images/marketplace/sectionTwo/escultura.png"
+    },
+    {
+      "id": 3,
+      "title": "Chave inglesa de boca ajustavel",
+      "tag": "Ferramentas",
+      "price": "25,00",
+      "img": "./images/marketplace/sectionTwo/chave.png"
+    },
+    {
+      "id": 4,
+      "title": "Tigrinho articulável suporte para celular de mesa bichinho",
+      "tag": "Outros",
+      "price": "45,00",
+      "img": "./images/marketplace/sectionTwo/tigrinho.png"
+    }
+  ],
+  "brinquedos": [
+    {
+      "id": 1,
+      "title": "Boneco Lilo e Stitch articulado brinquedo plástico coleção Disney figura decoraçao Stitch",
+      "tag": "Brinquedos",
+      "price": "65,00",
+      "img": "./images/marketplace/sectionThree/lilo.png"
+    },
+    {
+      "id": 2,
+      "title": "Boneco Pinóquio articulado - figura Pinocchio impressão 3D",
+      "tag": "Brinquedos",
+      "price": "75,00",
+      "img": "./images/marketplace/sectionThree/pinoquio.png"
+    },
+    {
+      "id": 3,
+      "title": "Boneco One Piece Luffy caveira Anime Brinquedo articulado",
+      "tag": "Brinquedos",
+      "price": "55,00",
+      "img": "./images/marketplace/sectionThree/onepiece.png"
+    },
+    {
+      "id": 4,
+      "title": "Boneco Woody articulável brinquedo Toy Story Xerife 18 cm",
+      "tag": "Brinquedos",
+      "price": "85,00",
+      "img": "./images/marketplace/sectionThree/woody.png"
+    }
+  ],
+  "casaEDecoracao": [
+    {
+      "id": 1,
+      "title": "Escultura postura meditação com vaso para suculentas",
+      "tag": "Casa e Decoração",
+      "price": "30,00",
+      "img": "./images/marketplace/sectionFour/escultura.png"
+    },
+    {
+      "id": 2,
+      "title": "Organizadores Minions porta treco divertido",
+      "tag": "Casa e Decoração",
+      "price": "90,00",
+      "img": "./images/marketplace/sectionFour/minions.png"
+    },
+    {
+      "id": 3,
+      "title": "Estatua buda monge escultura decorativa",
+      "tag": "Casa e Decoração",
+      "price": "35,00",
+      "img": "./images/marketplace/sectionFour/monge.png"
+    },
+    {
+      "id": 4,
+      "title": "Escultura artística Pole dance - troféu expressão corporal",
+      "tag": "Casa e Decoração",
+      "price": "60,00",
+      "img": "./images/marketplace/sectionFour/pole.png"
+    }
+  ],
+  "ferramentas": [
+    {
+      "id": 1,
+      "title": "Chave inglesa de boca ajustavel",
+      "tag": "Ferramentas",
+      "price": "25,00",
+      "img": "./images/marketplace/sectionFive/chave.png"
+    },
+    {
+      "id": 2,
+      "title": "Suporte de prateleira mão francesa",
+      "tag": "Ferramentas",
+      "price": "15,00",
+      "img": "./images/marketplace/sectionFive/suporte.png"
+    },
+    {
+      "id": 3,
+      "title": "Corpo do estilete, suporte de lâmina",
+      "tag": "Ferramentas",
+      "price": "45,00",
+      "img": "./images/marketplace/sectionFive/estilete.png"
+    },
+    {
+      "id": 4,
+      "title": " Abridores de caixas, cortadores de fita e embalagem",
+      "tag": "Ferramentas",
+      "price": "85,00",
+      "img": "./images/marketplace/sectionFive/abridor.png"
+    }
+  ],
+  "outros": [
+    {
+      "id": 1,
+      "title": "Tigrinho articulável suporte para celular de mesa bichinho",
+      "tag": "Outros",
+      "price": "45,00",
+      "img": "./images/marketplace/sectionSix/tigrinho.png"
+    },
+    {
+      "id": 2,
+      "title": "Chaveiro Banguela - Como treinar o seu dragão",
+      "tag": "Outros",
+      "price": "12,00",
+      "img": "./images/marketplace/sectionSix/banguela.png"
+    },
+    {
+      "id": 3,
+      "title": "Cortador de Biscoito cookies Pasta Americana Macaco Animais",
+      "tag": "Outros",
+      "price": "8,90",
+      "img": "./images/marketplace/sectionSix/cookie.png"
+    },
+    {
+      "id": 4,
+      "title": "Suporte para celular forma em onda",
+      "tag": "Outros",
+      "price": "25,00",
+      "img": "./images/marketplace/sectionSix/suporte.png"
+    }
+  ]
+}

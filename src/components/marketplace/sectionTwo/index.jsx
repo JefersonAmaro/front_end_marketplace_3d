@@ -1,38 +1,18 @@
 import styles from "./styles.module.css";
 
-import Lilo from "../../../assets/marketplace/sectionTwo/lilo.png";
-import Escultura from "../../../assets/marketplace/sectionTwo/escultura.png";
-import Chave from "../../../assets/marketplace/sectionTwo/chave.png";
-import Tigrinho from "../../../assets/marketplace/sectionTwo/tigrinho.png";
+import { useContext } from "react";
+import { DataContext } from "../../../context/dataContext";
+
+import Loading from "../../loading";  
 
 function SectionTwo() {
-  const cards = [
-    {
-      title:
-        "Boneco Lilo e Stitch articulado brinquedo plástico coleção Disney figura decoraçao Stitch",
-      tag: "Brinquedos",
-      price: "65,00",
-      img: Lilo,
-    },
-    {
-      title: "Escultura postura meditação com vaso para suculentas",
-      tag: "Casa e Decoração",
-      price: "30,00",
-      img: Escultura,
-    },
-    {
-      title: "Chave inglesa de boca ajustavel",
-      tag: "Ferramentas",
-      price: "25,00",
-      img: Chave,
-    },
-    {
-      title: "Tigrinho articulável suporte para celular de mesa bichinho",
-      tag: "Outros",
-      price: "45,00",
-      img: Tigrinho,
-    },
-  ];
+  const { data, loading } = useContext(DataContext);
+  const cards = data.lancamentosRecentes;
+
+  if (loading) {
+    return <Loading />
+  }
+  
   return (
     <div className={styles.container}>
       <div className={styles.containerTitle}>

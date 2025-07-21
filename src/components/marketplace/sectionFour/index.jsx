@@ -1,38 +1,17 @@
 import styles from "./styles.module.css";
 
-import Escultura from "../../../assets/marketplace/sectionFour/escultura.png";
-import Minions from "../../../assets/marketplace/sectionFour/minions.png";
-import Monge from "../../../assets/marketplace/sectionFour/monge.png";
-import Pole from "../../../assets/marketplace/sectionFour/pole.png";
+import { useContext } from "react";
+import { DataContext } from "../../../context/dataContext";
 
+import Loading from "../../loading";
 function SectionFour() {
-     const cards = [
-        {
-          title:
-            "Escultura postura meditação com vaso para suculentas",
-          tag: "Casa e Decoração",
-          price: "30,00",
-          img: Escultura,
-        },
-        {
-          title: "Organizadores Minions porta treco divertido",
-          tag: "Casa e Decoração",
-          price: "90,00",
-          img: Minions,
-        },
-        {
-          title: "Estatua buda monge escultura decorativa",
-          tag: "Casa e Decoração",
-          price: "35,00",
-          img: Monge,
-        },
-        {
-          title: "Escultura artística Pole dance - troféu expressão corporal",
-          tag: "Casa e Decoração",
-          price: "60,00",
-          img: Pole,
-        },
-      ];
+  const { data, loading } = useContext(DataContext);
+  const cards = data.casaEDecoracao;
+
+  if (loading) {
+    return <Loading />;
+  }
+    
       return (
         <div className={styles.container}>
           <div className={styles.containerTitle}>
