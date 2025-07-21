@@ -167,3 +167,145 @@
         color: #fff;
     }
 }
+
+@media screen and (max-width: 1919px) {
+    .sectionOne {
+        gap: 1rem;
+        padding: 6% 5% 0 5%;
+    }
+
+    .contentCardContainer{
+        gap: 1rem;
+    }
+
+    .cardPrincipalButton{
+        font-size: 16px;
+    }
+
+    .cardsSecundary{
+        gap: 1rem;
+    }
+
+    .cardPrincipalDescription{
+        font-size: 16px;
+    }
+
+    .cardContent{
+        padding: 1.5rem;
+    }
+
+    .cardContent h3{
+        font-size: 18px;
+    }
+
+    .cardContent h2{
+        font-size: 24px;
+    }
+
+    .cardSmallDescription{
+        font-size: 12px;
+    }
+
+    .cardSmallButton{
+        font-size: 12px;
+    }
+
+    .contentContainer{
+        padding: 2rem 1.5rem;
+    }
+
+    .content img{
+        width: 60px;
+    }
+
+    .contentTitle h3{
+        font-size: 24px;
+    }
+
+    .contentTitle p{
+        font-size: 16px;
+    }
+}
+
+@media screen and (max-width: 699px) {
+    .sectionOne{
+        gap: 1rem;
+        padding: 22% 5% 0 5%;
+    }
+
+    .contentCardContainer{
+        flex-direction: column;
+        gap: .5rem;
+    }
+
+    .cardsSecundary{
+        gap: 0.5rem;
+        flex-direction: row;
+    }
+
+    .cardContent{
+        width: 100%;
+        padding: 1rem;
+        gap: 0.5rem;
+
+        h2{
+            font-size: 20px;
+        }
+
+        p{
+            font-size: 14px;
+        }
+
+        button{
+            font-size: 14px;
+        }
+    }
+
+    .cardSmall{
+        width: 100%;
+        height: 100%;
+    }
+
+    .cardSmallContent{
+        gap: .2rem;
+        padding: 0.5rem;
+
+        h3{
+            font-size: 12px;
+        }
+
+        p{
+            font-size: 9px;
+        }
+    }
+
+    .cardSmallButton{
+        display: none;
+    }
+
+    .contentContainer{
+        padding: 1rem;
+    }
+
+    .content{
+        gap: .2rem;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+
+        h3{
+            font-size: 12px;
+            text-align: center;
+        }
+
+        p{
+            font-size: 10px;
+            text-align: center;
+        }
+
+        img{
+            width: 50px;
+        }
+    }
+
+}

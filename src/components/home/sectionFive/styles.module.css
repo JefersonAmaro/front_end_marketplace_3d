@@ -90,3 +90,62 @@
 .contentButton button:hover {
     opacity: 0.8;
 }
+
+@media screen and (max-width: 1919px) {
+    .contentTitle h3 {
+        font-size: 24px;
+    }
+
+    .card {
+        width: 23rem;
+        height: 20rem;
+        padding: 0% 1.5rem;
+    }
+
+    .card img {
+        width: 60px;
+        height: 60px;
+    }
+
+    .card h4 {
+        font-size: 18px;
+    }
+
+    .card p {
+        font-size: 16px;
+    }
+
+    .contentButton button {
+        font-size: 18px;
+        padding: 1rem 3rem;
+    }
+}
+
+@media screen and (max-width: 699px) {
+    .container {
+        padding: 7% 5%;
+    }
+
+    .contentTitle {
+        align-items: start;
+
+        h3 {
+            font-size: 20px;
+        }
+    }
+
+    .contentCards {
+        flex-wrap: wrap;
+        gap: 3rem;
+    }
+
+    .card {
+        width: 23rem;
+        height: 20rem;
+        padding: 0% 1.5rem;
+    }
+
+    .contentButton{
+        margin-top: 0;
+    }
+}
