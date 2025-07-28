@@ -10,7 +10,7 @@ export const DataContextProvider = ({ children }) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get("./data.json");
+        const response = await axios.get("/data.json");
         setData(response.data);
       } catch (error) {
         console.error("Erro ao buscar os dados:", error);

@@ -5,11 +5,15 @@ import Loading from "../../loading";
 import { useContext } from "react";
 import { DataContext } from "../../../context/dataContext";
 
+import { useNavigate } from "react-router-dom";
+
 function SectionThree() {
   const { data, loading } = useContext(DataContext);
-  const cards = data.brinquedos;
+  const cards = data.brinquedos || [];
 
-  if (loading) {
+  const navigate = useNavigate();
+
+  if (loading || !data) {
     return <Loading />;
   }
 
@@ -30,15 +34,17 @@ function SectionThree() {
 
       <div className={styles.containerCards}>
         {cards.map((card, index) => (
-          <div className={styles.card} key={index}>
+          <div className={styles.card} key={index} onClick={() => navigate(`/marketplace/${card.id}`)}>
             <img src={card.img} alt={card.title} />
             <div className={styles.contentCard}>
               <div className={styles.contentTitleCard}>
-                <h4>{card.title}</h4>
-                <p>{card.tag}</p>
+                <h4>{card.name}</h4>
+                <p>{card.category}</p>
               </div>
               <h4>R$ {card.price}</h4>
-              <button>Adicionar a sacola</button>
+
+              {/* Bloquear o onClick do card */}
+              <button onClick={(e) => e.stopPropagation()}>Adicionar a sacola</button>
             </div>
           </div>
         ))}

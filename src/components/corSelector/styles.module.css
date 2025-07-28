@@ -1,0 +1,61 @@
+.container {
+  p {
+    white-space: pre-line;
+    font-size: 16px;
+    color: #353535;
+  }
+}
+
+.colors {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+  padding: .5rem;
+}
+
+.color {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: 2px solid transparent;
+  cursor: pointer;
+  transition: border 0.3s ease;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+}
+
+.color:hover {
+  opacity: 0.8;
+}
+
+.color.active {
+  outline: 3px solid #464646;
+  outline-offset: 3px;
+}
+
+@media screen and (max-width: 1919px) {
+  .container {
+    p {
+      font-size: 12px;
+    }
+  }
+
+  .color {
+    width: 25px;
+    height: 25px;
+  }
+
+}
+
+@media screen and (max-width: 699px) {
+  .color {
+    width: 30px;
+    height: 30px;
+  }
+
+  .container {
+    p {
+      font-size: 14px;
+    }
+  }
+  
+}

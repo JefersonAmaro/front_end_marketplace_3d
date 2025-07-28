@@ -3,12 +3,16 @@ import styles from "./styles.module.css";
 import { useContext } from "react";
 import { DataContext } from "../../../context/dataContext";
 
+import { useNavigate } from "react-router-dom";
+
 import Loading from "../../loading";
 function SectionFour() {
   const { data, loading } = useContext(DataContext);
-  const cards = data.casaEDecoracao;
+  const cards = data.casaEDecoracao || [];
 
-  if (loading) {
+  const navigate = useNavigate();
+
+  if (loading || !data) {
     return <Loading />;
   }
     
@@ -28,15 +32,17 @@ function SectionFour() {
     
           <div className={styles.containerCards}>
             {cards.map((card, index) => (
-              <div className={styles.card} key={index}>
+              <div className={styles.card} key={index} onClick={() => navigate(`/marketplace/${card.id}`)}>
                 <img src={card.img} alt={card.title} />
                 <div className={styles.contentCard}>
                   <div className={styles.contentTitleCard}>
-                    <h4>{card.title}</h4>
-                    <p>{card.tag}</p>
+                    <h4>{card.name}</h4>
+                    <p>{card.category}</p>
                   </div>
                   <h4>R$ {card.price}</h4>
-                  <button>Adicionar a sacola</button>
+
+                  {/* Bloquear o onClick do card */}
+                  <button onClick={(e) => e.stopPropagation()}>Adicionar a sacola</button>
                 </div>
               </div>
             ))}

@@ -89,7 +89,7 @@ function Header() {
                 <polyline points="6 9 12 15 18 9" />
               </svg>
             </button>
-            <button className={styles.orcamentoButton}>
+            <button className={styles.button + " " + styles.orcamentoButton}>
               Solicitar Orçamento
             </button>
             <button className={styles.sacolaButton}>
@@ -187,7 +187,7 @@ function Header() {
                 <polyline points="6 9 12 15 18 9" />
               </svg>
             </button>
-            <button className={styles.orcamentoButton}>
+            <button className={styles.button}>
               Solicitar Orçamento
             </button>
             <button className={styles.sacolaButton}>

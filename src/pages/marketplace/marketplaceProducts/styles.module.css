@@ -1,0 +1,563 @@
+.notFound {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.container {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 15vh 5% 5vh 5%;
+    gap: 2rem;
+}
+
+.images {
+    width: 55%;
+    height: 100%;
+    display: flex;
+    gap: 1rem;
+
+    .imagesSection {
+        display: flex;
+        flex-direction: column;
+        justify-content: start;
+        gap: 1rem;
+        width: 10%;
+
+
+        img {
+            width: 100%;
+            aspect-ratio: 1 / 1;
+            object-fit: cover;
+            object-position: center;
+            border-radius: 5px;
+            box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+            cursor: pointer;
+            transition: all 0.3s ease-in-out;
+        }
+
+        img:hover {
+            opacity: 0.8;
+        }
+    }
+
+    .image {
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        border-radius: 10px;
+
+        img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+            border-radius: 10px;
+            cursor: pointer;
+        }
+    }
+}
+
+.info {
+    width: 45%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+
+    .text {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+        width: 100%;
+
+        h1 {
+            color: #353535;
+            font-size: 26px;
+        }
+
+        .tag {
+            font-weight: 400;
+            font-size: 14px;
+            overflow: hidden;
+            display: -webkit-box;
+            -webkit-line-clamp: 1;
+            line-clamp: 1;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: normal;
+            background-color: #7B00FF;
+            padding: .5rem;
+            border-radius: 10px;
+            width: fit-content;
+            color: #fff;
+        }
+
+        .description,
+        .size {
+            white-space: pre-line;
+            font-size: 16px;
+            color: #353535
+        }
+
+        .price {
+            font-size: 26px;
+            color: #4D00FF;
+            font-weight: 800;
+        }
+    }
+
+
+}
+
+.buy {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 1rem;
+
+    .buttons {
+        display: flex;
+        gap: 1rem;
+
+        button {
+            cursor: pointer;
+            padding: 1rem 2rem;
+            border: none;
+            cursor: pointer;
+            font-weight: bold;
+            border-radius: 10px;
+        }
+
+        .buyNow {
+            background-color: #4D00FF;
+            color: white;
+            transition: all 0.3s ease-in-out;
+            font-weight: 400;
+            font-size: 18px;
+        }
+
+        .buyNow:hover {
+            opacity: 0.8;
+        }
+
+        .addToCart {
+            background-color: #f3f4f6;
+            color: #111827;
+            transition: all 0.3s ease-in-out;
+            font-weight: 400;
+            font-size: 18px;
+        }
+
+        .addToCart:hover {
+            background-color: #bebebe;
+        }
+    }
+}
+
+.quantidadeWrapper {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin: 0.5rem 0;
+}
+
+.botao {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: black;
+    color: white;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+}
+
+.valor {
+    font-size: 20px;
+    min-width: 20px;
+    text-align: center;
+}
+
+.btnCarrinho,
+.btnComprar {
+    margin-top: 1rem;
+    padding: 0.6rem 1.2rem;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+    border-radius: 4px;
+}
+
+.btnCarrinho {
+    background-color: #f3f4f6;
+    color: #111827;
+    margin-right: 0.5rem;
+}
+
+.btnComprar {
+    background-color: #111827;
+    color: white;
+}
+
+
+.moreProducts {
+    padding: 1% 5%
+}
+
+.containerTitle {
+    display: flex;
+    justify-content: space-between;
+}
+
+.contentTitle h2 {
+    font-weight: 600;
+    font-size: 28px;
+    color: #000;
+}
+
+.contentTitle p {
+    font-weight: 400;
+    font-size: 18px;
+    color: #000;
+}
+
+.contentButton {
+    height: 100%;
+
+    button {
+        font-weight: 400;
+        font-size: 20px;
+        color: #fff;
+        background: #4D00FF;
+        border: none;
+        border-radius: 10px;
+        padding: 1rem 3rem;
+        cursor: pointer;
+        transition: all 0.3s ease-in-out;
+    }
+
+    button:hover {
+        opacity: 0.8;
+    }
+}
+
+.containerCards {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 0;
+    gap: 1rem
+}
+
+.card {
+    display: flex;
+    flex-direction: column;
+    width: 25%;
+    background-color: #111827;
+    border-radius: 10px;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+
+    img {
+        width: 100%;
+        height: 230px;
+        border-radius: 10px 10px 0 0;
+    }
+
+    h4 {
+        font-weight: 600;
+        font-size: 18px;
+        color: #fff;
+    }
+
+    button {
+        font-weight: 400;
+        font-size: 18px;
+        color: #fff;
+        background: #4D00FF;
+        border: none;
+        border-radius: 10px;
+        padding: 1rem 1rem;
+        cursor: pointer;
+        transition: all 0.3s ease-in-out;
+        width: 55%;
+    }
+
+    button:hover {
+        opacity: 0.8;
+    }
+}
+
+.card:hover {
+    opacity: 0.9;
+    transform: translateY(-5px);
+
+}
+
+.contentCard {
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem
+}
+
+.contentTitleCard {
+    display: flex;
+    gap: .5rem;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+    color: #fff;
+
+    h4 {
+        font-weight: 400;
+        font-size: 18px;
+        width: 62%;
+        height: 100%;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: normal;
+    }
+
+    p {
+        font-weight: 400;
+        font-size: 14px;
+        overflow: hidden;
+        display: -webkit-box;
+        -webkit-line-clamp: 1;
+        line-clamp: 1;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: normal;
+        background-color: #7B00FF;
+        padding: .5rem;
+        border-radius: 10px;
+    }
+}
+
+@media screen and (max-width: 1919px) {
+
+    .images {
+        width: 50%;
+    }
+
+    .info {
+        width: 50%;
+        gap: 0.5rem;
+
+        .text {
+            gap: 0.5rem;
+
+            h1 {
+                font-size: 20px;
+            }
+
+            .tag {
+                font-size: 9px;
+                padding: 0.5rem;
+            }
+
+            .description,
+            .size {
+                font-size: 12px;
+            }
+
+            .price {
+                font-size: 20px;
+            }
+        }
+    }
+
+    .buy {
+        gap: 0.5rem;
+
+        .buttons {
+            gap: 0.5rem;
+
+            .buyNow {
+                font-size: 14px;
+            }
+
+            .addToCart {
+                font-size: 14px;
+            }
+        }
+    }
+
+    .botao {
+        font-size: 14px;
+        width: 30px;
+        height: 30px;
+    }
+
+    .valor {
+        font-size: 14px;
+    }
+
+
+    .contentTitle h2 {
+        font-size: 24px;
+    }
+
+    .contentTitle p {
+        font-size: 16px;
+    }
+
+    .contentButton button {
+        font-size: 16px;
+    }
+
+    .contentCard {
+        gap: 1rem;
+    }
+
+    .card {
+        width: 23rem;
+        height: 22rem;
+    }
+
+    .card img {
+        width: 100%;
+        height: 180px;
+    }
+
+    .card h4 {
+        font-size: 16px;
+    }
+
+    .card {
+        button {
+            font-size: 16px;
+            width: 65%;
+            padding: 1rem 0.5rem;
+        }
+    }
+
+    .contentTitleCard h4 {
+        width: 61%;
+    }
+
+    .contentTitleCard p {
+        font-size: 9px;
+        padding: 0.5rem;
+    }
+}
+
+@media screen and (max-width: 699px) {
+    .container {
+        flex-direction: column;
+        gap: 1rem;
+        height: auto;
+    }
+
+    .images {
+        width: 100%;
+        flex-direction: column-reverse;
+        gap: 0.5rem;
+
+        .imagesSection {
+            width: 100%;
+            flex-direction: row;
+            gap: 0.5rem;
+            padding: 1px;
+
+            img {
+                box-shadow: none;
+            }
+        }
+
+        .image {
+            img {
+                aspect-ratio: 1/1;
+            }
+        }
+    }
+
+    .info {
+        width: 100%;
+
+        .text {
+            gap: 0.5rem;
+
+            h1 {
+                font-size: 20px;
+            }
+
+            .tag {
+                font-size: 9px;
+                padding: 0.5rem;
+            }
+
+            .description,
+            .size {
+                font-size: 14px;
+            }
+
+            .price {
+                font-size: 24px;
+            }
+        }
+    }
+
+    .buy {
+        gap: 0.5rem;
+
+        .buttons {
+            flex-direction: column;
+            gap: 0.5rem;
+
+            .buyNow {
+                font-size: 16px;
+            }
+
+            .addToCart {
+                font-size: 16px;
+            }
+        }
+    }
+
+    .botao {
+        font-size: 16px;
+        width: 40px;
+        height: 40px;
+    }
+
+    .valor {
+        font-size: 16px;
+    }
+
+    .containerTitle {
+        flex-direction: column;
+        gap: 1rem;
+
+        h2 {
+            font-size: 20px;
+        }
+
+        p {
+            font-size: 14px;
+        }
+    }
+
+    .containerCards {
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .card {
+        width: 100%;
+    }
+}
