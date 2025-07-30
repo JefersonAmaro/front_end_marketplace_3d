@@ -44,7 +44,7 @@ function SectionSix() {
               <h4>R$ {card.price}</h4>
 
               {/* Bloquear o onClick do card */}
-              <button onClick={(e) => e.stopPropagation()}>Adicionar a sacola</button>
+              <button onClick={(e) => e.stopPropagation()}>Comprar Agora</button>
             </div>
           </div>
         ))}

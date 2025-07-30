@@ -8,8 +8,9 @@
   position: fixed;
   top: 0;
   width: 100vw;
-  height: 10vh;
+  height: 8vh;
   z-index: 1000;
+  overflow: hidden;
 }
 
 .title {
@@ -25,7 +26,7 @@
 
 .button {
   font-weight: 500;
-  font-size: 20px;
+  font-size: 16px;
   color: #000;
   background: #F9F9F9;
   border: none;
@@ -38,7 +39,7 @@
 
 .loginButton {
   font-weight: 350;
-  font-size: 20px;
+  font-size: 16px;
   color: #fff;
   background: #4D00FF;
   padding: .8rem 4rem;
@@ -148,12 +149,16 @@
 }
 
 @media screen and (max-width: 1919px) {
+  .header {
+    height: 9vh;
+  }
+
   .title {
     font-size: 30px;
   }
 
   .button {
-    font-size: 18px;
+    font-size: 16px;
   }
 
   .buttonsMarketplace {
@@ -161,14 +166,17 @@
   }
 
   .loginButton {
-    font-size: 18px;
-    padding: .8rem 3rem;
+    font-size: 16px;
+    padding: .5rem 2rem;
   }
 
   .inputBusca {
     input {
-
       font-size: 18px;
+    }
+
+    .pesquisarButton{
+      height: 75%;
     }
   }
 

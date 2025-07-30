@@ -5,6 +5,8 @@ import Footer from './components/footer'
 
 import ScrollToTop from './components/scrollToTop'
 
+import { CartPreview } from './components/cartPreview'
+
 function App() {
 
   return (
@@ -12,6 +14,7 @@ function App() {
       <Header />
       <ScrollToTop />
       <Outlet />
+      <CartPreview />
       <Footer />
     </>
   )
