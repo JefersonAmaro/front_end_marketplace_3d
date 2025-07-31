@@ -1,0 +1,254 @@
+{
+  "lancamentosRecentes": [
+    {
+      "id": "e5f0fdfa-8f74-4f9c-8e9b-4a1d16d986d3",
+      "name": "Boneco Lilo e Stitch articulado brinquedo plástico coleção Disney figura decoraçao Stitch",
+      "size": { "width": 10, "height": 15, "depth": 20 },
+      "colors": ["red", "blue", "yellow"],
+      "material": ["PLA", "PETG", "ABS", "TPU", "Nylon"],
+      "finishing": ["Padrão", "Lixado", "Pintado", "Polido"],
+      "category": "Brinquedos",
+      "price": "65,00",
+      "img": "/images/marketplace/sectionTwo/lilo.png",
+      "description": "Transforme seu espaço com nosso incrível Boneco Stitch Articulado, impresso em 3D e meticulosamente pintado à mão! Este produto é perfeito para colecionadores, fãs de Disney e amantes de arte. Articulado: Movimente as articulações do boneco para criar poses divertidas!\nImpressão 3D de Alta Qualidade: Cada detalhe é cuidadosamente reproduzido para uma experiência visual única.\nPintura Manual: O acabamento artesanal garante que cada peça seja exclusiva e cheia de personalidade.",
+      "supplier_id": "1"
+    },
+    {
+      "id": "fe244bdf-9a6b-4c3c-bb58-1f6ff0db9f99",
+      "name": "Escultura postura meditação com vaso para suculentas",
+      "size": { "width": 10, "height": 15, "depth": 20 },
+      "colors": ["red", "blue", "yellow"],
+      "material": ["PLA", "PETG", "ABS", "TPU", "Nylon"],
+      "finishing": ["Padrão", "Lixado", "Pintado", "Polido"],
+      "category": "Casa e Decoração",
+      "price": "30,00",
+      "img": "/images/marketplace/sectionTwo/escultura.png",
+      "supplier_id": "1"
+
+    },
+    {
+      "id": "74dbf42b-8264-45e3-9aa6-bb9184f008f7",
+      "name": "Chave inglesa de boca ajustavel",
+      "size": { "width": 10, "height": 15, "depth": 20 },
+      "colors": ["red", "blue", "yellow"],
+      "material": ["PLA", "PETG", "ABS", "TPU", "Nylon"],
+      "finishing": ["Padrão", "Lixado", "Pintado", "Polido"],
+      "category": "Ferramentas",
+      "price": "25,00",
+      "img": "/images/marketplace/sectionTwo/chave.png",
+      "supplier_id": "1"
+    },
+    {
+      "id": "1ad61e5a-4692-4cc7-9ac9-d340ff823f9e",
+      "name": "Tigrinho articulável suporte para celular de mesa bichinho",
+      "size": { "width": 10, "height": 15, "depth": 20 },
+      "colors": ["red", "blue", "yellow"],
+      "material": ["PLA", "PETG", "ABS", "TPU", "Nylon"],
+      "finishing": ["Padrão", "Lixado", "Pintado", "Polido"],
+      "category": "Outros",
+      "price": "45,00",
+      "img": "/images/marketplace/sectionTwo/tigrinho.png",
+      "supplier_id": "1"
+    }
+  ],
+  "brinquedos": [
+    {
+      "id": "50dcb68a-7e36-4a47-85e3-58060ac64b7d",
+      "name": "Boneco Lilo e Stitch articulado brinquedo plástico coleção Disney figura decoraçao Stitch",
+      "size": { "width": 10, "height": 15, "depth": 20 },
+      "colors": ["red", "blue", "yellow"],
+      "material": ["PLA", "PETG", "ABS", "TPU", "Nylon"],
+      "finishing": ["Padrão", "Lixado", "Pintado", "Polido"],
+      "category": "Brinquedos",
+      "price": "65,00",
+      "img": "/images/marketplace/sectionThree/lilo.png",
+      "supplier_id": "1"
+    },
+    {
+      "id": "8776463e-1746-4eb9-b142-f3489f8cb5f1",
+      "name": "Boneco Pinóquio articulado - figura Pinocchio impressão 3D",
+      "size": { "width": 10, "height": 15, "depth": 20 },
+      "colors": ["red", "blue", "yellow"],
+      "material": ["PLA", "PETG", "ABS", "TPU", "Nylon"],
+      "finishing": ["Padrão", "Lixado", "Pintado", "Polido"],
+      "category": "Brinquedos",
+      "price": "75,00",
+      "img": "/images/marketplace/sectionThree/pinoquio.png",
+      "supplier_id": "1"
+    },
+    {
+      "id": "85e49e3d-ec8e-49f9-acc8-6596e3609a77",
+      "name": "Boneco One Piece Luffy caveira Anime Brinquedo articulado",
+      "size": { "width": 10, "height": 15, "depth": 20 },
+      "colors": ["red", "blue", "yellow"],
+      "material": ["PLA", "PETG", "ABS", "TPU", "Nylon"],
+      "finishing": ["Padrão", "Lixado", "Pintado", "Polido"],
+      "category": "Brinquedos",
+      "price": "55,00",
+      "img": "/images/marketplace/sectionThree/onepiece.png",
+      "supplier_id": "1"
+    },
+    {
+      "id": "c2de5ea4-e9b1-4b92-b289-4182e1ad9d15",
+      "name": "Boneco Woody articulável brinquedo Toy Story Xerife 18 cm",
+      "size": { "width": 10, "height": 15, "depth": 20 },
+      "colors": ["red", "blue", "yellow"],
+      "material": ["PLA", "PETG", "ABS", "TPU", "Nylon"],
+      "finishing": ["Padrão", "Lixado", "Pintado", "Polido"],
+      "category": "Brinquedos",
+      "price": "85,00",
+      "img": "/images/marketplace/sectionThree/woody.png",
+      "supplier_id": "1"
+    }
+  ],
+  "casaEDecoracao": [
+    {
+      "id": "3d6142db-8c64-42b0-a1f5-3a88c0a4ce42",
+      "name": "Escultura postura meditação com vaso para suculentas",
+      "size": { "width": 10, "height": 15, "depth": 20 },
+      "colors": ["red", "blue", "yellow"],
+      "material": ["PLA", "PETG", "ABS", "TPU", "Nylon"],
+      "finishing": ["Padrão", "Lixado", "Pintado", "Polido"],
+      "category": "Casa e Decoração",
+      "price": "30,00",
+      "img": "/images/marketplace/sectionFour/escultura.png",
+      "supplier_id": "1"
+    },
+    {
+      "id": "f51943b6-c4c5-4ac1-9213-8ae84ec5e8c9",
+      "name": "Organizadores Minions porta treco divertido",
+      "size": { "width": 10, "height": 15, "depth": 20 },
+      "colors": ["red", "blue", "yellow"],
+      "material": ["PLA", "PETG", "ABS", "TPU", "Nylon"],
+      "finishing": ["Padrão", "Lixado", "Pintado", "Polido"],
+      "category": "Casa e Decoração",
+      "price": "90,00",
+      "img": "/images/marketplace/sectionFour/minions.png",
+      "supplier_id": "1"
+    },
+    {
+      "id": "96d171ef-13b6-4a7c-b8b1-6a12df2e27ee",
+      "name": "Estatua buda monge escultura decorativa",
+      "size": { "width": 10, "height": 15, "depth": 20 },
+      "colors": ["red", "blue", "yellow"],
+      "material": ["PLA", "PETG", "ABS", "TPU", "Nylon"],
+      "finishing": ["Padrão", "Lixado", "Pintado", "Polido"],
+      "category": "Casa e Decoração",
+      "price": "35,00",
+      "img": "/images/marketplace/sectionFour/monge.png",
+      "supplier_id": "1"
+    },
+    {
+      "id": "b6c80ff2-1448-4179-882e-b28788d39693",
+      "name": "Escultura artística Pole dance - troféu expressão corporal",
+      "size": { "width": 10, "height": 15, "depth": 20 },
+      "colors": ["red", "blue", "yellow"],
+      "material": ["PLA", "PETG", "ABS", "TPU", "Nylon"],
+      "finishing": ["Padrão", "Lixado", "Pintado", "Polido"],
+      "category": "Casa e Decoração",
+      "price": "60,00",
+      "img": "/images/marketplace/sectionFour/pole.png",
+      "supplier_id": "1"
+    }
+  ],
+  "ferramentas": [
+    {
+      "id": "e2c5dd59-7c92-4c63-ae36-bb1c93eb5d31",
+      "name": "Chave inglesa de boca ajustavel",
+      "size": { "width": 10, "height": 15, "depth": 20 },
+      "colors": ["red", "blue", "yellow"],
+      "material": ["PLA", "PETG", "ABS", "TPU", "Nylon"],
+      "finishing": ["Padrão", "Lixado", "Pintado", "Polido"],
+      "category": "Ferramentas",
+      "price": "25,00",
+      "img": "/images/marketplace/sectionFive/chave.png",
+      "supplier_id": "1"
+    },
+    {
+      "id": "497d3807-4517-4db1-bbd2-4f5c9e90cfea",
+      "name": "Suporte de prateleira mão francesa",
+      "size": { "width": 10, "height": 15, "depth": 20 },
+      "colors": ["red", "blue", "yellow"],
+      "material": ["PLA", "PETG", "ABS", "TPU", "Nylon"],
+      "finishing": ["Padrão", "Lixado", "Pintado", "Polido"],
+      "category": "Ferramentas",
+      "price": "15,00",
+      "img": "/images/marketplace/sectionFive/suporte.png",
+      "supplier_id": "1"
+    },
+    {
+      "id": "f3e8a7e1-c8a5-49e4-accf-d01c4066f9de",
+      "name": "Corpo do estilete, suporte de lâmina",
+      "size": { "width": 10, "height": 15, "depth": 20 },
+      "colors": ["red", "blue", "yellow"],
+      "material": ["PLA", "PETG", "ABS", "TPU", "Nylon"],
+      "finishing": ["Padrão", "Lixado", "Pintado", "Polido"],
+      "category": "Ferramentas",
+      "price": "45,00",
+      "img": "/images/marketplace/sectionFive/estilete.png",
+      "supplier_id": "1"
+    },
+    {
+      "id": "b2b9e152-e648-45d2-9a0f-5a00ed0872fa",
+      "name": " Abridores de caixas, cortadores de fita e embalagem",
+      "size": { "width": 10, "height": 15, "depth": 20 },
+      "colors": ["red", "blue", "yellow"],
+      "material": ["PLA", "PETG", "ABS", "TPU", "Nylon"],
+      "finishing": ["Padrão", "Lixado", "Pintado", "Polido"],
+      "category": "Ferramentas",
+      "price": "85,00",
+      "img": "/images/marketplace/sectionFive/abridor.png",
+      "supplier_id": "1"
+    }
+  ],
+  "outros": [
+    {
+      "id": "32b45fe9-c13c-4df9-910e-c9fe7c3cd7c6",
+      "name": "Tigrinho articulável suporte para celular de mesa bichinho",
+      "size": { "width": 10, "height": 15, "depth": 20 },
+      "colors": ["red", "blue", "yellow"],
+      "material": ["PLA", "PETG", "ABS", "TPU", "Nylon"],
+      "finishing": ["Padrão", "Lixado", "Pintado", "Polido"],
+      "category": "Outros",
+      "price": "45,00",
+      "img": "/images/marketplace/sectionSix/tigrinho.png",
+      "supplier_id": "1"
+    },
+    {
+      "id": "aec928a6-51c4-43e0-9d6e-3d50200f88e1",
+      "name": "Chaveiro Banguela - Como treinar o seu dragão",
+      "size": { "width": 10, "height": 15, "depth": 20 },
+      "colors": ["red", "blue", "yellow"],
+      "material": ["PLA", "PETG", "ABS", "TPU", "Nylon"],
+      "finishing": ["Padrão", "Lixado", "Pintado", "Polido"],
+      "category": "Outros",
+      "price": "12,00",
+      "img": "/images/marketplace/sectionSix/banguela.png",
+      "supplier_id": "1"
+    },
+    {
+      "id": "d670f271-3d65-44bb-8c83-9d1c80a8084f",
+      "name": "Cortador de Biscoito cookies Pasta Americana Macaco Animais",
+      "size": { "width": 10, "height": 15, "depth": 20 },
+      "colors": ["red", "blue", "yellow"],
+      "material": ["PLA", "PETG", "ABS", "TPU", "Nylon"],
+      "finishing": ["Padrão", "Lixado", "Pintado", "Polido"],
+      "category": "Outros",
+      "price": "8,90",
+      "img": "/images/marketplace/sectionSix/cookie.png",
+      "supplier_id": "1"
+    },
+    {
+      "id": "1d7fbc02-595a-4d62-b2fc-bd364134fa0f",
+      "name": "Suporte para celular forma em onda",
+      "size": { "width": 10, "height": 15, "depth": 20 },
+      "colors": ["red", "blue", "yellow"],
+      "material": ["PLA", "PETG", "ABS", "TPU", "Nylon"],
+      "finishing": ["Padrão", "Lixado", "Pintado", "Polido"],
+      "category": "Outros",
+      "price": "25,00",
+      "img": "/images/marketplace/sectionSix/suporte.png",
+      "supplier_id": "1"
+    }
+  ]
+}

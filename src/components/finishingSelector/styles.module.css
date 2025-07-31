@@ -1,0 +1,61 @@
+.container {
+  p {
+    white-space: pre-line;
+    font-size: 16px;
+    color: #353535;
+  }
+}
+
+.finishingContainer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.finishing {
+  padding: 0.5rem 1rem;
+  border-radius: 10px;
+  border: 2px solid #ccc;
+  background-color: #f5f5f5;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.finishing:hover {
+  background-color: #e0e0e0;
+}
+
+.finishing.active {
+  background-color: #333;
+  color: white;
+  border-color: #333;
+}
+
+@media screen and (max-width: 1919px) {
+
+  .container {
+    p {
+      font-size: 12px;
+    }
+  }
+  
+  .finishing{
+    font-size: 12px;
+  }
+
+}
+
+@media screen and (max-width: 699px) {
+
+  .container {
+    p {
+      font-size: 14px;
+    }
+  }
+  
+  .finishing{
+    font-size: 14px;
+  }
+  
+}

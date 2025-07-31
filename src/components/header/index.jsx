@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import styles from "./styles.module.css";
 
 import Busca from "../../assets/header/busca.png";
-import Sacola from "../../assets/header/sacola.png";
 
 function Header() {
   const [menuAberto, setMenuAberto] = useState(false);
@@ -42,7 +41,7 @@ function Header() {
     // Menu Desktop
     return (
       <header className={styles.header}>
-        <h1 className={styles.title}>Market3D</h1>
+        <h1 className={styles.title} onClick={() => navigate("/marketplace")}>Market3D</h1>
         {isHome ? (
           <div className={styles.buttonsHome}>
             <button
@@ -89,11 +88,8 @@ function Header() {
                 <polyline points="6 9 12 15 18 9" />
               </svg>
             </button>
-            <button className={styles.orcamentoButton}>
+            <button className={styles.button + " " + styles.orcamentoButton}>
               Solicitar Orçamento
-            </button>
-            <button className={styles.sacolaButton}>
-              <img src={Sacola} alt="Sacola" />0
             </button>
             <button className={styles.loginButton}>Login</button>
           </div>
@@ -106,7 +102,7 @@ function Header() {
   return (
     <header className={styles.headerMobile}>
       <div className={styles.headerContent}>
-        <h1 className={styles.title}>Market3D</h1>
+        <h1 className={styles.title} onClick={() => navigate("/marketplace")}>Market3D</h1>
 
         {/* Botão Hamburger */}
         <button
@@ -187,11 +183,8 @@ function Header() {
                 <polyline points="6 9 12 15 18 9" />
               </svg>
             </button>
-            <button className={styles.orcamentoButton}>
+            <button className={styles.button}>
               Solicitar Orçamento
-            </button>
-            <button className={styles.sacolaButton}>
-              <img src={Sacola} alt="Sacola" />0
             </button>
             <button className={styles.loginButton}>Login</button>
           </div>

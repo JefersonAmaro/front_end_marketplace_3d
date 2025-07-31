@@ -1,38 +1,21 @@
 import styles from "./styles.module.css";
 
-import Escultura from "../../../assets/marketplace/sectionFour/escultura.png";
-import Minions from "../../../assets/marketplace/sectionFour/minions.png";
-import Monge from "../../../assets/marketplace/sectionFour/monge.png";
-import Pole from "../../../assets/marketplace/sectionFour/pole.png";
+import { useContext } from "react";
+import { DataContext } from "../../../context/dataContext";
 
+import { useNavigate } from "react-router-dom";
+
+import Loading from "../../loading";
 function SectionFour() {
-     const cards = [
-        {
-          title:
-            "Escultura postura meditação com vaso para suculentas",
-          tag: "Casa e Decoração",
-          price: "30,00",
-          img: Escultura,
-        },
-        {
-          title: "Organizadores Minions porta treco divertido",
-          tag: "Casa e Decoração",
-          price: "90,00",
-          img: Minions,
-        },
-        {
-          title: "Estatua buda monge escultura decorativa",
-          tag: "Casa e Decoração",
-          price: "35,00",
-          img: Monge,
-        },
-        {
-          title: "Escultura artística Pole dance - troféu expressão corporal",
-          tag: "Casa e Decoração",
-          price: "60,00",
-          img: Pole,
-        },
-      ];
+  const { data, loading } = useContext(DataContext);
+  const cards = data.casaEDecoracao || [];
+
+  const navigate = useNavigate();
+
+  if (loading || !data) {
+    return <Loading />;
+  }
+    
       return (
         <div className={styles.container}>
           <div className={styles.containerTitle}>
@@ -49,15 +32,17 @@ function SectionFour() {
     
           <div className={styles.containerCards}>
             {cards.map((card, index) => (
-              <div className={styles.card} key={index}>
+              <div className={styles.card} key={index} onClick={() => navigate(`/marketplace/${card.id}`)}>
                 <img src={card.img} alt={card.title} />
                 <div className={styles.contentCard}>
                   <div className={styles.contentTitleCard}>
-                    <h4>{card.title}</h4>
-                    <p>{card.tag}</p>
+                    <h4>{card.name}</h4>
+                    <p>{card.category}</p>
                   </div>
                   <h4>R$ {card.price}</h4>
-                  <button>Adicionar a sacola</button>
+
+                  {/* Bloquear o onClick do card */}
+                  <button onClick={(e) => e.stopPropagation()}>Comprar Agora</button>
                 </div>
               </div>
             ))}
