@@ -6,6 +6,8 @@ import { useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import { DataContext } from "../../context/dataContext";
 
+import { FiTrash, FiShoppingCart  } from "react-icons/fi";
+
 export function CartPreview() {
   const { data, loading } = useContext(DataContext);
   const [cart, setCart] = useState([]);
@@ -29,6 +31,7 @@ export function CartPreview() {
   };
 
   useEffect(() => {
+    loadCart();
     const handleCartChange = (event) => {
       loadCart();
 
@@ -71,12 +74,20 @@ export function CartPreview() {
     }
   };
 
+  const removerItem = (index) => {
+    const updatedCart = [...cart];
+    updatedCart.splice(index, 1);
+    setCart(updatedCart);
+    localStorage.setItem("cart", JSON.stringify(updatedCart));
+    window.dispatchEvent(new Event("cartUpdated"));
+  };
+
   if (!data || loading) return <>Carregando</>;
 
   return (
     <>
       <div className={styles.floatingButton} onClick={toggleCart}>
-        🛒 {totalItems}
+        <FiShoppingCart sixe={20} /> {totalItems}
       </div>
 
       <div className={`${styles.cartPanel} ${isOpen ? styles.open : ""}`}>
@@ -97,16 +108,30 @@ export function CartPreview() {
                 <div
                   key={index}
                   className={styles.cartItemContainer}
-                  onClick={() => {navigate(`/marketplace/${item.produto?.id}`); toggleCart()}}
+                  onClick={() => {
+                    navigate(`/marketplace/${item.produto?.id}`);
+                    toggleCart();
+                  }}
                 >
                   <div className={styles.cartItemImg}>
                     <img src={item.produto?.img} alt={item.produto?.name} />
                   </div>
                   <div className={styles.cartItemInfo}>
                     <li className={styles.cartItem}>
-                      <p className={styles.cartItemName}>
-                        {item.produto?.name}
-                      </p>
+                      <div className={styles.cartItemTitle}>
+                        <p className={styles.cartItemName}>
+                          {item.produto?.name}
+                        </p>
+                        <div
+                          className={styles.cartItemDelete}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            removerItem(index);
+                          }}
+                        >
+                          <FiTrash size={18} className={styles.cartItemDeleteIcon} />
+                        </div>
+                      </div>
                       <div className={styles.cartItemDescription}>
                         <div
                           className={styles.cartItemColor}
@@ -126,6 +151,7 @@ export function CartPreview() {
                               e.stopPropagation();
                               diminuirQuantidade(index);
                             }}
+                            disabled={item.quantidade === 1}
                           >
                             –
                           </button>

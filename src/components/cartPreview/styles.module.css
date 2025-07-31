@@ -10,6 +10,9 @@
   cursor: pointer;
   z-index: 1000;
   font-weight: bold;
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
 .cartPanel {
@@ -123,10 +126,41 @@
     gap: 5px;
   }
 
+  .cartItemTitle {
+    display: flex;
+    justify-content: space-between;
+  }
+
   .cartItemName {
     font-weight: 300;
     font-size: 16px;
     margin-bottom: 5px;
+    width: 90%;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: normal;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+  }
+
+  .cardItemDelete {
+    width: 10%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+  }
+
+  .cartItemDeleteIcon {
+    font-size: 16px;
+    color: #333;
+    transition: all 0.3s ease-in-out;
+  }
+
+  .cartItemDeleteIcon:hover {
+    color: red;
   }
 
   .cartItemDescription {
@@ -272,7 +306,7 @@
     .cartTotalValue {
       font-size: 18px;
     }
-  } 
+  }
 
   .cartCheckoutButton {
     font-size: 16px;
@@ -295,9 +329,8 @@
   .cartItemInfo {
     .cartItemName {
       font-size: 14px;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
+      -webkit-line-clamp: 1;
+      line-clamp: 1;
     }
 
     .cartItemDescription {
@@ -340,7 +373,7 @@
     width: 70%;
   }
 
-  .cartItemInfo{
+  .cartItemInfo {
     .cartItemName {
       font-size: 16px;
     }
@@ -354,5 +387,5 @@
       font-size: 16px;
     }
   }
-  
+
 }
