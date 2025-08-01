@@ -71,7 +71,9 @@ function Header() {
             >
               Quero Vender
             </button>
-            <button className={styles.loginButton} onClick={abrirLogin}>Login</button>
+            <button className={styles.loginButton} onClick={abrirLogin}>
+              Login
+            </button>
           </div>
         ) : (
           <div className={styles.buttonsMarketplace}>
@@ -100,13 +102,14 @@ function Header() {
             <button className={styles.button + " " + styles.orcamentoButton}>
               Solicitar Orçamento
             </button>
-            <button className={styles.loginButton} onClick={abrirLogin}>Login</button>
+            <button className={styles.loginButton} onClick={abrirLogin}>
+              Login
+            </button>
           </div>
         )}
 
         {/* Modal de login */}
         <LoginModal isOpen={isModalOpen} onRequestClose={fecharLogin} />
-
       </header>
     );
   }
@@ -199,10 +202,20 @@ function Header() {
               </svg>
             </button>
             <button className={styles.button}>Solicitar Orçamento</button>
-            <button className={styles.loginButton}>Login</button>
+            <button
+              className={styles.loginButton}
+              onClick={() => {
+                abrirLogin();
+                setMenuAberto(false); // fecha o menu após clicar
+              }}
+            >
+              Login
+            </button>
           </div>
         )}
       </nav>
+      {/* Modal de login */}
+      <LoginModal isOpen={isModalOpen} onRequestClose={fecharLogin} />
     </header>
   );
 }

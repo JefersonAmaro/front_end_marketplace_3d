@@ -91,7 +91,16 @@ export default function LoginModal({ isOpen, onRequestClose }) {
       style={{
         overlay: { backgroundColor: "rgba(0,0,0,0.5)", zIndex: 2000 },
         content:
-          window.innerWidth < 1919
+          window.innerWidth < 699
+            ? {
+                width: "80%",
+                height: "95%",
+                margin: "auto",
+                borderRadius: "8px",
+                padding: 0,
+                border: "none",
+              }
+            : window.innerWidth < 1919
             ? {
                 width: "70%",
                 height: "95%",

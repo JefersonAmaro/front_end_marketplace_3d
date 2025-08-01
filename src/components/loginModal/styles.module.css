@@ -357,3 +357,31 @@
         }
     }
 }
+
+@media screen and (max-width: 699px) {
+    .modalImage {
+        display: none;
+    }
+
+    .modalContent {
+        width: 100%;
+    }
+
+    .modalHeader{
+        padding: 1rem;
+    }
+
+    .formContainer{
+        padding: 1rem;
+        gap: 1rem;
+        height: 93%;
+
+        form{
+            width: 100%;
+        }
+
+        .loginOptions{
+            overflow: hidden;
+        }
+    }
+}
