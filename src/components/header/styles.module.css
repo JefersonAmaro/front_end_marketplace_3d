@@ -57,7 +57,9 @@
 .buttonsMarketplace {
   width: 80%;
   display: flex;
-  justify-content: space-between;
+  justify-content: end;
+  gap: 2rem;
+  padding: 1rem 0; 
 
   .button {
     margin: 0 1.5rem;
@@ -82,7 +84,7 @@
 
   input {
     padding: 0.5rem 6rem 0.5rem 0.5rem;
-    font-size: 20px;
+    font-size: 16px;
     border: 1px solid #0000002f;
     border-radius: 5px;
     width: 100%;
@@ -124,30 +126,6 @@
   opacity: 0.8;
 }
 
-.sacolaButton {
-  background-color: #7B00FF;
-  border: none;
-  color: #fff;
-  font-size: 18px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 1rem 1.5rem;
-  border-radius: 10px;
-  gap: 0.2rem;
-  cursor: pointer;
-  transition: all 0.3s ease-in-out;
-
-  img {
-    width: 20px;
-    height: 20px;
-  }
-}
-
-.sacolaButton:hover {
-  opacity: 0.8;
-}
-
 @media screen and (max-width: 1919px) {
   .header {
     height: 9vh;
@@ -167,12 +145,12 @@
 
   .loginButton {
     font-size: 16px;
-    padding: .5rem 2rem;
+    padding: .5rem 3rem;
   }
 
   .inputBusca {
     input {
-      font-size: 18px;
+      font-size: 16px;
     }
 
     .pesquisarButton{
@@ -327,6 +305,6 @@
 
   .loginButton {
     width: 100%;
-
+    padding: 1rem 3rem;
   }
 }

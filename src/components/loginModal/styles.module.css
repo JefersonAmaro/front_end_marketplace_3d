@@ -24,7 +24,7 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    background: rgba(70, 70, 70, 0.1);
+    background: rgba(0, 0, 0, 0.521);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
     border: 1px solid rgba(255, 255, 255, 0.18);
@@ -33,10 +33,19 @@
     padding: 2rem;
     gap: 1rem;
 
+    h1{
+        color: #fff;
+        font-size: 32px;
+        font-weight: 700;
+        text-align: start;
+        width: 100%;
+        overflow: hidden;
+    }
+
     h2 {
         color: #fff;
         font-size: 20px;
-        font-weight: 700;
+        font-weight: 500;
         margin-bottom: 1.5rem;
         text-align: start;
         line-height: 1.4;
@@ -64,13 +73,16 @@
         font-size: 16px;
         color: #000;
 
-        a {
+        button {
+            border: none;
+            background-color: transparent;
             font-weight: 700;
             font-size: 16px;
             color: #000;
             text-decoration: none;
             color: #4D00FF;
             transition: all 0.3s ease-in-out;
+            cursor: pointer;
         }
 
         a:hover {
@@ -237,6 +249,50 @@
     }
 }
 
+.cadastroContainer {
+    width: 100%;
+    height: 92%;
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: center;
+    gap: 1rem;
+    background-color: #F5F5F5;
+
+    h4{
+        width: 100%;
+        font-weight: 500;
+        font-size: 16px;
+        color: #000;
+        text-align: start;
+    }
+}
+
+.buttonProx{
+    width: 100%;
+    display: flex;
+    justify-content: end;
+    padding-bottom: .4rem;
+    gap: 1rem;
+
+    button{
+        font-weight: 350;
+        font-size: 16px;
+        color: #fff;
+        background: #4D00FF;
+        border: none;
+        border-radius: 10px;
+        padding: .5rem 1rem;
+        cursor: pointer;
+        box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+        transition: all 0.3s ease-in-out;
+    }
+
+    button:hover{
+        opacity: 0.8;
+    }
+}
+
 @media screen and (max-width: 1919px) {
     .modalHeader {
         h4 {
@@ -251,6 +307,10 @@
 
     .imageContainer{
         padding: 1rem;
+        h1{
+            font-size: 26px;
+        }
+
         h2{
             font-size: 16px;
         }
