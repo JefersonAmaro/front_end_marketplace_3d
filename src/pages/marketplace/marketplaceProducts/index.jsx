@@ -8,6 +8,8 @@ import Loading from "../../../components/loading";
 import ColorSelector from "../../../components/corSelector";
 import FinishingSelector from "../../../components/finishingSelector";
 
+import CardsComponent from "../../../components/cardsComponent";
+
 function MarketplaceProducts() {
   const { id } = useParams();
   const { data, loading } = useContext(DataContext);
@@ -149,74 +151,18 @@ function MarketplaceProducts() {
           </div>
         </div>
       </div>
-      <div className={styles.moreProducts}>
-        <div className={styles.containerTitle}>
-          <div className={styles.contentTitle}>
-            <h2>Produtos do mesmo vendedor</h2>
-            <p>Outras opções que este vendedor oferece</p>
-          </div>
-          <div className={styles.contentButton}>
-            <button>Ver Mais</button>
-          </div>
-        </div>
-
-        <div className={styles.containerCards}>
-          {randomFourProducts.map((card, index) => (
-            <div
-              className={styles.card}
-              key={index}
-              onClick={() => navigate(`/marketplace/${card.id}`)}
-            >
-              <img src={card.img} alt={card.title} />
-              <div className={styles.contentCard}>
-                <div className={styles.contentTitleCard}>
-                  <h4>{card.name}</h4>
-                  <p>{card.category}</p>
-                </div>
-                <h4>R$ {card.price}</h4>
-
-                <button onClick={(e) => e.stopPropagation()}>
-                  Comprar Agora
-                </button>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-      <div className={styles.moreProducts}>
-        <div className={styles.containerTitle}>
-          <div className={styles.contentTitle}>
-            <h2>Produtos Relacionado</h2>
-            <p>Confira outros produtos semelhantes</p>
-          </div>
-          <div className={styles.contentButton}>
-            <button>Ver Mais</button>
-          </div>
-        </div>
-
-        <div className={styles.containerCards}>
-          {productsRelated.map((card, index) => (
-            <div
-              className={styles.card}
-              key={index}
-              onClick={() => navigate(`/marketplace/${card.id}`)}
-            >
-              <img src={card.img} alt={card.title} />
-              <div className={styles.contentCard}>
-                <div className={styles.contentTitleCard}>
-                  <h4>{card.name}</h4>
-                  <p>{card.category}</p>
-                </div>
-                <h4>R$ {card.price}</h4>
-
-                <button onClick={(e) => e.stopPropagation()}>
-                  Comprar Agora
-                </button>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
+    <CardsComponent
+      title="Produtos do mesmo vendedor"
+      description="Outras opções que este vendedor oferece"
+      button="Ver Mais"
+      cards={randomFourProducts}
+    />
+      <CardsComponent
+      title="Produtos Relacionado"
+      description="Confira outros produtos semelhantes"
+      button="Ver Mais"
+      cards={productsRelated}
+    />
     </>
   );
 }
