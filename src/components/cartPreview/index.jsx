@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import { DataContext } from "../../context/dataContext";
 
-import { FiTrash, FiShoppingCart  } from "react-icons/fi";
+import { FiTrash, FiShoppingCart } from "react-icons/fi";
 
 export function CartPreview() {
   const { data, loading } = useContext(DataContext);
@@ -82,6 +82,43 @@ export function CartPreview() {
     window.dispatchEvent(new Event("cartUpdated"));
   };
 
+  function traduzirCor(corInglesa) {
+    const traducoes = {
+      red: "vermelho",
+      blue: "azul",
+      green: "verde",
+      black: "preto",
+      white: "branco",
+      yellow: "amarelo",
+      pink: "rosa",
+      gray: "cinza",
+      grey: "cinza",
+      orange: "laranja",
+      brown: "marrom",
+      purple: "roxo",
+      cyan: "ciano",
+      magenta: "magenta",
+      gold: "dourado",
+      silver: "prateado",
+      beige: "bege",
+      transparent: "transparente",
+    };
+
+    if (!corInglesa) return "Cor indefinida";
+
+    const corNormalizada = corInglesa.toLowerCase();
+    const corTraduzida = traducoes[corNormalizada] || corNormalizada;
+
+    return corTraduzida.charAt(0).toUpperCase() + corTraduzida.slice(1);
+  }
+
+  const formatarPreco = (valor) =>
+    new Intl.NumberFormat("pt-BR", {
+      style: "currency",
+      currency: "BRL",
+      minimumFractionDigits: 2,
+    }).format(valor);
+
   if (!data || loading) return <>Carregando</>;
 
   return (
@@ -129,14 +166,20 @@ export function CartPreview() {
                             removerItem(index);
                           }}
                         >
-                          <FiTrash size={18} className={styles.cartItemDeleteIcon} />
+                          <FiTrash
+                            size={18}
+                            className={styles.cartItemDeleteIcon}
+                          />
                         </div>
                       </div>
                       <div className={styles.cartItemDescription}>
-                        <div
-                          className={styles.cartItemColor}
-                          style={{ backgroundColor: item.cor }}
-                        ></div>
+                        <div className={styles.cartItemColorWrapper}>
+                          <p>{traduzirCor(item.cor)}</p>
+                          <div
+                            className={styles.cartItemColor}
+                            style={{ backgroundColor: item.cor }}
+                          ></div>
+                        </div>
                         <p>{item.acabamento}</p>
                       </div>
                       <div className={styles.cartItemDetails}>
@@ -178,18 +221,20 @@ export function CartPreview() {
               <div className={styles.cartTotal}>
                 <span className={styles.cartTotalLabel}>Total:</span>
                 <span className={styles.cartTotalValue}>
-                  R${" "}
-                  {cart
-                    .reduce((acc, item) => {
+                  {formatarPreco(
+                    cart.reduce((acc, item) => {
                       const allProducts = Object.values(produtos).flat();
                       const produtoAtual = allProducts.find(
                         (p) => p.id === item.produto?.id
                       );
 
-                      const preco = parseFloat(produtoAtual?.price) || 0;
+                      const preco =
+                        parseFloat(
+                          (produtoAtual?.price || "0").replace(",", ".")
+                        ) || 0;
                       return acc + preco * item.quantidade;
                     }, 0)
-                    .toFixed(2)}
+                  )}
                 </span>
               </div>
               <button className={styles.cartCheckoutButton}>

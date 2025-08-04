@@ -23,7 +23,7 @@
 .contentButton {
     height: 100%;
 
-    button {
+    .contentButtonBtn {
         font-weight: 400;
         font-size: 20px;
         color: #fff;
@@ -35,7 +35,7 @@
         transition: all 0.3s ease-in-out;
     }
 
-    button:hover {
+    .contentButtonBtn:hover {
         opacity: 0.8;
     }
 }
@@ -61,6 +61,7 @@
     transition: all 0.3s ease-in-out;
     padding: 1rem;
     gap: .5rem;
+    border: 1px solid #4D00FF;
 
     img {
         width: 100%;
@@ -77,7 +78,7 @@
         color: #fff;
     }
 
-    button {
+    .button {
         font-weight: 400;
         font-size: 18px;
         color: #fff;
@@ -87,7 +88,6 @@
         padding: 1rem 1rem;
         cursor: pointer;
         transition: all 0.3s ease-in-out;
-        width: 55%;
     }
 
     button:hover {
@@ -144,7 +144,49 @@
     }
 }
 
+.contentBuy {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.buy {
+    width: fit-content;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+.quantidadeWrapper {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin: 0.5rem 0;
+}
+
+.botao {
+    width: 40px;
+    height: 40px;
+    border-radius: 20%;
+    background-color: rgb(248, 248, 248);
+    color: #111827;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+}
+
+.valor {
+    font-size: 20px;
+    min-width: 20px;
+    text-align: center;
+    color: #fff;
+}
+
 @media screen and (max-width: 1919px) {
+    .card{
+        padding: .5rem;
+    }
     .contentTitle h2 {
         font-size: 24px;
     }
@@ -153,7 +195,7 @@
         font-size: 16px;
     }
 
-    .contentButton button {
+    .contentButton .contentButtonBtn {
         font-size: 16px;
     }
 
@@ -167,8 +209,8 @@
     }
 
     .card {
-        button {
-            font-size: 16px;
+        .button {
+            font-size: 14px;
             width: 65%;
             padding: 1rem 0.5rem;
         }
@@ -178,6 +220,20 @@
         font-size: 9px;
         padding: 0.5rem;
     }
+
+    .quantidadeWrapper {
+        gap: 0.2rem;
+    }
+
+    .botao{
+        width: 30px;
+        height: 30px;
+    }
+
+    .valor{
+        font-size: 14px;
+    }
+
 }
 
 @media screen and (max-width: 699px) {
@@ -201,5 +257,6 @@
 
     .card {
         width: 100%;
+        padding: 1rem;
     }
 }
