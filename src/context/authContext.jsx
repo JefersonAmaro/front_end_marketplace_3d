@@ -7,10 +7,12 @@ export const AuthContextProvider = ({ children }) => {
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState(null);
 
+  const API_URL = import.meta.env.VITE_API_URL;
+
   async function loginUser(loginData) {
     setLoading(true);
     try {
-      const response = await axios.post("http://localhost:3000/auth/user", {
+      const response = await axios.post(`${API_URL}auth/user`, {
         email: loginData.email,
         password: loginData.senha,
       });
@@ -26,7 +28,7 @@ export const AuthContextProvider = ({ children }) => {
   async function loginSupplier(loginData) {
     setLoading(true);
     try {
-      const response = await axios.post("http://localhost:3000/auth/supplier", {
+      const response = await axios.post(`${API_URL}auth/supplier`, {
         email: loginData.email,
         password: loginData.senha,
       });
@@ -44,7 +46,7 @@ export const AuthContextProvider = ({ children }) => {
 
     try {
       const response = await axios.post(
-        "http://localhost:3000/register/user",
+        `${API_URL}register/user`,
        {  
         name: user.nome,
         email: user.email,
@@ -69,7 +71,7 @@ export const AuthContextProvider = ({ children }) => {
 
     try {
       const response = await axios.post(
-        "http://localhost:3000/register/supplier",
+        `${API_URL}register/supplier`,
         {
           name: supplier.nome,
           email: supplier.email,
