@@ -1,4 +1,5 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
+import { AuthContext } from "../../context/authContext";
 import { useNavigate } from "react-router-dom";
 import styles from "./styles.module.css";
 
@@ -7,6 +8,7 @@ import Busca from "../../assets/header/busca.png";
 import LoginModal from "../loginModal";
 
 function Header() {
+  const { token, logout } = useContext(AuthContext);
   const [menuAberto, setMenuAberto] = useState(false);
   const [isDesktop, setIsDesktop] = useState(window.innerWidth > 1024);
 
@@ -71,9 +73,16 @@ function Header() {
             >
               Quero Vender
             </button>
-            <button className={styles.loginButton} onClick={abrirLogin}>
-              Login
-            </button>
+            {!token && (
+              <button className={styles.loginButton} onClick={abrirLogin}>
+                Login
+              </button>
+            )}
+            {token && (
+              <button className={styles.loginButton} onClick={logout}>
+                Logout
+              </button>
+            )}
           </div>
         ) : (
           <div className={styles.buttonsMarketplace}>
@@ -102,9 +111,16 @@ function Header() {
             <button className={styles.button + " " + styles.orcamentoButton}>
               Solicitar Orçamento
             </button>
-            <button className={styles.loginButton} onClick={abrirLogin}>
-              Login
-            </button>
+            {!token && (
+              <button className={styles.loginButton} onClick={abrirLogin}>
+                Login
+              </button>
+            )}
+            {token && (
+              <button className={styles.loginButton} onClick={logout}>
+                Logout
+              </button>
+            )}
           </div>
         )}
 
@@ -175,7 +191,16 @@ function Header() {
             >
               Quero Vender
             </button>
-            <button className={styles.loginButton}>Login</button>
+            {!token && (
+              <button className={styles.loginButton} onClick={abrirLogin}>
+                Login
+              </button>
+            )}
+            {token && (
+              <button className={styles.loginButton} onClick={logout}>
+                Logout
+              </button>
+            )}
           </div>
         ) : (
           <div className={styles.buttonsMarketplace}>
@@ -202,15 +227,28 @@ function Header() {
               </svg>
             </button>
             <button className={styles.button}>Solicitar Orçamento</button>
-            <button
-              className={styles.loginButton}
-              onClick={() => {
-                abrirLogin();
-                setMenuAberto(false); // fecha o menu após clicar
-              }}
-            >
-              Login
-            </button>
+            {!token && (
+              <button
+                className={styles.loginButton}
+                onClick={() => {
+                  abrirLogin();
+                  setMenuAberto(false); // fecha o menu após clicar
+                }}
+              >
+                Login
+              </button>
+            )}
+            {token && (
+              <button
+                className={styles.loginButton}
+                onClick={() => {
+                  logout();
+                  setMenuAberto(false); // fecha o menu após clicar
+                }}
+              >
+                Logout
+              </button>
+            )}
           </div>
         )}
       </nav>

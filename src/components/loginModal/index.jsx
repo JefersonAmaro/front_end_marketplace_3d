@@ -19,6 +19,7 @@ export default function LoginModal({ isOpen, onRequestClose }) {
     loginSupplier,
     registerUser,
     registerSupplier,
+    loginWithGoogle,
     loading,
     errorMessage,
     setErrorMessage,
@@ -78,6 +79,22 @@ export default function LoginModal({ isOpen, onRequestClose }) {
 
     setLoginData({ email: "", senha: "" });
     setMessage("");
+  };
+
+  const handleGoogleLogin = async () => {
+    let permission;
+    switch (loginOptions) {
+      case "fornecedor":
+        permission = "fornecedor";
+        break;
+      case "cliente":
+        permission = "cliente";
+        break;
+      default:
+        break;
+    }
+    await loginWithGoogle(permission);
+    onRequestClose();
   };
 
   const handleChange = (e) => {
@@ -473,7 +490,11 @@ export default function LoginModal({ isOpen, onRequestClose }) {
                       Esqueceu sua senha? <a href="#">Clique aqui</a>
                     </p>
                     <div className={styles.loginForGoogle}>
-                      <button className={styles.loginWithGoogle} type="button">
+                      <button
+                        className={styles.loginWithGoogle}
+                        type="button"
+                        onClick={handleGoogleLogin}
+                      >
                         <img src="https://img.icons8.com/color/48/000000/google-logo.png" />
                         Entrar com Google
                       </button>
