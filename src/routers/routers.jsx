@@ -6,6 +6,7 @@ import Marketplace from "../pages/marketplace";
 import MarketplaceLandingPage from "../pages/marketplace/marketplaceLandingPage";
 import MarketplaceProducts from "../pages/marketplace/marketplaceProducts";
 import Perfil from "../pages/perfil";
+import Orcamento from "../pages/orcamento";
 
 export const router = createBrowserRouter([
   {
@@ -36,6 +37,10 @@ export const router = createBrowserRouter([
           {
             path: "perfil",
             element: <Perfil />,
+          },
+          {
+            path: "solicitar-orcamento",
+            element: <Orcamento />,
           },
         ],
       },

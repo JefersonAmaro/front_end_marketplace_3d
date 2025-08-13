@@ -12,6 +12,7 @@ export const AuthContextProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
   const [errorMessage, setErrorMessage] = useState(null);
   const [token, setToken] = useState(null);
+  const [user, setUser] = useState({});
   const [showLoginModal, setShowLoginModal] = useState(false);
 
   const API_URL = import.meta.env.VITE_API_URL;
@@ -43,6 +44,8 @@ export const AuthContextProvider = ({ children }) => {
 
       if (response.data.valid) {
         setToken(savedToken);
+        const { name, email } = response.data.user;
+        setUser({ name, email });
         return true;
       } else {
         logout();
@@ -122,6 +125,8 @@ export const AuthContextProvider = ({ children }) => {
 
       saveToken(response.data.token);
 
+      validateToken();
+
       setLoading(false);
       return response.status;
     } catch (error) {
@@ -139,6 +144,8 @@ export const AuthContextProvider = ({ children }) => {
       });
 
       saveToken(response.data.token);
+
+      validateToken();
 
       setLoading(false);
       return response.status;
@@ -211,6 +218,9 @@ export const AuthContextProvider = ({ children }) => {
       // 4. Salvar token do backend
       saveToken(response.data.token);
 
+      // 5. Validar token
+      validateToken();
+
       setLoading(false);
       return response.data;
     } catch (error) {
@@ -224,6 +234,7 @@ export const AuthContextProvider = ({ children }) => {
       value={{
         loading,
         token,
+        user,
         loginUser,
         loginSupplier,
         registerUser,

@@ -1,11 +1,11 @@
 import styles from "./styles.module.css"
 
-function Perfil () {
+function Orcamento () {
     return (
         <div className={styles.container}>
-            <h1>Perfil</h1>
+            <h1>Orçamento</h1>
         </div>
     )
 }
 
-export default Perfil
+export default Orcamento
