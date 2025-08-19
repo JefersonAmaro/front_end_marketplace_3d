@@ -29,8 +29,6 @@ function CardsComponent(props) {
   const addToCart = (produto, quantidade) => {
     const cart = JSON.parse(localStorage.getItem("cart")) || [];
 
-    console.log(produto);
-
     const cor = produto.colors?.[0] || null;
     const acabamento = produto.finishing?.[0] || null;
 

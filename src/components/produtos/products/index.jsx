@@ -53,8 +53,6 @@ function Products({ filters, onRemoveFilter, products }) {
   const addToCart = (produto, quantidade) => {
     const cart = JSON.parse(localStorage.getItem("cart")) || [];
 
-    console.log(produto);
-
     const cor = produto.colors?.[0] || null;
     const acabamento = produto.finishing?.[0] || null;
 
@@ -82,6 +80,36 @@ function Products({ filters, onRemoveFilter, products }) {
       new CustomEvent("cartUpdated", { detail: { open: true } })
     );
   };
+
+    function traduzirCor(corInglesa) {
+    const traducoes = {
+      red: "vermelho",
+      blue: "azul",
+      green: "verde",
+      black: "preto",
+      white: "branco",
+      yellow: "amarelo",
+      pink: "rosa",
+      gray: "cinza",
+      grey: "cinza",
+      orange: "laranja",
+      brown: "marrom",
+      purple: "roxo",
+      cyan: "ciano",
+      magenta: "magenta",
+      gold: "dourado",
+      silver: "prateado",
+      beige: "bege",
+      transparent: "transparente",
+    };
+
+    if (!corInglesa) return "Cor indefinida";
+
+    const corNormalizada = corInglesa.toLowerCase();
+    const corTraduzida = traducoes[corNormalizada] || corNormalizada;
+
+    return corTraduzida.charAt(0).toUpperCase() + corTraduzida.slice(1);
+  }
 
   // Drag e scroll
   useEffect(() => {
@@ -190,7 +218,7 @@ function Products({ filters, onRemoveFilter, products }) {
 
             {cor && (
               <p className={styles.filtro}>
-                Cor: {cor}
+                Cor: {traduzirCor(cor)}
                 <span
                   className={styles.removeFiltro}
                   onClick={() => onRemoveFilter("cor")}
@@ -224,6 +252,7 @@ function Products({ filters, onRemoveFilter, products }) {
       </div>
 
       <div className={styles.products}>
+        {sortedProducts.length === 0 && <p>Nenhum produto encontrado</p>}
         {sortedProducts.map((product, index) => {
           const quantidadeAtual = quantidades[product.id] || 1;
 
