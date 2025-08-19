@@ -89,8 +89,8 @@ function Header() {
                 <img src={Busca} alt="Buscar" />
               </button>
             </div>
-            <button className={styles.button}>
-              Categorias{" "}
+            <button className={styles.button} onClick={() => navigate("/produtos")}>
+              Produtos{" "}
               <svg
                 className={styles.seta}
                 width="24"
@@ -202,8 +202,8 @@ function Header() {
                 <img src={Busca} alt="Buscar" />
               </button>
             </div>
-            <button className={styles.button}>
-              Categorias{" "}
+            <button className={styles.button} onClick={() => navigate("/produtos")}>
+              Produtos{" "}
               <svg
                 className={styles.seta}
                 width="24"

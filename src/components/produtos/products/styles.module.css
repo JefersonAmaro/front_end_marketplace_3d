@@ -1,0 +1,298 @@
+.container {
+    width: 84vw;
+    height: 100%;
+    overflow: hidden;
+    padding: 0 0 0 2rem;
+}
+
+.headerFiltros {
+    width: 100%;
+    height: 7%;
+    position: relative;
+    display: flex;
+    gap: 1rem;
+    justify-content: end;
+}
+
+/* Adicione ao CSS */
+.filtros.fadeLeft::before {
+    display: block;
+}
+
+.filtros.fadeLeft::after {
+    display: none;
+}
+
+.filtros.fadeRight::after {
+    display: block;
+}
+
+.filtros.fadeRight::before {
+    display: none;
+}
+
+/* Ou combine para os dois lados */
+.filtros.fadeLeft.fadeRight::before {
+    display: block;
+}
+
+.filtros.fadeLeft.fadeRight::after {
+    display: block;
+}
+
+/* Inicialmente escondidos */
+.filtros::before,
+.filtros::after {
+    display: none;
+}
+
+.filtros {
+    display: flex;
+    gap: 1rem;
+    padding-bottom: 1rem;
+    overflow-x: auto;
+    /* scroll horizontal */
+    overflow-y: hidden;
+    white-space: nowrap;
+    width: 80%;
+    position: relative;
+    cursor: grab;
+
+    /* escondendo a barra de rolagem */
+    scrollbar-width: none;
+    /* Firefox */
+    -ms-overflow-style: none;
+    /* IE e Edge antigo */
+
+}
+
+.filtros::-webkit-scrollbar {
+    display: none;
+    /* Chrome, Safari e Edge */
+}
+
+/* Pseudo-elementos para o efeito de fade */
+.filtros::before,
+.filtros::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    width: 2rem;
+    /* largura do fade */
+    height: 100%;
+    pointer-events: none;
+    /* permite arrastar sem bloquear */
+    z-index: 10;
+}
+
+.filtros::before {
+    left: 0;
+    background: linear-gradient(to right, rgba(255, 255, 255, 1), rgba(255, 255, 255, 0));
+}
+
+.filtros::after {
+    right: 0;
+    background: linear-gradient(to left, rgba(255, 255, 255, 1), rgba(255, 255, 255, 0));
+}
+
+.filtros.dragging {
+    cursor: grabbing;
+    /* muda o cursor durante o drag */
+    user-select: none;
+    /* impede seleção de texto */
+    -webkit-user-select: none;
+}
+
+.filtro {
+    flex-shrink: 0;
+    /* não deixa os filtros encolherem */
+    background-color: #F9F9F9;
+    box-shadow: 0px 4px 4px rgba(153, 153, 153, 0.25);
+    border-radius: 10px;
+    padding: .5rem 1rem;
+    font-size: 16px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.removeFiltro {
+    position: relative;
+    top: -5px;
+    left: 10px;
+    cursor: pointer;
+    font-weight: bold;
+    color: #555;
+}
+
+.removeFiltro:hover {
+    color: red;
+}
+
+
+.order {
+    width: 20%;
+    display: flex;
+    gap: 1rem;
+    align-items: start;
+    justify-content: end;
+    padding-bottom: 1rem;
+}
+
+.products {
+    width: 100%;
+    height: 93%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: start;
+    overflow-y: scroll;
+    gap: 1rem;
+    padding-top: 1rem;
+
+    /* Oculta a barra de rolagem no Chrome, Edge e Safari */
+    scrollbar-width: none;
+    /* Firefox */
+    -ms-overflow-style: none;
+    /* IE e Edge antigo */
+}
+
+.products::-webkit-scrollbar {
+    display: none;
+    /* Chrome, Safari e Edge */
+}
+
+.card {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 32.5%;
+    height: 72%;
+    background-color: #111827;
+    border-radius: 15px;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+    padding: 1rem;
+    gap: .5rem;
+    border: 1px solid #4D00FF;
+
+    img {
+        width: 100%;
+        aspect-ratio: 16/9;
+        border-radius: 10px 10px;
+        object-fit: cover;
+        overflow: hidden;
+        border: 1px solid #4D00FF;
+    }
+
+    h4 {
+        font-weight: 600;
+        font-size: 18px;
+        color: #fff;
+    }
+
+    .button {
+        font-weight: 400;
+        font-size: 18px;
+        color: #fff;
+        background: #4D00FF;
+        border: none;
+        border-radius: 10px;
+        padding: 1rem 1rem;
+        cursor: pointer;
+        transition: all 0.3s ease-in-out;
+    }
+
+    button:hover {
+        opacity: 0.8;
+    }
+}
+
+.card:hover {
+    opacity: 0.9;
+    transform: translateY(-5px);
+}
+
+.contentProduct {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem
+}
+
+.contentTitleProduct {
+    display: flex;
+    gap: 1rem;
+    width: 100%;
+    justify-content: space-between;
+    flex-direction: column;
+    color: #fff;
+
+    h4 {
+        font-weight: 400;
+        font-size: 18px;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: normal;
+    }
+
+    p {
+        font-weight: 400;
+        font-size: 14px;
+        overflow: hidden;
+        display: -webkit-box;
+        -webkit-line-clamp: 1;
+        line-clamp: 1;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: normal;
+        background-color: #7B00FF;
+        padding: .5rem;
+        border-radius: 10px;
+        width: fit-content;
+    }
+}
+
+.contentBuy {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.buy {
+    width: fit-content;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+.quantidadeWrapper {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin: 0.5rem 0;
+}
+
+.botao {
+    width: 40px;
+    height: 40px;
+    border-radius: 20%;
+    background-color: rgb(248, 248, 248);
+    color: #111827;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+}
+
+.valor {
+    font-size: 20px;
+    min-width: 20px;
+    text-align: center;
+    color: #fff;
+}

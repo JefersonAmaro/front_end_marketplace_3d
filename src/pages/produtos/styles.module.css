@@ -1,0 +1,7 @@
+.container {
+    width: 100vw;
+    height: 100vh;
+    padding: 6.5% 5% 1% 5%;
+    position: sticky;
+    display: flex;
+}

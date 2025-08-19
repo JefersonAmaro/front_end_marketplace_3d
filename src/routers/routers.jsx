@@ -7,6 +7,7 @@ import MarketplaceLandingPage from "../pages/marketplace/marketplaceLandingPage"
 import MarketplaceProducts from "../pages/marketplace/marketplaceProducts";
 import Perfil from "../pages/perfil";
 import Orcamento from "../pages/orcamento";
+import Produtos from "../pages/produtos";
 
 export const router = createBrowserRouter([
   {
@@ -23,13 +24,17 @@ export const router = createBrowserRouter([
         children: [
           {
             path: "",
-            element: <MarketplaceLandingPage />, // <- onde estarão SectionOne a SectionSeven
+            element: <MarketplaceLandingPage />,
           },
           {
             path: ":id",
             element: <MarketplaceProducts />,
           },
         ],
+      },
+      {
+        path: "/produtos",
+        element: <Produtos />,
       },
       {
         element: <PrivateRoute />, // wrapper que protege as rotas filhas
