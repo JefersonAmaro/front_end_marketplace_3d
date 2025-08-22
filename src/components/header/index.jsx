@@ -1,21 +1,24 @@
 import { useState, useEffect, useContext } from "react";
 import { AuthContext } from "../../context/authContext";
+import { DataContext } from "../../context/dataContext";
 import { useNavigate } from "react-router-dom";
 import styles from "./styles.module.css";
-
-import Busca from "../../assets/header/busca.png";
 
 import LoginModal from "../loginModal";
 import MenuPefil from "../menuPerfil";
 
+import SearchBox from "../searchBox";
+
 function Header() {
   const { token, user, logout } = useContext(AuthContext);
+  const { data, loading } = useContext(DataContext);
+
   const [menuAberto, setMenuAberto] = useState(false);
   const [isDesktop, setIsDesktop] = useState(window.innerWidth > 1024);
-
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const navigate = useNavigate();
+
   const isHome = window.location.pathname === "/";
 
   function scrollToWithOffset(id) {
@@ -46,6 +49,16 @@ function Header() {
 
   const abrirLogin = () => setIsModalOpen(true);
   const fecharLogin = () => setIsModalOpen(false);
+
+  if (loading || !data) return <div>Carregando...</div>;
+
+  const products = [
+    ...data.lancamentosRecentes,
+    ...data.casaEDecoracao,
+    ...data.brinquedos,
+    ...data.ferramentas,
+    ...data.outros,
+  ];
 
   if (isDesktop) {
     // Menu Desktop
@@ -83,12 +96,14 @@ function Header() {
           </div>
         ) : (
           <div className={styles.buttonsMarketplace}>
-            <div className={styles.inputBusca}>
-              <input type="text" placeholder="Buscar na Market3D" />
-              <button className={styles.pesquisarButton}>
-                <img src={Busca} alt="Buscar" />
-              </button>
-            </div>
+            <SearchBox
+              products={products}
+              onSearch={(term) =>
+                navigate(`/produtos?search=${encodeURIComponent(term)}`)
+              }
+              setMenuAberto={setMenuAberto}
+            />
+
             <button
               className={styles.button}
               onClick={() => navigate("/produtos")}
@@ -194,7 +209,10 @@ function Header() {
               Quero Vender
             </button>
             {!token && (
-              <button className={styles.loginButton} onClick={() => (abrirLogin(), setMenuAberto(false))}>
+              <button
+                className={styles.loginButton}
+                onClick={() => (abrirLogin(), setMenuAberto(false))}
+              >
                 Login
               </button>
             )}
@@ -202,12 +220,14 @@ function Header() {
           </div>
         ) : (
           <div className={styles.buttonsMarketplace}>
-            <div className={styles.inputBusca}>
-              <input type="text" placeholder="Buscar na Market3D" />
-              <button className={styles.pesquisarButton}>
-                <img src={Busca} alt="Buscar" />
-              </button>
-            </div>
+            <SearchBox
+              products={products}
+              onSearch={(term) =>
+                navigate(`/produtos?search=${encodeURIComponent(term)}`)
+              }
+              setMenuAberto={setMenuAberto}
+            />
+
             <button
               className={styles.button}
               onClick={() => (navigate("/produtos"), setMenuAberto(false))}

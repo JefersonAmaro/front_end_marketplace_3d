@@ -1,12 +1,17 @@
 import { useState } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import styles from "./styles.module.css";
 
 function Filtro({ filters, setFilters }) {
   const [open, setOpen] = useState(false);
+  const navigate = useNavigate();
+  const location = useLocation();
 
   const categorias = ["Brinquedos", "Casa e Decoração", "Ferramentas", "Outros"];
   const materiais = ["PLA", "PETG", "ABS", "TPU", "Nylon"];
   const cores = ["red", "blue", "yellow"];
+
+  const limparURL = () => navigate(location.pathname, { replace: true });
 
   const handleCategoryChange = (categoria) => {
     setFilters((prev) => ({
@@ -15,6 +20,7 @@ function Filtro({ filters, setFilters }) {
         ? prev.categorias.filter((c) => c !== categoria)
         : [...prev.categorias, categoria],
     }));
+    limparURL();
   };
 
   const handleMaterialChange = (material) => {
@@ -24,6 +30,7 @@ function Filtro({ filters, setFilters }) {
         ? prev.materiais.filter((m) => m !== material)
         : [...prev.materiais, material],
     }));
+    limparURL();
   };
 
   const handleColorChange = (color) => {
@@ -31,23 +38,22 @@ function Filtro({ filters, setFilters }) {
       ...prev,
       cor: prev.cor === color ? null : color,
     }));
+    limparURL();
   };
 
   const handlePrecoChange = (value) => {
     setFilters((prev) => ({ ...prev, preco: value }));
+    limparURL();
   };
 
   return (
     <>
-      {/* Botão só aparece no mobile */}
       <button className={styles.mobileButton} onClick={() => setOpen(true)}>
         Filtrar
       </button>
 
-      {/* Overlay para mobile */}
       <div className={`${styles.overlay} ${open ? styles.show : ""}`} onClick={() => setOpen(false)} />
 
-      {/* Drawer lateral */}
       <div className={`${styles.container} ${open ? styles.open : ""}`}>
         <div className={styles.header}>
           <h3>Filtrar</h3>

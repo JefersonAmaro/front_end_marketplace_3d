@@ -1,80 +1,161 @@
-import { useRef, useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useRef, useEffect, useState, useMemo } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import styles from "./styles.module.css";
 
 function Products({ filters, onRemoveFilter, products }) {
+  const location = useLocation();
+  const navigate = useNavigate();
+
   const { categorias = [], materiais = [], cor, preco } = filters;
   const temFiltros =
     categorias.length > 0 || materiais.length > 0 || cor || preco > 0;
 
   const [orderBy, setOrderBy] = useState("data");
-
-  const sortedProducts = [...products].sort((a, b) => {
-    switch (orderBy) {
-      case "maior":
-        return (
-          Number(b.price.replace(",", ".")) - Number(a.price.replace(",", "."))
-        );
-      case "menor":
-        return (
-          Number(a.price.replace(",", ".")) - Number(b.price.replace(",", "."))
-        );
-      case "data":
-      default:
-        // Se você tiver um campo de data, use ele. Caso não, mantém a ordem original
-        return 0;
-    }
-  });
-
-  const scrollRef = useRef(null);
-  const isDragging = useRef(false);
-  const startX = useRef(0);
-  const scrollLeft = useRef(0);
-
-  const navigate = useNavigate();
-
-  // Controle de quantidades
   const [quantidades, setQuantidades] = useState({});
 
-  const aumentar = (id) => {
-    setQuantidades((prev) => ({ ...prev, [id]: (prev[id] || 1) + 1 }));
+  const params = new URLSearchParams(location.search);
+  const search = params.get("search")?.toLowerCase() || "";
+
+  // 🔹 Mapeamento cores português → inglês
+  const coresPTparaEN = {
+    vermelho: "red",
+    azul: "blue",
+    verde: "green",
+    preto: "black",
+    branco: "white",
+    amarelo: "yellow",
+    rosa: "pink",
+    cinza: "gray",
+    laranja: "orange",
+    marrom: "brown",
+    roxo: "purple",
+    ciano: "cyan",
+    magenta: "magenta",
+    dourado: "gold",
+    prateado: "silver",
+    bege: "beige",
+    transparente: "transparent",
   };
 
-  const diminuir = (id) => {
-    setQuantidades((prev) => {
-      const atual = prev[id] || 1;
-      return { ...prev, [id]: atual > 1 ? atual - 1 : 1 };
+  const traduzirCorParaIngles = (corPt) => {
+    return coresPTparaEN[corPt?.toLowerCase()] || corPt?.toLowerCase();
+  };
+
+  // 🔹 Função que remove filtro e limpa a URL
+  const handleRemoveFilter = (tipo, valor) => {
+    onRemoveFilter(tipo, valor);
+    navigate(location.pathname, { replace: true }); // limpa query string
+  };
+
+  // 🔹 Filtragem dos produtos
+  const filteredProducts = useMemo(() => {
+    const searchLower = search.toLowerCase();
+    const searchCorEmIngles = traduzirCorParaIngles(searchLower);
+
+    return products.filter((p) => {
+      // Busca pelo nome, categoria, material ou cor
+      const matchesSearch =
+        !searchLower ||
+        (typeof p.name === "string" &&
+          p.name.toLowerCase().includes(searchLower)) ||
+        (typeof p.category === "string" &&
+          p.category.toLowerCase().includes(searchLower)) ||
+        (Array.isArray(p.material)
+          ? p.material.some(
+              (m) =>
+                typeof m === "string" && m.toLowerCase().includes(searchLower)
+            )
+          : typeof p.material === "string" &&
+            p.material.toLowerCase().includes(searchLower)) ||
+        (Array.isArray(p.colors)
+          ? p.colors.some(
+              (c) =>
+                typeof c === "string" &&
+                (c.toLowerCase().includes(searchLower) ||
+                  c.toLowerCase() === searchCorEmIngles)
+            )
+          : typeof p.colors === "string" &&
+            (p.colors.toLowerCase().includes(searchLower) ||
+              p.colors.toLowerCase() === searchCorEmIngles));
+
+      // Categoria
+      const matchesCategoria =
+        categorias.length === 0 || categorias.includes(p.category);
+
+      // Material
+      const matchesMaterial =
+        materiais.length === 0 ||
+        (Array.isArray(p.material)
+          ? materiais.some((m) => p.material.includes(m))
+          : materiais.includes(p.material));
+
+      // Cor (filtro específico)
+      const corEmIngles = traduzirCorParaIngles(cor);
+      const matchesCor =
+        !cor ||
+        (Array.isArray(p.colors)
+          ? p.colors.some((c) => c.toLowerCase() === corEmIngles)
+          : p.colors?.toLowerCase() === corEmIngles);
+
+      // Preço
+      const matchesPreco = !preco || Number(p.price.replace(",", ".")) <= preco;
+
+      return (
+        matchesSearch &&
+        matchesCategoria &&
+        matchesMaterial &&
+        matchesCor &&
+        matchesPreco
+      );
     });
-  };
+  }, [products, search, categorias, materiais, cor, preco]);
 
-  function generateUUID() {
-    return Date.now().toString(36) + Math.random().toString(36).substring(2);
-  }
+  // 🔹 Ordenação
+  const sortedProducts = useMemo(() => {
+    return [...filteredProducts].sort((a, b) => {
+      switch (orderBy) {
+        case "maior":
+          return (
+            Number(b.price.replace(",", ".")) -
+            Number(a.price.replace(",", "."))
+          );
+        case "menor":
+          return (
+            Number(a.price.replace(",", ".")) -
+            Number(b.price.replace(",", "."))
+          );
+        case "data":
+        default:
+          return 0;
+      }
+    });
+  }, [filteredProducts, orderBy]);
+
+  // 🔹 Controle de quantidades
+  const aumentar = (id) =>
+    setQuantidades((prev) => ({ ...prev, [id]: (prev[id] || 1) + 1 }));
+  const diminuir = (id) =>
+    setQuantidades((prev) => ({
+      ...prev,
+      [id]: prev[id] > 1 ? prev[id] - 1 : 1,
+    }));
+
+  const generateUUID = () =>
+    Date.now().toString(36) + Math.random().toString(36).substring(2);
 
   const addToCart = (produto, quantidade) => {
     const cart = JSON.parse(localStorage.getItem("cart")) || [];
-
     const cor = produto.colors?.[0] || null;
     const acabamento = produto.finishing?.[0] || null;
-
     const index = cart.findIndex(
       (item) =>
         item.produto.id === produto.id &&
         item.cor === cor &&
         item.acabamento === acabamento
     );
-
-    if (index >= 0) {
-      cart[index].quantidade += quantidade;
-    } else {
-      cart.push({
-        id: generateUUID(),
-        produto,
-        quantidade,
-        cor,
-        acabamento,
-      });
-    }
+    if (index >= 0) cart[index].quantidade += quantidade;
+    else
+      cart.push({ id: generateUUID(), produto, quantidade, cor, acabamento });
 
     localStorage.setItem("cart", JSON.stringify(cart));
     window.dispatchEvent(
@@ -82,37 +163,12 @@ function Products({ filters, onRemoveFilter, products }) {
     );
   };
 
-    function traduzirCor(corInglesa) {
-    const traducoes = {
-      red: "vermelho",
-      blue: "azul",
-      green: "verde",
-      black: "preto",
-      white: "branco",
-      yellow: "amarelo",
-      pink: "rosa",
-      gray: "cinza",
-      grey: "cinza",
-      orange: "laranja",
-      brown: "marrom",
-      purple: "roxo",
-      cyan: "ciano",
-      magenta: "magenta",
-      gold: "dourado",
-      silver: "prateado",
-      beige: "bege",
-      transparent: "transparente",
-    };
+  // 🔹 Drag & Scroll
+  const scrollRef = useRef(null);
+  const isDragging = useRef(false);
+  const startX = useRef(0);
+  const scrollLeft = useRef(0);
 
-    if (!corInglesa) return "Cor indefinida";
-
-    const corNormalizada = corInglesa.toLowerCase();
-    const corTraduzida = traducoes[corNormalizada] || corNormalizada;
-
-    return corTraduzida.charAt(0).toUpperCase() + corTraduzida.slice(1);
-  }
-
-  // Drag e scroll
   useEffect(() => {
     const slider = scrollRef.current;
     if (!slider) return;
@@ -146,21 +202,15 @@ function Products({ filters, onRemoveFilter, products }) {
       e.preventDefault();
     };
 
-    // Eventos desktop
     slider.addEventListener("mousedown", startDrag);
     slider.addEventListener("mousemove", doDrag);
     slider.addEventListener("mouseleave", stopDrag);
     slider.addEventListener("mouseup", stopDrag);
-
-    // Eventos mobile
     slider.addEventListener("touchstart", startDrag, { passive: false });
     slider.addEventListener("touchmove", doDrag, { passive: false });
     slider.addEventListener("touchend", stopDrag);
-
-    // Scroll normal
     slider.addEventListener("scroll", updateFades);
 
-    // Inicializa fades
     updateFades();
 
     return () => {
@@ -168,16 +218,13 @@ function Products({ filters, onRemoveFilter, products }) {
       slider.removeEventListener("mousemove", doDrag);
       slider.removeEventListener("mouseleave", stopDrag);
       slider.removeEventListener("mouseup", stopDrag);
-
       slider.removeEventListener("touchstart", startDrag);
       slider.removeEventListener("touchmove", doDrag);
       slider.removeEventListener("touchend", stopDrag);
-
       slider.removeEventListener("scroll", updateFades);
     };
   }, []);
 
-  // Atualiza fades sempre que os filtros mudarem
   useEffect(() => {
     const slider = scrollRef.current;
     if (!slider) return;
@@ -188,6 +235,7 @@ function Products({ filters, onRemoveFilter, products }) {
     );
   }, [filters]);
 
+  // 🔹 Render
   return (
     <div className={styles.container}>
       <div className={styles.headerFiltros}>
@@ -198,43 +246,40 @@ function Products({ filters, onRemoveFilter, products }) {
                 {categoria}
                 <span
                   className={styles.removeFiltro}
-                  onClick={() => onRemoveFilter("categorias", categoria)}
+                  onClick={() => handleRemoveFilter("categorias", categoria)}
                 >
                   ×
                 </span>
               </p>
             ))}
-
             {materiais.map((material) => (
               <p key={material} className={styles.filtro}>
                 {material}
                 <span
                   className={styles.removeFiltro}
-                  onClick={() => onRemoveFilter("materiais", material)}
+                  onClick={() => handleRemoveFilter("materiais", material)}
                 >
                   ×
                 </span>
               </p>
             ))}
-
             {cor && (
               <p className={styles.filtro}>
-                {traduzirCor(cor)}
+                {cor}
                 <span
                   className={styles.removeFiltro}
-                  onClick={() => onRemoveFilter("cor")}
+                  onClick={() => handleRemoveFilter("cor")}
                 >
                   ×
                 </span>
               </p>
             )}
-
-            {preco !== null && preco !== undefined && (
+            {preco > 0 && (
               <p className={styles.filtro}>
-                {preco > 0 ? `Até R$ ${preco}` : "Sem limite de preço"}
+                {`Até R$ ${preco}`}
                 <span
                   className={styles.removeFiltro}
-                  onClick={() => onRemoveFilter("preco")}
+                  onClick={() => handleRemoveFilter("preco")}
                 >
                   ×
                 </span>
@@ -253,10 +298,14 @@ function Products({ filters, onRemoveFilter, products }) {
       </div>
 
       <div className={styles.products}>
-        {sortedProducts.length === 0 && <p>Nenhum produto encontrado</p>}
+        {sortedProducts.length === 0 && (
+          <div className={styles.empty}>
+            <p>Nenhum produto encontrado</p>
+            <button onClick={() => handleRemoveFilter("todos")}>Ver todos os produtos</button>
+          </div>
+        )}
         {sortedProducts.map((product, index) => {
           const quantidadeAtual = quantidades[product.id] || 1;
-
           return (
             <div
               className={styles.card}
@@ -270,7 +319,6 @@ function Products({ filters, onRemoveFilter, products }) {
                   <p>{product.category}</p>
                 </div>
                 <h4>R$ {product.price}</h4>
-
                 <div className={styles.contentBuy}>
                   <div className={styles.buy}>
                     <div className={styles.quantidadeWrapper}>
