@@ -5,3 +5,10 @@
     position: sticky;
     display: flex;
 }
+
+@media screen and (max-width: 1024px) {
+    .container{
+        flex-direction: column;
+        padding: 22% 5% 1% 5%;
+    }
+}

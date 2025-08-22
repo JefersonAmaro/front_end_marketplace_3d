@@ -97,3 +97,108 @@
     outline: 3px solid #464646;
     outline-offset: 3px;
 }
+
+@media screen and (max-width: 1919px) {
+    .container {
+        width: 20vw;
+        gap: .5rem;
+
+        h3{
+            font-size: 20px;
+        }
+    }
+
+    .contentSection {
+        h4{
+            font-size: 16px;
+        }
+
+        .categoria,
+        .material{
+            font-size: 14px;
+        }
+    }
+}
+
+/* Botão mobile */
+.mobileButton {
+  display: none;
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  background: #6c00ff;
+  color: white;
+  border: none;
+  padding: 0.8rem 1.2rem;
+  border-radius: 10px;
+  font-size: 16px;
+  cursor: pointer;
+  z-index: 1001;
+}
+
+.closeBtn{
+    display: none;
+}
+
+/* Overlay escuro atrás do drawer */
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .3s ease;
+  z-index: 1000;
+}
+
+.overlay.show {
+  opacity: 1;
+  pointer-events: all;
+}
+
+/* Drawer lateral */
+.container {
+  transition: transform 0.3s ease;
+}
+
+@media screen and (max-width: 1024px) {
+  .container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 80%;
+    max-width: 320px;
+    height: 100%;
+    background: #f9f9f9;
+    box-shadow: 2px 0 6px rgba(0,0,0,0.25);
+    transform: translateX(-100%);
+    z-index: 1002;
+    padding: 22% 5% 1% 5%;
+    overflow-y: auto;
+  }
+
+  .container.open {
+    transform: translateX(0);
+  }
+
+  .mobileButton {
+    display: block;
+  }
+
+  .closeBtn{
+    display: block;
+  }
+
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .closeBtn {
+    background: none;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+  }
+}

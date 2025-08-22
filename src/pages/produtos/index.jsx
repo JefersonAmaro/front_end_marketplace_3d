@@ -13,7 +13,7 @@ function Produtos() {
     categorias: [],
     materiais: [],
     cor: null,
-    preco: 500,
+    preco: 0,
   });
 
   if (loading || !data) return null;

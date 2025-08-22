@@ -1,6 +1,5 @@
 .container {
     width: 84vw;
-    height: 100%;
     overflow: hidden;
     padding: 0 0 0 2rem;
 }
@@ -135,9 +134,31 @@
     width: 20%;
     display: flex;
     gap: 1rem;
-    align-items: start;
+    align-items: center;
     justify-content: end;
-    padding-bottom: 1rem;
+    overflow: hidden;
+
+    select {
+        background-color: #F9F9F9;
+        box-shadow: 0px 4px 4px rgba(153, 153, 153, 0.25);
+        border-radius: 10px;
+        padding: .5rem;
+        font-size: 14px;
+        font-weight: 400;
+
+        option{
+            background-color: #F9F9F9;
+            box-shadow: 0px 4px 4px rgba(153, 153, 153, 0.25);
+            border-radius: 10px;
+            padding: .5rem;
+            font-size: 14px;
+            font-weight: 400;
+        }
+    }
+
+    select:focus {
+        outline: none;
+    }
 }
 
 .products {
@@ -217,7 +238,11 @@
 .contentProduct {
     display: flex;
     flex-direction: column;
-    gap: 2rem
+    gap: 2rem;
+
+    h4 {
+        overflow: hidden;
+    }
 }
 
 .contentTitleProduct {
@@ -262,6 +287,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    overflow: hidden;
 }
 
 .buy {
@@ -295,4 +321,113 @@
     min-width: 20px;
     text-align: center;
     color: #fff;
+}
+
+@media screen and (max-width: 1919px) {
+    .headerFiltros {
+        height: 8%;
+    }
+
+    .filtros {
+        width: 75%;
+        padding-bottom: .5rem;
+    }
+
+    .filtro {
+        padding: .5rem 1rem;
+        font-size: 14px;
+    }
+
+    .order {
+        width: 25%;
+
+        p {
+            font-size: 14px;
+        }
+    }
+
+    .card {
+        width: 32%;
+        height: 88%;
+        padding: .5rem;
+    }
+
+    .contentTitle h2 {
+        font-size: 24px;
+    }
+
+    .contentTitle p {
+        font-size: 16px;
+    }
+
+    .contentButton .contentButtonBtn {
+        font-size: 16px;
+    }
+
+    .contentCard {
+        gap: 1rem;
+    }
+
+
+    .card h4 {
+        font-size: 16px;
+    }
+
+    .card {
+        .button {
+            font-size: 14px;
+            width: 65%;
+            padding: 1rem 0.5rem;
+        }
+    }
+
+    .contentTitleCard p {
+        font-size: 9px;
+        padding: 0.5rem;
+    }
+
+    .quantidadeWrapper {
+        gap: 0.2rem;
+    }
+
+    .botao {
+        width: 30px;
+        height: 30px;
+    }
+
+    .valor {
+        font-size: 14px;
+    }
+}
+
+@media screen and (max-width: 1024px) {
+    .container {
+        /* display: none; */
+        width: 100%;
+        padding: 0;
+    }
+    .headerFiltros{
+        flex-direction: column;
+        height: auto;
+        padding-bottom: 0.5rem;
+    }
+
+    .filtros{
+        width: 100%;
+    }
+
+    .order{
+        width: 100%;
+        justify-content: start;
+    }
+
+    .products{
+        padding-bottom: 5rem;
+    }
+
+    .card{
+        width: 100%;
+        height: auto;
+    }
+    
 }

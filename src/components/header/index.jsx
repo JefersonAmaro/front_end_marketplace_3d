@@ -89,7 +89,10 @@ function Header() {
                 <img src={Busca} alt="Buscar" />
               </button>
             </div>
-            <button className={styles.button} onClick={() => navigate("/produtos")}>
+            <button
+              className={styles.button}
+              onClick={() => navigate("/produtos")}
+            >
               Produtos{" "}
               <svg
                 className={styles.seta}
@@ -130,7 +133,10 @@ function Header() {
   return (
     <header className={styles.headerMobile}>
       <div className={styles.headerContent}>
-        <h1 className={styles.title} onClick={() => navigate("/marketplace")}>
+        <h1
+          className={styles.title}
+          onClick={() => (navigate("/marketplace"), setMenuAberto(false))}
+        >
           Market3D
         </h1>
 
@@ -188,7 +194,7 @@ function Header() {
               Quero Vender
             </button>
             {!token && (
-              <button className={styles.loginButton} onClick={abrirLogin}>
+              <button className={styles.loginButton} onClick={() => (abrirLogin(), setMenuAberto(false))}>
                 Login
               </button>
             )}
@@ -202,7 +208,10 @@ function Header() {
                 <img src={Busca} alt="Buscar" />
               </button>
             </div>
-            <button className={styles.button} onClick={() => navigate("/produtos")}>
+            <button
+              className={styles.button}
+              onClick={() => (navigate("/produtos"), setMenuAberto(false))}
+            >
               Produtos{" "}
               <svg
                 className={styles.seta}
@@ -220,7 +229,9 @@ function Header() {
             </button>
             <button
               className={styles.button}
-              onClick={() => navigate("/solicitar-orcamento")}
+              onClick={() => (
+                navigate("/solicitar-orcamento"), setMenuAberto(false)
+              )}
             >
               Solicitar Orçamento
             </button>

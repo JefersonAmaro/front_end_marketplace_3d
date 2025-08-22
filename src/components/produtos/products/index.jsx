@@ -5,7 +5,8 @@ import styles from "./styles.module.css";
 function Products({ filters, onRemoveFilter, products }) {
   const { categorias = [], materiais = [], cor, preco } = filters;
   const temFiltros =
-    categorias.length > 0 || materiais.length > 0 || cor || preco;
+    categorias.length > 0 || materiais.length > 0 || cor || preco > 0;
+
   const [orderBy, setOrderBy] = useState("data");
 
   const sortedProducts = [...products].sort((a, b) => {
@@ -218,7 +219,7 @@ function Products({ filters, onRemoveFilter, products }) {
 
             {cor && (
               <p className={styles.filtro}>
-                Cor: {traduzirCor(cor)}
+                {traduzirCor(cor)}
                 <span
                   className={styles.removeFiltro}
                   onClick={() => onRemoveFilter("cor")}
@@ -230,7 +231,7 @@ function Products({ filters, onRemoveFilter, products }) {
 
             {preco !== null && preco !== undefined && (
               <p className={styles.filtro}>
-                Preço até: {preco > 0 ? `R$ ${preco}` : "Sem limite"}
+                {preco > 0 ? `Até R$ ${preco}` : "Sem limite de preço"}
                 <span
                   className={styles.removeFiltro}
                   onClick={() => onRemoveFilter("preco")}
@@ -244,7 +245,7 @@ function Products({ filters, onRemoveFilter, products }) {
         <div className={styles.order}>
           <p>Ordenar por:</p>
           <select value={orderBy} onChange={(e) => setOrderBy(e.target.value)}>
-            <option value="data">Data de cadastro</option>
+            <option value="data">Lançamentos</option>
             <option value="maior">Maior Preço</option>
             <option value="menor">Menor Preço</option>
           </select>
