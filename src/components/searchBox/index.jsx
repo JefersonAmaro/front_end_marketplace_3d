@@ -166,7 +166,7 @@ function SearchBox({ products, setMenuAberto }) {
                 <div className={styles.imgContainer}>
                   <img src={p.img} alt={p.name} className={styles.img} />
                 </div>
-                {p.name}
+                <p>{p.name}</p>
               </div>
             ))}
           </div>,

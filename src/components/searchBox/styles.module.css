@@ -1,6 +1,7 @@
 .searchBox {
   position: relative;
-  width: 50%; /* ajuste conforme necessário */
+  width: 50%;
+  /* ajuste conforme necessário */
   display: flex;
   align-items: center;
   justify-content: center;
@@ -35,7 +36,7 @@
   justify-content: center;
   border: none;
 
-  img{
+  img {
     width: 20px;
     height: 20px;
   }
@@ -43,7 +44,8 @@
 
 .dropdown {
   position: absolute;
-  top: calc(100% + 4px); /* aparece logo abaixo do input */
+  top: calc(100% + 4px);
+  /* aparece logo abaixo do input */
   left: 0;
   width: 100%;
   background: #fff;
@@ -60,14 +62,21 @@
   display: flex;
   align-items: center;
   gap: 1rem;
+
+  p {
+    width: 90%;
+  }
 }
 
 .item:hover {
-  background: #f3f4f6; /* cinza claro */
+  background: #f3f4f6;
+  /* cinza claro */
 }
 
-.imgContainer{
-  img{
+.imgContainer {
+  width: 10%;
+
+  img {
     width: 70px;
     height: 70px;
     object-position: center;
@@ -81,8 +90,18 @@
     width: 40%;
   }
 
-  .iconContainer{
+  .iconContainer {
     right: 10px;
+  }
+
+  .item {
+    p {
+      width: 80%;
+    }
+  }
+
+  .imgContainer {
+    width: 20%;
   }
 }
 
@@ -91,7 +110,7 @@
     width: 100%;
   }
 
-  .input{
+  .input {
     font-size: 16px;
   }
 }
