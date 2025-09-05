@@ -41,7 +41,17 @@ function MarketplaceProducts() {
   useEffect(() => {
     if (!produto) return;
     const outros = allProducts.filter((item) => item.id !== id);
-    const aleatorios = [...outros].sort(() => 0.5 - Math.random()).slice(0, 4);
+
+    // pega só produtos do mesmo fornecedor
+    const doMesmoFornecedor = outros.filter(
+      (item) => item.supplier?.id === produto.supplier?.id
+    );
+
+    // embaralha e pega até 4
+    const aleatorios = [...doMesmoFornecedor]
+      .sort(() => 0.5 - Math.random())
+      .slice(0, 4);
+
     setRandomFourProducts(aleatorios);
 
     const relacionados = outros
@@ -151,18 +161,18 @@ function MarketplaceProducts() {
           </div>
         </div>
       </div>
-    <CardsComponent
-      title="Produtos do mesmo vendedor"
-      description="Outras opções que este vendedor oferece"
-      button="Ver Mais"
-      cards={randomFourProducts}
-    />
       <CardsComponent
-      title="Produtos Relacionado"
-      description="Confira outros produtos semelhantes"
-      button="Ver Mais"
-      cards={productsRelated}
-    />
+        title="Produtos do mesmo fornecedor"
+        description={`Outras opções que ${produto.supplier.name} oferece`}
+        button="Ver Mais"
+        cards={randomFourProducts}
+      />
+      <CardsComponent
+        title="Produtos Relacionado"
+        description="Confira outros produtos semelhantes"
+        button="Ver Mais"
+        cards={productsRelated}
+      />
     </>
   );
 }

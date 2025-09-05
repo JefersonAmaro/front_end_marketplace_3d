@@ -9,7 +9,11 @@ import MenuPefil from "../menuPerfil";
 
 import SearchBox from "../searchBox";
 
+import { useGeolocation } from "../../hooks/useGeolocation";
+
 function Header() {
+  const { street, postalCode, error } = useGeolocation();
+
   const { token, user, logout } = useContext(AuthContext);
   const { data, loading } = useContext(DataContext);
 
@@ -52,21 +56,27 @@ function Header() {
 
   if (loading || !data) return <div>Carregando...</div>;
 
-  const products = [
-    ...data.lancamentosRecentes,
-    ...data.casaEDecoracao,
-    ...data.brinquedos,
-    ...data.ferramentas,
-    ...data.outros,
-  ];
+const products = Object.values(data).flat();
 
   if (isDesktop) {
     // Menu Desktop
     return (
       <header className={styles.header}>
-        <h1 className={styles.title} onClick={() => navigate("/marketplace")}>
-          Market3D
-        </h1>
+        <div className={styles.container}>
+          <h1 className={styles.title} onClick={() => navigate("/marketplace")}>
+            Market3D
+          </h1>
+          <div className={styles.locationContainer}>
+            {street && postalCode ? (
+              <div className={styles.location}>
+                <p className={styles.locationTitle}>Localização:</p>
+                <p className={styles.locationText}>
+                  Rua {street}, {postalCode}
+                </p>
+              </div>
+            ) : null}
+          </div>
+        </div>
         {isHome ? (
           <div className={styles.buttonsHome}>
             <button
@@ -108,20 +118,7 @@ function Header() {
               className={styles.button}
               onClick={() => navigate("/produtos")}
             >
-              Produtos{" "}
-              <svg
-                className={styles.seta}
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="black"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <polyline points="6 9 12 15 18 9" />
-              </svg>
+              Produtos
             </button>
             <button
               className={styles.button + " " + styles.orcamentoButton}
@@ -148,12 +145,21 @@ function Header() {
   return (
     <header className={styles.headerMobile}>
       <div className={styles.headerContent}>
-        <h1
-          className={styles.title}
-          onClick={() => (navigate("/marketplace"), setMenuAberto(false))}
-        >
-          Market3D
-        </h1>
+        <div className={styles.container}>
+          <h1 className={styles.title} onClick={() => navigate("/marketplace")}>
+            Market3D
+          </h1>
+          <div className={styles.locationContainer}>
+            {street && postalCode ? (
+              <div className={styles.location}>
+                <p className={styles.locationTitle}>Localização:</p>
+                <p className={styles.locationText}>
+                  Rua {street}, {postalCode}
+                </p>
+              </div>
+            ) : null}
+          </div>
+        </div>
 
         {/* Botão Hamburger */}
         <button
@@ -232,20 +238,7 @@ function Header() {
               className={styles.button}
               onClick={() => (navigate("/produtos"), setMenuAberto(false))}
             >
-              Produtos{" "}
-              <svg
-                className={styles.seta}
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="black"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <polyline points="6 9 12 15 18 9" />
-              </svg>
+              Produtos
             </button>
             <button
               className={styles.button}

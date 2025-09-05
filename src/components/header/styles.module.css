@@ -13,10 +13,43 @@
   overflow: hidden;
 }
 
+.container {
+  width: 30%;
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+}
+
 .title {
   font-weight: 700;
   font-size: 36px;
   color: #4D00FF;
+  z-index: 2;
+}
+
+.locationContainer {
+  width: 58%;
+
+  .location {
+    font-weight: 400;
+    font-size: 14px;
+    color: #000;
+
+    .locationTitle {
+      font-weight: 600;
+      font-size: 16px;
+      color: #000;
+    }
+
+    .locationText {
+      white-space: nowrap;
+      /* não quebra linha */
+      overflow: hidden;
+      /* esconde o que passar */
+      text-overflow: ellipsis;
+      /* coloca os "..." */
+    }
+  }
 }
 
 .buttonsHome {
@@ -25,7 +58,7 @@
 }
 
 .button {
-  font-weight: 500;
+  font-weight: 400;
   font-size: 16px;
   color: #000;
   background: #F9F9F9;
@@ -56,11 +89,11 @@
 
 
 .buttonsMarketplace {
-  width: 80%;
+  width: 70%;
   display: flex;
   justify-content: end;
   gap: 2rem;
-  padding: 1rem 0; 
+  padding: 1rem 0;
 
   .button {
     margin: 0 1.5rem;
@@ -85,16 +118,30 @@
     height: 9vh;
   }
 
+  .container {
+    width: 35%;
+  }
+
   .title {
     font-size: 30px;
   }
 
+  .locationContainer {
+    .location {
+      font-size: 12px;
+
+      .locationTitle {
+        font-size: 14px;
+      }
+    }
+  }
+
   .button {
-    font-size: 16px;
+    font-size: 14px;
   }
 
   .buttonsMarketplace {
-    width: 85%;
+    width: 65%;
   }
 
   .loginButton {
@@ -131,6 +178,27 @@
 
     h1 {
       z-index: 1100;
+    }
+  }
+
+  .container {
+    gap: 1rem;
+    width: 100%;
+  }
+
+  .locationContainer {
+    width: 40%;
+    z-index: 1100;
+
+    .location {
+
+      .locationTitle {
+        font-size: 12px;
+      }
+
+      .locationText {
+        font-size: 10px;
+      }
     }
   }
 
@@ -223,6 +291,10 @@
     justify-content: center;
     align-items: center;
     width: 100%;
+  }
+
+  .button {
+    font-size: 16px;
   }
 
   .orcamentoButton {

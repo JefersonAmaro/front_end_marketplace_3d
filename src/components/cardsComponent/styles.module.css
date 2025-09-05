@@ -62,6 +62,7 @@
     padding: 1rem;
     gap: .5rem;
     border: 1px solid #4D00FF;
+    position: relative;
 
     img {
         width: 100%;
@@ -70,6 +71,18 @@
         object-fit: cover;
         overflow: hidden;
         border: 1px solid #4D00FF;
+    }
+
+    .distance{
+        position: absolute;
+        top: 20px;
+        left: 20px;
+        background-color: #7B00FF;
+        padding: 5px 10px;
+        border-radius: 8px;
+        color: #fff;
+        font-weight: 400;
+        font-size: 14px
     }
 
     h4 {
@@ -203,6 +216,10 @@
         gap: 1rem;
     }
 
+    .card .distance{
+        top: 15px;
+        left: 15px;
+    }
 
     .card h4 {
         font-size: 16px;
@@ -258,5 +275,10 @@
     .card {
         width: 100%;
         padding: 1rem;
+    }
+
+    .card .distance{
+        top: 20px;
+        left: 20px;
     }
 }

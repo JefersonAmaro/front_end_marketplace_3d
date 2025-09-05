@@ -80,6 +80,7 @@ function CardsComponent(props) {
               onClick={() => navigate(`/marketplace/${card.id}`)}
             >
               <img src={card.img} alt={card.title} />
+              <p className={styles.distance}>{card.distance?.toFixed(1)} km de você</p>
               <div className={styles.contentCard}>
                 <div className={styles.contentTitleCard}>
                   <h4>{card.name}</h4>

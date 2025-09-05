@@ -45,6 +45,7 @@ export const AuthContextProvider = ({ children }) => {
       if (response.data.valid) {
         setToken(savedToken);
         const { name, email } = response.data.user;
+
         setUser({ name, email });
         return true;
       } else {

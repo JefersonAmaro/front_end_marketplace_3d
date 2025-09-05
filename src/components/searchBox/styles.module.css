@@ -86,9 +86,6 @@
 }
 
 @media screen and (max-width: 1919px) {
-  .searchBox {
-    width: 40%;
-  }
 
   .iconContainer {
     right: 10px;

@@ -100,8 +100,10 @@ function MenuPefil({ user, logout }) {
             }}
           >
             <div className={styles.profileInfo}>
-              <p className={styles.name}>Olá, {user.name.split(" ")[0]}</p>
-              <p className={styles.email}>{user.email}</p>
+              <p className={styles.name}>
+                Olá, {user?.name?.split(" ")[0] ?? ""}
+              </p>
+              <p className={styles.email}>{user?.email ?? ""}</p>
             </div>
             <div className={styles.profileOptions}>
               <button className={styles.btn}>Minha conta</button>
