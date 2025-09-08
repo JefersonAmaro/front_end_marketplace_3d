@@ -1,7 +1,7 @@
 import styles from "./styles.module.css";
 
 import { useParams, useNavigate } from "react-router-dom";
-import { useContext, useState, useEffect, useMemo } from "react";
+import { useContext, useState, useEffect } from "react";
 import { DataContext } from "../../../context/dataContext";
 
 import Loading from "../../../components/loading";
@@ -9,10 +9,14 @@ import ColorSelector from "../../../components/corSelector";
 import FinishingSelector from "../../../components/finishingSelector";
 
 import CardsComponent from "../../../components/cardsComponent";
+import { useGeolocation } from "../../../hooks/useGeolocation";
+
+import LoadingCards from "../../../components/loadingCards";
 
 function MarketplaceProducts() {
   const { id } = useParams();
   const { data, loading } = useContext(DataContext);
+  const userLocation = useGeolocation(); // { latitude, longitude, error }
   const navigate = useNavigate();
 
   const [randomFourProducts, setRandomFourProducts] = useState([]);
@@ -21,46 +25,86 @@ function MarketplaceProducts() {
   const [cor, setCor] = useState(null);
   const [acabamento, setAcabamento] = useState(null);
 
+  // Função para calcular distância entre duas coordenadas (em km)
+  function getDistance(lat1, lon1, lat2, lon2) {
+    if (!lat1 || !lon1 || !lat2 || !lon2) return Infinity;
+    const R = 6371;
+    const dLat = ((lat2 - lat1) * Math.PI) / 180;
+    const dLon = ((lon2 - lon1) * Math.PI) / 180;
+
+    const a =
+      Math.sin(dLat / 2) ** 2 +
+      Math.cos((lat1 * Math.PI) / 180) *
+        Math.cos((lat2 * Math.PI) / 180) *
+        Math.sin(dLon / 2) ** 2;
+
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    return R * c;
+  }
+
   const aumentar = () => setQuantidade((q) => q + 1);
   const diminuir = () => setQuantidade((q) => (q > 1 ? q - 1 : 1));
 
-  const allProducts = useMemo(() => {
-    return [
-      ...(data?.lancamentosRecentes || []),
-      ...(data?.brinquedos || []),
-      ...(data?.casaEDecoracao || []),
-      ...(data?.ferramentas || []),
-      ...(data?.outros || []),
-    ];
-  }, [data]);
+  // Garante que data sempre seja array
+  const allProducts = Array.isArray(data) ? data : [];
 
-  const produto = useMemo(() => {
-    return allProducts.find((item) => item.id === id);
-  }, [id, allProducts]);
+  // Calcula distância de cada produto até o usuário
+  const productsWithDistance = allProducts.map((p) => {
+    const supplier = p.supplier;
+    const distance = supplier?.latitude
+      ? getDistance(
+          userLocation.latitude,
+          userLocation.longitude,
+          supplier.latitude,
+          supplier.longitude
+        )
+      : Infinity;
+    return { ...p, distance };
+  });
+
+  const produto = productsWithDistance.find((item) => item.id === id);
 
   useEffect(() => {
     if (!produto) return;
-    const outros = allProducts.filter((item) => item.id !== id);
 
-    // pega só produtos do mesmo fornecedor
+    // cria cópia com distância só uma vez
+    const outros = allProducts
+      .filter((item) => item.id !== id)
+      .map((p) => {
+        const supplier = p.supplier;
+        const distance =
+          supplier?.latitude && supplier?.longitude && userLocation.latitude
+            ? getDistance(
+                userLocation.latitude,
+                userLocation.longitude,
+                supplier.latitude,
+                supplier.longitude
+              )
+            : Infinity;
+        return { ...p, distance };
+      });
+
+    // Produtos do mesmo fornecedor
     const doMesmoFornecedor = outros.filter(
       (item) => item.supplier?.id === produto.supplier?.id
     );
 
-    // embaralha e pega até 4
-    const aleatorios = [...doMesmoFornecedor]
+    const aleatorios = doMesmoFornecedor
+      .slice()
       .sort(() => 0.5 - Math.random())
       .slice(0, 4);
 
     setRandomFourProducts(aleatorios);
 
+    // Produtos relacionados (mesma categoria) ordenados pela distância
     const relacionados = outros
       .filter((item) => item.category === produto.category)
-      .sort(() => 0.5 - Math.random()) // embaralha
-      .slice(0, 4); // pega 4
+      .slice()
+      .sort((a, b) => a.distance - b.distance)
+      .slice(0, 4);
 
     setProductsRelated(relacionados);
-  }, [id, allProducts, produto]);
+  }, [id, allProducts, userLocation]);
 
   if (loading) {
     return <Loading />;
@@ -76,7 +120,6 @@ function MarketplaceProducts() {
 
   const addToCart = () => {
     const cart = JSON.parse(localStorage.getItem("cart")) || [];
-    // Verifica se já existe produto com mesmo produto.id + cor + acabamento (se quiser diferenciar)
     const index = cart.findIndex(
       (item) =>
         item.produto.id === produto.id &&
@@ -85,10 +128,8 @@ function MarketplaceProducts() {
     );
 
     if (index >= 0) {
-      // Produto já existe: soma a quantidade
       cart[index].quantidade += quantidade;
     } else {
-      // Produto novo
       cart.push({
         id: generateUUID(),
         produto,
@@ -104,7 +145,7 @@ function MarketplaceProducts() {
     );
   };
 
-  const { width, height, depth } = produto.size;
+  const { width = 0, height = 0, depth = 0 } = produto.size || {};
 
   return (
     <>
@@ -128,7 +169,7 @@ function MarketplaceProducts() {
             </div>
             <p className={styles.description}>{produto.description}</p>
             <p className={styles.material}>
-              Material: {produto.material.join(", ")}
+              Material: {produto.material?.join(", ")}
             </p>
             <p className={styles.size}>
               Tamanho: {height.toFixed(1)} x {width.toFixed(1)} x{" "}
@@ -153,7 +194,7 @@ function MarketplaceProducts() {
             </div>
 
             <div className={styles.buttons}>
-              <button className={styles.addToCart} onClick={() => addToCart()}>
+              <button className={styles.addToCart} onClick={addToCart}>
                 Adicionar ao Carrinho
               </button>
               <button className={styles.buyNow}>Comprar Agora</button>
@@ -161,18 +202,25 @@ function MarketplaceProducts() {
           </div>
         </div>
       </div>
-      <CardsComponent
-        title="Produtos do mesmo fornecedor"
-        description={`Outras opções que ${produto.supplier.name} oferece`}
-        button="Ver Mais"
-        cards={randomFourProducts}
-      />
-      <CardsComponent
-        title="Produtos Relacionado"
-        description="Confira outros produtos semelhantes"
-        button="Ver Mais"
-        cards={productsRelated}
-      />
+
+      {loading || !data || !userLocation.latitude ? (
+        <LoadingCards />
+      ) : (
+        <>
+          <CardsComponent
+            title="Produtos do mesmo fornecedor"
+            description={`Outras opções que ${produto.supplier?.name} oferece`}
+            button="Ver Mais"
+            cards={randomFourProducts}
+          />
+          <CardsComponent
+            title="Produtos Relacionados"
+            description="Confira outros produtos semelhantes (ordenados por proximidade)"
+            button="Ver Mais"
+            cards={productsRelated}
+          />
+        </>
+      )}
     </>
   );
 }

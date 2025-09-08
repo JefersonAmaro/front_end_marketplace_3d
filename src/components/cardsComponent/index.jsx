@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 
 function CardsComponent(props) {
   const { title, description, button, cards } = props;
+
   const navigate = useNavigate();
 
   const [quantidades, setQuantidades] = useState({});

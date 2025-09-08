@@ -34,7 +34,7 @@
       "name": "Fornecedor Exemplo",
       "email": "contato@fornecedor.com",
       "endereco": "Rua Raimundo Starosky, 357 - A, Carianos, Florianópolis, SC, CEP: 88047622",
-      "latitude": -27.6145,
+      "latitude": -27.6135,
       "longitude": -48.5471
     }
   },
@@ -300,7 +300,7 @@
       "name": "Fornecedor Exemplo",
       "email": "contato@fornecedor.com",
       "endereco": "Rua Raimundo Starosky, 357 - A, Carianos, Florianópolis, SC, CEP: 88047622",
-      "latitude": -27.6145,
+      "latitude": -27.6125,
       "longitude": -48.5471
     }
   }

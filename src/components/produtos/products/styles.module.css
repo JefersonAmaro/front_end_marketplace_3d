@@ -146,7 +146,7 @@
         font-size: 14px;
         font-weight: 400;
 
-        option{
+        option {
             background-color: #F9F9F9;
             box-shadow: 0px 4px 4px rgba(153, 153, 153, 0.25);
             border-radius: 10px;
@@ -197,6 +197,7 @@
     padding: 1rem;
     gap: .5rem;
     border: 1px solid #4D00FF;
+    position: relative;
 
     img {
         width: 100%;
@@ -205,6 +206,18 @@
         object-fit: cover;
         overflow: hidden;
         border: 1px solid #4D00FF;
+    }
+
+    .distance {
+        position: absolute;
+        top: 20px;
+        left: 20px;
+        background-color: #7B00FF;
+        padding: 5px 10px;
+        border-radius: 8px;
+        color: #fff;
+        font-weight: 400;
+        font-size: 14px
     }
 
     h4 {
@@ -323,7 +336,7 @@
     color: #fff;
 }
 
-.empty{
+.empty {
     display: flex;
     flex-direction: column;
     gap: 1rem;
@@ -332,11 +345,11 @@
     height: 80%;
     width: 100%;
 
-    p{
+    p {
         font-size: 18px;
     }
 
-    button{
+    button {
         font-size: 16px;
         padding: 1rem 2rem;
         background: #4D00FF;
@@ -346,7 +359,7 @@
         cursor: pointer;
         transition: all 0.3s ease-in-out;
     }
-    
+
 }
 
 @media screen and (max-width: 1919px) {
@@ -376,6 +389,11 @@
         width: 32%;
         height: 88%;
         padding: .5rem;
+    }
+
+    .card .distance {
+        top: 15px;
+        left: 15px;
     }
 
     .contentTitle h2 {
@@ -425,8 +443,8 @@
         font-size: 14px;
     }
 
-    .empty{
-        p{
+    .empty {
+        p {
             font-size: 16px;
         }
     }
@@ -438,28 +456,34 @@
         width: 100%;
         padding: 0;
     }
-    .headerFiltros{
+
+    .headerFiltros {
         flex-direction: column;
         height: auto;
         padding-bottom: 0.5rem;
     }
 
-    .filtros{
+    .filtros {
         width: 100%;
     }
 
-    .order{
+    .order {
         width: 100%;
         justify-content: start;
     }
 
-    .products{
+    .products {
         padding-bottom: 5rem;
     }
 
-    .card{
+    .card {
         width: 100%;
         height: auto;
     }
-    
+
+    .card .distance {
+        top: 15px;
+        left: 215x;
+    }
+
 }

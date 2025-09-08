@@ -301,7 +301,9 @@ function Products({ filters, onRemoveFilter, products }) {
         {sortedProducts.length === 0 && (
           <div className={styles.empty}>
             <p>Nenhum produto encontrado</p>
-            <button onClick={() => handleRemoveFilter("todos")}>Ver todos os produtos</button>
+            <button onClick={() => handleRemoveFilter("todos")}>
+              Ver todos os produtos
+            </button>
           </div>
         )}
         {sortedProducts.map((product, index) => {
@@ -313,6 +315,9 @@ function Products({ filters, onRemoveFilter, products }) {
               onClick={() => navigate(`/marketplace/${product.id}`)}
             >
               <img src={product.img} alt={product.name} />
+              <p className={styles.distance}>
+                {product.distance?.toFixed(1)} km de você
+              </p>
               <div className={styles.contentProduct}>
                 <div className={styles.contentTitleProduct}>
                   <h4>{product.name}</h4>

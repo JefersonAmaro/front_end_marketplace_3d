@@ -34,8 +34,6 @@ function Produtos() {
     preco: 0,
   });
 
-  if (loading || !data || !userLocation.latitude) return null;
-
   // Junta todos os produtos
   const products = Object.values(data).flat();
 
@@ -114,16 +112,23 @@ function Produtos() {
     (a, b) => a.distance - b.distance
   );
 
-  return (
-    <div className={styles.container}>
-      <Filtro filters={filters} setFilters={setFilters} />
+return (
+  <div className={styles.container}>
+    <Filtro filters={filters} setFilters={setFilters} />
+    {loading || !data || !userLocation.latitude ? (
+      <div className={styles.loadingContainer}>
+        <div className={styles.loading}></div>
+      </div>
+    ) : (
       <Products
         filters={filters}
         onRemoveFilter={handleRemoveFilter}
         products={sortedProducts}
       />
-    </div>
-  );
+    )}
+  </div>
+);
+
 }
 
 export default Produtos;
