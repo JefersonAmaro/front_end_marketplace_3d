@@ -6,6 +6,12 @@ export const DataContext = createContext();
 export const DataContextProvider = ({ children }) => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [filters, setFilters] = useState({
+    categorias: [],
+    materiais: [],
+    cor: null,
+    preco: 0,
+  });
 
   useEffect(() => {
     const fetchData = async () => {
@@ -23,7 +29,7 @@ export const DataContextProvider = ({ children }) => {
   }, []);
 
   return (
-    <DataContext.Provider value={{ data, loading }}>
+    <DataContext.Provider value={{ data, loading, filters, setFilters }}>
       {children}
     </DataContext.Provider>
   );

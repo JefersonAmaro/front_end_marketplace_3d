@@ -3,7 +3,7 @@ import { DataContext } from "../../../context/dataContext";
 import { useGeolocation } from "../../../hooks/useGeolocation";
 import CardsComponent from "../../cardsComponent";
 import LoadingCards from "../../loadingCards";
-
+import { useNavigate } from "react-router-dom";
 
 // Função para calcular distância entre duas coordenadas (em km)
 function getDistance(lat1, lon1, lat2, lon2) {
@@ -22,8 +22,9 @@ function getDistance(lat1, lon1, lat2, lon2) {
 }
 
 function SectionFour() {
-  const { data, loading } = useContext(DataContext);
+  const { data, loading, setFilters } = useContext(DataContext);
   const userLocation = useGeolocation(); // { latitude, longitude, error }
+  const navigate = useNavigate();
 
   if (loading || !data || !userLocation.latitude) {
     return <LoadingCards />;
@@ -59,6 +60,15 @@ function SectionFour() {
       title="Casa e Decoração"
       description="Ferramentas e peças para tornar seu ambiente mais agradável."
       button="Ver Mais"
+      onClickButton={() => {
+        setFilters({
+          categorias: ["Casa e Decoração"],
+          materiais: [],
+          cor: null,
+          preco: null,
+        });
+        navigate("/produtos");
+      }}
       cards={sortedCards}
     />
   );

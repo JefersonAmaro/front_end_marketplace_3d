@@ -3,7 +3,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 function CardsComponent(props) {
-  const { title, description, button, cards } = props;
+  const { title, description, button, onClickButton, cards } = props;
 
   const navigate = useNavigate();
 
@@ -66,7 +66,7 @@ function CardsComponent(props) {
           <p>{description}</p>
         </div>
         <div className={styles.contentButton}>
-          <button className={styles.contentButtonBtn}>{button}</button>
+          <button className={styles.contentButtonBtn} onClick={onClickButton}>{button}</button>
         </div>
       </div>
 

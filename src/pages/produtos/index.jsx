@@ -24,15 +24,8 @@ function getDistance(lat1, lon1, lat2, lon2) {
 }
 
 function Produtos() {
-  const { data, loading } = useContext(DataContext);
+  const { data, loading, filters, setFilters } = useContext(DataContext);
   const userLocation = useGeolocation(); // { latitude, longitude, error }
-
-  const [filters, setFilters] = useState({
-    categorias: [],
-    materiais: [],
-    cor: null,
-    preco: 0,
-  });
 
   // Junta todos os produtos
   const products = Object.values(data).flat();
