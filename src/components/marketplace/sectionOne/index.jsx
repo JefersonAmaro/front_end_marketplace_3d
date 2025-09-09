@@ -1,5 +1,6 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useNavigate } from "react-router-dom"; // 👈 importar aqui
 
 import styles from "./styles.module.css";
 
@@ -11,7 +12,12 @@ import Loja from "../../../assets/marketplace/sectionOne/loja.png";
 import Experiencia from "../../../assets/marketplace/sectionOne/experiencia.png";
 import Otimize from "../../../assets/marketplace/sectionOne/otimize.png";
 
+import { DataContext } from "../../../context/dataContext";
+
 function SectionOne() {
+  const { setFilters } = useContext(DataContext);
+  const navigate = useNavigate(); // 👈 hook do react-router
+
   const initialCards = [
     {
       title: "Brinquedos que ganham vida camada por camada",
@@ -19,6 +25,7 @@ function SectionOne() {
         "Com tecnologia de impressão 3D, criamos peças exclusivas para brincar, aprender e colecionar.",
       button: "Explorar Brinquedos",
       img: Brinquedos,
+      category: "Brinquedos",
     },
     {
       title: "Precisão em cada detalhe",
@@ -33,6 +40,7 @@ function SectionOne() {
         "Transformando ideias em peças decorativas únicas com a precisão da impressora 3D.",
       button: "Explorar Modelos",
       img: DecoracaoArte,
+      category: "Casa e Decoração",
     },
   ];
 
@@ -47,7 +55,7 @@ function SectionOne() {
         newOrder.unshift(last);
         return newOrder;
       });
-      setActiveIndex((prev) => (prev + 1) % 2); // alterna entre 0 e 1
+      setActiveIndex((prev) => (prev + 1) % 2);
     }, 7000);
 
     return () => clearInterval(interval);
@@ -55,6 +63,19 @@ function SectionOne() {
 
   const cardPrincipal = initialCards[order[0]];
   const cardsSecundary = [initialCards[order[1]], initialCards[order[2]]];
+
+  // 👇 função para aplicar filtro e navegar
+  function handleClick(card) {
+    if (card.category) {
+      setFilters((prev) => ({
+        ...prev,
+        categorias: [card.category],
+      }));
+      navigate("/produtos");
+    } else {
+      navigate("/solicitar-orcamento");
+    }
+  }
 
   return (
     <div className={styles.sectionOne}>
@@ -71,7 +92,10 @@ function SectionOne() {
                     " " +
                     styles[`card-layer-${layerIndex}`]
                   }
-                  initial={{ filter: "blur(2px) brightness(0.9)", opacity: 0.5 }}
+                  initial={{
+                    filter: "blur(2px) brightness(0.9)",
+                    opacity: 0.5,
+                  }}
                   animate={{ filter: "blur(0px) brightness(1)", opacity: 1 }}
                   exit={{ filter: "blur(1px) brightness(0.7)", opacity: 0.2 }}
                   transition={{ duration: 1, ease: "easeInOut" }}
@@ -87,7 +111,10 @@ function SectionOne() {
                       <p className={styles.cardPrincipalDescription}>
                         {cardPrincipal.description}
                       </p>
-                      <button className={styles.cardPrincipalButton}>
+                      <button
+                        className={styles.cardPrincipalButton}
+                        onClick={() => handleClick(cardPrincipal)}
+                      >
                         {cardPrincipal.button}
                       </button>
                     </div>
@@ -106,7 +133,10 @@ function SectionOne() {
                           <p className={styles.cardSmallDescription}>
                             {card.description}
                           </p>
-                          <button className={styles.cardSmallButton}>
+                          <button
+                            className={styles.cardSmallButton}
+                            onClick={() => handleClick(card)}
+                          >
                             {card.button}
                           </button>
                         </div>
@@ -120,27 +150,27 @@ function SectionOne() {
         })}
       </div>
       <div className={styles.contentContainer}>
-          <div className={styles.content}>
-            <img src={Loja} alt="Loja" />
-            <div className={styles.contentTitle}>
-              <h3>Loja</h3>
-              <p>100% Criativa e Personalizada</p>
-            </div>
+        <div className={styles.content}>
+          <img src={Loja} alt="Loja" />
+          <div className={styles.contentTitle}>
+            <h3>Loja</h3>
+            <p>100% Criativa e Personalizada</p>
           </div>
-          <div className={styles.content}>
-            <img src={Experiencia} alt="Experiencia" />
-            <div className={styles.contentTitle}>
-              <h3>Experiência</h3>
-              <p>Precisa, confiável e sob medida</p>
-            </div>
+        </div>
+        <div className={styles.content}>
+          <img src={Experiencia} alt="Experiencia" />
+          <div className={styles.contentTitle}>
+            <h3>Experiência</h3>
+            <p>Precisa, confiável e sob medida</p>
           </div>
-          <div className={styles.content}>
-            <img src={Otimize} alt="Otimize" />
-            <div className={styles.contentTitle}>
-              <h3>Otimize sua produção</h3>
-              <p>Soluções em impressão sob demanda</p>
-            </div>
+        </div>
+        <div className={styles.content}>
+          <img src={Otimize} alt="Otimize" />
+          <div className={styles.contentTitle}>
+            <h3>Otimize sua produção</h3>
+            <p>Soluções em impressão sob demanda</p>
           </div>
+        </div>
       </div>
     </div>
   );

@@ -1,23 +1,29 @@
-import './App.css'
-import { Outlet } from 'react-router-dom'
-import Header from './components/header'
-import Footer from './components/footer'
+import "./App.css";
+import { Outlet } from "react-router-dom";
+import { useContext } from "react";
+import { AuthContext } from "./context/authContext";
+import Header from "./components/header";
+import HeaderSupplier from "./components/headerSupplier";
+import Footer from "./components/footer";
 
-import ScrollToTop from './components/scrollToTop'
+import ScrollToTop from "./components/scrollToTop";
 
-import { CartPreview } from './components/cartPreview'
+import { CartPreview } from "./components/cartPreview";
 
 function App() {
+  const { user } = useContext(AuthContext);
+
+  const isSupplier = user.role === "fornecedor";
 
   return (
     <>
-      <Header />
+      {isSupplier ? <HeaderSupplier /> : <Header />}
       <ScrollToTop />
       <Outlet />
       <CartPreview />
-      <Footer />
+      {isSupplier ? null : <Footer />}
     </>
-  )
+  );
 }
 
-export default App
+export default App;

@@ -14,16 +14,7 @@ export function CartPreview() {
   const [isOpen, setIsOpen] = useState(false);
   const navigate = useNavigate();
 
-  const produtos = useMemo(
-    () => ({
-      lancamentosRecentes: data.lancamentosRecentes,
-      brinquedos: data.brinquedos,
-      casaEDecoracao: data.casaEDecoracao,
-      ferramentas: data.ferramentas,
-      outros: data.outros,
-    }),
-    [data]
-  );
+  const produtos = Array.isArray(data) ? data : [];
 
   const loadCart = () => {
     const stored = JSON.parse(localStorage.getItem("cart")) || [];

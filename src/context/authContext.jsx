@@ -32,6 +32,7 @@ export const AuthContextProvider = ({ children }) => {
 
     if (!savedToken) {
       setToken(null);
+      setUser({});
       return false;
     }
 
@@ -44,8 +45,14 @@ export const AuthContextProvider = ({ children }) => {
 
       if (response.data.valid) {
         setToken(savedToken);
-        const { name, email } = response.data.user;
-        setUser({ name, email });
+        const { name, email, role } = response.data.user;
+        setUser({ name, email, role });
+
+        // Redireciona fornecedor automaticamente
+        if (role === "fornecedor" && window.location.pathname !== "/fornecedor") {
+          window.location.href = "/fornecedor";
+        }
+
         return true;
       } else {
         logout();
@@ -63,12 +70,10 @@ export const AuthContextProvider = ({ children }) => {
     async function checkToken() {
       const savedToken = Cookies.get("token");
       if (savedToken) {
-        const valid = await validateToken();
-        if (!valid) {
-          setToken(null);
-        }
+        await validateToken();
       } else {
         setToken(null);
+        setUser({});
       }
       setLoading(false);
     }
@@ -81,9 +86,9 @@ export const AuthContextProvider = ({ children }) => {
       const currentToken = Cookies.get("token") || null;
       setToken((prevToken) => {
         if (prevToken !== currentToken) {
-          // Se mudou o token, revalida ele
           if (!currentToken) {
             // Token removido, logout
+            setUser({});
             return null;
           } else {
             validateToken(); // revalida o novo token
@@ -98,13 +103,14 @@ export const AuthContextProvider = ({ children }) => {
   }, []);
 
   function saveToken(newToken) {
-    Cookies.set("token", newToken, { expires: 7 }); // expira em 7 dias
+    Cookies.set("token", newToken, { expires: 7 });
     setToken(newToken);
   }
 
   function logout() {
     Cookies.remove("token");
     setToken(null);
+    setUser({});
   }
 
   function openLoginModal() {
@@ -124,8 +130,7 @@ export const AuthContextProvider = ({ children }) => {
       });
 
       saveToken(response.data.token);
-
-      validateToken();
+      await validateToken();
 
       setLoading(false);
       return response.status;
@@ -144,8 +149,7 @@ export const AuthContextProvider = ({ children }) => {
       });
 
       saveToken(response.data.token);
-
-      validateToken();
+      await validateToken();
 
       setLoading(false);
       return response.status;
@@ -197,14 +201,10 @@ export const AuthContextProvider = ({ children }) => {
   async function loginWithGoogle(permission) {
     setLoading(true);
     try {
-      // 1. Login no Firebase
       const result = await signInWithPopup(auth, provider);
-      const user = result.user;
+      const userFirebase = result.user;
+      const idToken = await userFirebase.getIdToken();
 
-      // 2. Pegar idToken do Firebase
-      const idToken = await user.getIdToken();
-
-      // 3. Chamar backend com token do Firebase
       const response = await axios.post(
         `${API_URL}auth/google?permission=${permission}`,
         {},
@@ -215,11 +215,8 @@ export const AuthContextProvider = ({ children }) => {
         }
       );
 
-      // 4. Salvar token do backend
       saveToken(response.data.token);
-
-      // 5. Validar token
-      validateToken();
+      await validateToken();
 
       setLoading(false);
       return response.data;
@@ -243,7 +240,7 @@ export const AuthContextProvider = ({ children }) => {
         logout,
         errorMessage,
         setErrorMessage,
-        validateToken, // exporta para possível uso externo
+        validateToken,
         openLoginModal,
         closeLoginModal,
       }}

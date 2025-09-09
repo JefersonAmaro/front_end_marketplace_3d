@@ -1,21 +1,28 @@
 import { useState, useEffect, useContext } from "react";
 import { AuthContext } from "../../context/authContext";
+import { DataContext } from "../../context/dataContext";
 import { useNavigate } from "react-router-dom";
 import styles from "./styles.module.css";
-
-import Busca from "../../assets/header/busca.png";
 
 import LoginModal from "../loginModal";
 import MenuPefil from "../menuPerfil";
 
+import SearchBox from "../searchBox";
+
+import { useGeolocation } from "../../hooks/useGeolocation";
+
 function Header() {
+  const { street, postalCode, error } = useGeolocation();
+
   const { token, user, logout } = useContext(AuthContext);
+  const { data, loading } = useContext(DataContext);
+
   const [menuAberto, setMenuAberto] = useState(false);
   const [isDesktop, setIsDesktop] = useState(window.innerWidth > 1024);
-
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const navigate = useNavigate();
+
   const isHome = window.location.pathname === "/";
 
   function scrollToWithOffset(id) {
@@ -47,13 +54,29 @@ function Header() {
   const abrirLogin = () => setIsModalOpen(true);
   const fecharLogin = () => setIsModalOpen(false);
 
+  if (loading || !data) return <div>Carregando...</div>;
+
+const products = Object.values(data).flat();
+
   if (isDesktop) {
     // Menu Desktop
     return (
       <header className={styles.header}>
-        <h1 className={styles.title} onClick={() => navigate("/marketplace")}>
-          Market3D
-        </h1>
+        <div className={styles.container}>
+          <h1 className={styles.title} onClick={() => navigate("/marketplace")}>
+            Market3D
+          </h1>
+          <div className={styles.locationContainer}>
+            {street && postalCode ? (
+              <div className={styles.location}>
+                <p className={styles.locationTitle}>Localização:</p>
+                <p className={styles.locationText}>
+                  Rua {street}, {postalCode}
+                </p>
+              </div>
+            ) : null}
+          </div>
+        </div>
         {isHome ? (
           <div className={styles.buttonsHome}>
             <button
@@ -83,27 +106,19 @@ function Header() {
           </div>
         ) : (
           <div className={styles.buttonsMarketplace}>
-            <div className={styles.inputBusca}>
-              <input type="text" placeholder="Buscar na Market3D" />
-              <button className={styles.pesquisarButton}>
-                <img src={Busca} alt="Buscar" />
-              </button>
-            </div>
-            <button className={styles.button}>
-              Categorias{" "}
-              <svg
-                className={styles.seta}
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="black"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <polyline points="6 9 12 15 18 9" />
-              </svg>
+            <SearchBox
+              products={products}
+              onSearch={(term) =>
+                navigate(`/produtos?search=${encodeURIComponent(term)}`)
+              }
+              setMenuAberto={setMenuAberto}
+            />
+
+            <button
+              className={styles.button}
+              onClick={() => navigate("/produtos")}
+            >
+              Produtos
             </button>
             <button
               className={styles.button + " " + styles.orcamentoButton}
@@ -130,9 +145,21 @@ function Header() {
   return (
     <header className={styles.headerMobile}>
       <div className={styles.headerContent}>
-        <h1 className={styles.title} onClick={() => navigate("/marketplace")}>
-          Market3D
-        </h1>
+        <div className={styles.container}>
+          <h1 className={styles.title} onClick={() => navigate("/marketplace")}>
+            Market3D
+          </h1>
+          <div className={styles.locationContainer}>
+            {street && postalCode ? (
+              <div className={styles.location}>
+                <p className={styles.locationTitle}>Localização:</p>
+                <p className={styles.locationText}>
+                  Rua {street}, {postalCode}
+                </p>
+              </div>
+            ) : null}
+          </div>
+        </div>
 
         {/* Botão Hamburger */}
         <button
@@ -188,7 +215,10 @@ function Header() {
               Quero Vender
             </button>
             {!token && (
-              <button className={styles.loginButton} onClick={abrirLogin}>
+              <button
+                className={styles.loginButton}
+                onClick={() => (abrirLogin(), setMenuAberto(false))}
+              >
                 Login
               </button>
             )}
@@ -196,31 +226,25 @@ function Header() {
           </div>
         ) : (
           <div className={styles.buttonsMarketplace}>
-            <div className={styles.inputBusca}>
-              <input type="text" placeholder="Buscar na Market3D" />
-              <button className={styles.pesquisarButton}>
-                <img src={Busca} alt="Buscar" />
-              </button>
-            </div>
-            <button className={styles.button}>
-              Categorias{" "}
-              <svg
-                className={styles.seta}
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="black"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <polyline points="6 9 12 15 18 9" />
-              </svg>
+            <SearchBox
+              products={products}
+              onSearch={(term) =>
+                navigate(`/produtos?search=${encodeURIComponent(term)}`)
+              }
+              setMenuAberto={setMenuAberto}
+            />
+
+            <button
+              className={styles.button}
+              onClick={() => (navigate("/produtos"), setMenuAberto(false))}
+            >
+              Produtos
             </button>
             <button
               className={styles.button}
-              onClick={() => navigate("/solicitar-orcamento")}
+              onClick={() => (
+                navigate("/solicitar-orcamento"), setMenuAberto(false)
+              )}
             >
               Solicitar Orçamento
             </button>

@@ -270,7 +270,8 @@ export default function LoginModal({ isOpen, onRequestClose }) {
         endereco: montarEnderecoCompleto(
           prev.numero,
           prev.complemento,
-          endereco
+          endereco,
+          prev.cep
         ),
       }));
     } catch (error) {
@@ -284,7 +285,12 @@ export default function LoginModal({ isOpen, onRequestClose }) {
     setFormData((prev) => ({
       ...prev,
       numero,
-      endereco: montarEnderecoCompleto(numero, prev.complemento),
+      endereco: montarEnderecoCompleto(
+        numero,
+        prev.complemento,
+        null,
+        prev.cep
+      ),
     }));
   }
 
@@ -294,7 +300,12 @@ export default function LoginModal({ isOpen, onRequestClose }) {
     setFormData((prev) => ({
       ...prev,
       complemento: complementoUsuario,
-      endereco: montarEnderecoCompleto(prev.numero, complementoUsuario),
+      endereco: montarEnderecoCompleto(
+        prev.numero,
+        complementoUsuario,
+        null,
+        prev.cep
+      ),
     }));
   }
 
@@ -302,9 +313,9 @@ export default function LoginModal({ isOpen, onRequestClose }) {
   function montarEnderecoCompleto(
     numero,
     complementoUsuario,
-    enderecoViaCep = null
+    enderecoViaCep = null,
+    cep = ""
   ) {
-    // Se recebeu o objeto enderecoViaCep, usa ele; senão usa dadosEndereco
     const dados = enderecoViaCep || dadosEndereco;
 
     const comp =
@@ -314,7 +325,7 @@ export default function LoginModal({ isOpen, onRequestClose }) {
         ? ` - ${dados.complemento}`
         : "";
 
-    return `${dados.logradouro}, ${numero}${comp}, ${dados.bairro}, ${dados.localidade}, ${dados.uf}`;
+    return `${dados.logradouro}, ${numero}${comp}, ${dados.bairro}, ${dados.localidade}, ${dados.uf}, CEP: ${cep}`;
   }
 
   function handleCpfCnpjChange(e) {

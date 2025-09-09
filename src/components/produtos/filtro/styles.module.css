@@ -1,0 +1,204 @@
+.container {
+    background: #F9F9F9;
+    box-shadow: 0px 4px 4px rgba(71, 71, 71, 0.25);
+    padding: 1rem 2rem;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    width: 16vw;
+    height: 100%;
+
+    h3 {
+        font-weight: 500;
+        font-size: 24px;
+        color: #000;
+    }
+}
+
+.contentSection {
+    display: flex;
+    flex-direction: column;
+    gap: .5rem;
+
+    h4 {
+        font-weight: 500;
+        font-size: 18px;
+        color: #000;
+    }
+
+    .categoria,
+    .material {
+        display: flex;
+        gap: .5rem;
+        cursor: pointer;
+        padding-left: .5rem;
+    }
+
+    .priceRange {
+        display: flex;
+        justify-content: space-between;
+        gap: .5rem;
+    }
+
+    .rangeWrapper {
+        display: flex;
+        flex-direction: column;
+        gap: .5rem;
+    }
+
+    .rangeInput {
+        width: 100%;
+        appearance: none;
+        border-radius: 5px;
+        background: linear-gradient(to right, #6c00ff, #a44dff);
+        outline: none;
+    }
+
+    .rangeInput::-webkit-slider-thumb {
+        appearance: none;
+        width: 15px;
+        height: 15px;
+        border-radius: 50%;
+        background: white;
+        border: 2px solid #6c00ff;
+        cursor: pointer;
+    }
+
+    p {
+        font-weight: 400;
+        font-size: 16px;
+        color: #000;
+    }
+
+}
+
+.colors {
+    display: flex;
+    gap: 0.5rem;
+    padding: .5rem 0 .5rem .5rem;
+}
+
+.color {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    border: 2px solid transparent;
+    cursor: pointer;
+    transition: border 0.3s ease;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+}
+
+.color:hover {
+    opacity: 0.8;
+}
+
+.color.active {
+    outline: 3px solid #464646;
+    outline-offset: 3px;
+}
+
+@media screen and (max-width: 1919px) {
+    .container {
+        width: 20vw;
+        gap: .5rem;
+
+        h3{
+            font-size: 20px;
+        }
+    }
+
+    .contentSection {
+        h4{
+            font-size: 16px;
+        }
+
+        .categoria,
+        .material{
+            font-size: 14px;
+        }
+    }
+}
+
+/* Botão mobile */
+.mobileButton {
+  display: none;
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  background: #6c00ff;
+  color: white;
+  border: none;
+  padding: 0.8rem 1.2rem;
+  border-radius: 10px;
+  font-size: 16px;
+  cursor: pointer;
+  z-index: 1001;
+}
+
+.closeBtn{
+    display: none;
+}
+
+/* Overlay escuro atrás do drawer */
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .3s ease;
+  z-index: 1000;
+}
+
+.overlay.show {
+  opacity: 1;
+  pointer-events: all;
+}
+
+/* Drawer lateral */
+.container {
+  transition: transform 0.3s ease;
+}
+
+@media screen and (max-width: 1024px) {
+  .container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 80%;
+    max-width: 320px;
+    height: 100%;
+    background: #f9f9f9;
+    box-shadow: 2px 0 6px rgba(0,0,0,0.25);
+    transform: translateX(-100%);
+    z-index: 1002;
+    padding: 22% 5% 1% 5%;
+    overflow-y: auto;
+  }
+
+  .container.open {
+    transform: translateX(0);
+  }
+
+  .mobileButton {
+    display: block;
+  }
+
+  .closeBtn{
+    display: block;
+  }
+
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .closeBtn {
+    background: none;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+  }
+}

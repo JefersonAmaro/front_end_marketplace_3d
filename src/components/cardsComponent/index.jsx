@@ -3,7 +3,8 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 function CardsComponent(props) {
-  const { title, description, button, cards } = props;
+  const { title, description, button, onClickButton, cards } = props;
+
   const navigate = useNavigate();
 
   const [quantidades, setQuantidades] = useState({});
@@ -28,8 +29,6 @@ function CardsComponent(props) {
 
   const addToCart = (produto, quantidade) => {
     const cart = JSON.parse(localStorage.getItem("cart")) || [];
-
-    console.log(produto);
 
     const cor = produto.colors?.[0] || null;
     const acabamento = produto.finishing?.[0] || null;
@@ -67,7 +66,7 @@ function CardsComponent(props) {
           <p>{description}</p>
         </div>
         <div className={styles.contentButton}>
-          <button className={styles.contentButtonBtn}>{button}</button>
+          <button className={styles.contentButtonBtn} onClick={onClickButton}>{button}</button>
         </div>
       </div>
 
@@ -82,6 +81,7 @@ function CardsComponent(props) {
               onClick={() => navigate(`/marketplace/${card.id}`)}
             >
               <img src={card.img} alt={card.title} />
+              <p className={styles.distance}>{card.distance?.toFixed(1)} km de você</p>
               <div className={styles.contentCard}>
                 <div className={styles.contentTitleCard}>
                   <h4>{card.name}</h4>

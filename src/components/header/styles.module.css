@@ -13,10 +13,43 @@
   overflow: hidden;
 }
 
+.container {
+  width: 30%;
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+}
+
 .title {
   font-weight: 700;
   font-size: 36px;
   color: #4D00FF;
+  z-index: 2;
+}
+
+.locationContainer {
+  width: 58%;
+
+  .location {
+    font-weight: 400;
+    font-size: 14px;
+    color: #000;
+
+    .locationTitle {
+      font-weight: 600;
+      font-size: 16px;
+      color: #000;
+    }
+
+    .locationText {
+      white-space: nowrap;
+      /* não quebra linha */
+      overflow: hidden;
+      /* esconde o que passar */
+      text-overflow: ellipsis;
+      /* coloca os "..." */
+    }
+  }
 }
 
 .buttonsHome {
@@ -25,7 +58,7 @@
 }
 
 .button {
-  font-weight: 500;
+  font-weight: 400;
   font-size: 16px;
   color: #000;
   background: #F9F9F9;
@@ -56,11 +89,11 @@
 
 
 .buttonsMarketplace {
-  width: 80%;
+  width: 70%;
   display: flex;
   justify-content: end;
   gap: 2rem;
-  padding: 1rem 0; 
+  padding: 1rem 0;
 
   .button {
     margin: 0 1.5rem;
@@ -76,53 +109,6 @@
   }
 }
 
-.inputBusca {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 45%;
-  position: relative;
-
-  input {
-    padding: 0.5rem 6rem 0.5rem 0.5rem;
-    font-size: 16px;
-    border: 1px solid #0000002f;
-    border-radius: 5px;
-    width: 100%;
-    transition: border 0.3s ease;
-  }
-
-  input:focus-visible {
-    border: 1px solid #4D00FF;
-    outline: none;
-  }
-
-  .pesquisarButton {
-    height: 60%;
-    width: 12%;
-    background-color: #4D00FF;
-    position: absolute;
-    right: 0;
-    margin-right: 1%;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    transition: all 0.3s ease-in-out;
-
-    img {
-      width: 20px;
-      height: 20px;
-    }
-  }
-
-  .pesquisarButton:hover {
-    opacity: 0.8;
-  }
-}
-
 .orcamentoButton:hover {
   opacity: 0.8;
 }
@@ -132,31 +118,37 @@
     height: 9vh;
   }
 
+  .container {
+    width: 30%;
+    gap: 1rem;
+  }
+
   .title {
     font-size: 30px;
   }
 
+  .locationContainer {
+    .location {
+      font-size: 12px;
+
+      .locationTitle {
+        font-size: 14px;
+      }
+    }
+  }
+
   .button {
-    font-size: 16px;
+    font-size: 14px;
   }
 
   .buttonsMarketplace {
-    width: 85%;
+    width: 70%;
+    gap: 1rem;
   }
 
   .loginButton {
     font-size: 16px;
     padding: .5rem 3rem;
-  }
-
-  .inputBusca {
-    input {
-      font-size: 16px;
-    }
-
-    .pesquisarButton{
-      height: 75%;
-    }
   }
 
   .orcamentoButton {
@@ -188,6 +180,27 @@
 
     h1 {
       z-index: 1100;
+    }
+  }
+
+  .container {
+    gap: 1rem;
+    width: 100%;
+  }
+
+  .locationContainer {
+    width: 40%;
+    z-index: 1100;
+
+    .location {
+
+      .locationTitle {
+        font-size: 12px;
+      }
+
+      .locationText {
+        font-size: 10px;
+      }
     }
   }
 
@@ -282,16 +295,8 @@
     width: 100%;
   }
 
-  .inputBusca {
-    width: 100%;
-
-    input {
-      padding: 1rem 6rem 1rem 1rem;
-    }
-
-    .pesquisarButton {
-      margin-right: 3%;
-    }
+  .button {
+    font-size: 16px;
   }
 
   .orcamentoButton {
