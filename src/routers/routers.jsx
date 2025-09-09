@@ -8,46 +8,38 @@ import MarketplaceProducts from "../pages/marketplace/marketplaceProducts";
 import Perfil from "../pages/perfil";
 import Orcamento from "../pages/orcamento";
 import Produtos from "../pages/produtos";
+import FornecedorDashboard from "../pages/fornecedor/dashboard";
 
 export const router = createBrowserRouter([
   {
     path: "/",
     element: <App />,
     children: [
-      {
-        path: "/",
-        element: <Home />,
-      },
+      { path: "/", element: <Home /> },
       {
         path: "/marketplace",
         element: <Marketplace />,
         children: [
-          {
-            path: "",
-            element: <MarketplaceLandingPage />,
-          },
-          {
-            path: ":id",
-            element: <MarketplaceProducts />,
-          },
+          { path: "", element: <MarketplaceLandingPage /> },
+          { path: ":id", element: <MarketplaceProducts /> },
         ],
       },
+      { path: "/produtos", element: <Produtos /> },
+
+      // Rotas privadas CLIENTE
       {
-        path: "/produtos",
-        element: <Produtos />,
-      },
-      {
-        element: <PrivateRoute />, // wrapper que protege as rotas filhas
+        element: <PrivateRoute allowedRoles={["cliente"]} />,
         children: [
-          {
-            path: "perfil",
-            element: <Perfil />,
-          },
-          {
-            path: "solicitar-orcamento",
-            element: <Orcamento />,
-          },
+          { path: "perfil", element: <Perfil /> },
+          { path: "solicitar-orcamento", element: <Orcamento /> },
         ],
+      },
+
+      // Rota privada FORNECEDOR
+      {
+        path: "/fornecedor",
+        element: <PrivateRoute allowedRoles={["fornecedor"]} />,
+        children: [{ path: "", element: <FornecedorDashboard /> }],
       },
     ],
   },
