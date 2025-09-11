@@ -123,18 +123,29 @@
     justify-content: center;
     gap: 1rem;
     cursor: pointer;
-    background-color: #ffffff;
-    border: #0f1724 1px solid;
+    background-color: #0f1724;
+    border: #ffffff 1px solid;
     padding: 0.5rem;
     border-radius: 10px;
     transition: all 0.3s ease-in-out;
+    color: #ffffff;
+}
+
+.logoutBtn:hover {
+    background-color: #ffffff;
+    color: #0f1724;
 }
 
 .logoutBtn.collapsed {
     gap: 0;
     background: none;
     border: none;
-    color: #ffffff;
+}
+
+.logoutBtn.collapsed:hover {
+    background: #ffffff;
+    border: none;
+    color: #0f1724;
 }
 
 .sidebar.collapsed .logoutBtn span {

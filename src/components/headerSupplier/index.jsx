@@ -9,7 +9,11 @@ import {
 } from "react-icons/fa";
 import styles from "./styles.module.css";
 
+import { useContext } from "react";
+import { AuthContext } from "../../context/authContext";
+
 function HeaderSupplier({ collapsed, setCollapsed }) {
+  const { logout } = useContext(AuthContext);
 
   return (
     <aside className={`${styles.sidebar} ${collapsed ? styles.collapsed : ""}`}>
@@ -52,7 +56,7 @@ function HeaderSupplier({ collapsed, setCollapsed }) {
       </nav>
 
       <div className={styles.footer}>
-        <button className={`${styles.logoutBtn} ${collapsed ? styles.collapsed : ""}`}>
+        <button onClick={logout} className={`${styles.logoutBtn} ${collapsed ? styles.collapsed : ""}`}>
           <span className={styles.navText}>Sair</span>
           <FaSignOutAlt className={styles.navIcon} />
         </button>
