@@ -1,1 +1,10 @@
+/* Normal (sidebar aberta) */
+main {
+  margin-left: 15%;
+  transition: margin-left 0.3s ease;
+}
 
+/* Quando a sidebar está colapsada */
+main.sidebar-collapsed {
+  margin-left: 4vw; /* mesma largura da sidebar.collapsed */
+}
