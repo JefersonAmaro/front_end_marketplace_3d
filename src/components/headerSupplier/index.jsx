@@ -12,8 +12,12 @@ import styles from "./styles.module.css";
 import { useContext } from "react";
 import { AuthContext } from "../../context/authContext";
 
+import { useNavigate } from "react-router-dom";
+
 function HeaderSupplier({ collapsed, setCollapsed }) {
   const { logout } = useContext(AuthContext);
+
+  const navigate = useNavigate();
 
   return (
     <aside className={`${styles.sidebar} ${collapsed ? styles.collapsed : ""}`}>
@@ -41,7 +45,7 @@ function HeaderSupplier({ collapsed, setCollapsed }) {
           <FaHome className={styles.navIcon} />
           <span className={styles.navText}>Painel</span>
         </div>
-        <div className={styles.navItem}>
+        <div className={styles.navItem} onClick={() => navigate("/fornecedor/produtos")}>
           <FaBox className={styles.navIcon} />
           <span className={styles.navText}>Produtos</span>
         </div>

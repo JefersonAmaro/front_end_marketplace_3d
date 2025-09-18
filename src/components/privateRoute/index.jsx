@@ -1,10 +1,11 @@
 import { useContext, useEffect } from "react";
-import { Outlet, useNavigate } from "react-router-dom";
+import { Outlet, useNavigate, useLocation } from "react-router-dom";
 import { AuthContext } from "../../context/authContext";
 
 function PrivateRoute({ allowedRoles = [] }) {
   const { token, loading, user, openLoginModal } = useContext(AuthContext);
   const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
     if (!token && !loading) {
@@ -13,13 +14,14 @@ function PrivateRoute({ allowedRoles = [] }) {
     } else if (token && user) {
       // Se allowedRoles definido e a role do usuário não está incluída
       if (allowedRoles.length > 0 && !allowedRoles.includes(user.role)) {
-        navigate("/", { replace: true }); // ou página de acesso negado
-      } else if (user.role === "fornecedor") {
-        // Redireciona fornecedor logado diretamente para /fornecedor
+        navigate("/marketplace", { replace: true });
+      }
+      // Redireciona fornecedor logado apenas se ele estiver na raiz "/"
+      else if (user.role === "fornecedor" && location.pathname === "/") {
         navigate("/fornecedor", { replace: true });
       }
     }
-  }, [token, loading, user, allowedRoles, navigate, openLoginModal]);
+  }, [token, loading, user, allowedRoles, navigate, openLoginModal, location.pathname]);
 
   if (loading) return <div>Carregando...</div>;
   if (!token) return null;
