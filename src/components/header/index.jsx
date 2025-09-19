@@ -54,7 +54,7 @@ function Header() {
   const abrirLogin = () => setIsModalOpen(true);
   const fecharLogin = () => setIsModalOpen(false);
 
-  if (loading || !data) return <div>Carregando...</div>;
+  if (loading || !data) return null;
 
 const products = Object.values(data).flat();
 

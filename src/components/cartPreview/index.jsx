@@ -110,7 +110,7 @@ export function CartPreview() {
       minimumFractionDigits: 2,
     }).format(valor);
 
-  if (!data || loading) return <>Carregando</>;
+  if (!data || loading) return null;
 
   return (
     <>
