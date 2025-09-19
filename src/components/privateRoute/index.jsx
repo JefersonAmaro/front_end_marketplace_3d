@@ -2,6 +2,8 @@ import { useContext, useEffect } from "react";
 import { Outlet, useNavigate, useLocation } from "react-router-dom";
 import { AuthContext } from "../../context/authContext";
 
+import styles from "./styles.module.css";
+
 function PrivateRoute({ allowedRoles = [] }) {
   const { token, loading, user, openLoginModal } = useContext(AuthContext);
   const navigate = useNavigate();
@@ -21,9 +23,22 @@ function PrivateRoute({ allowedRoles = [] }) {
         navigate("/fornecedor", { replace: true });
       }
     }
-  }, [token, loading, user, allowedRoles, navigate, openLoginModal, location.pathname]);
+  }, [
+    token,
+    loading,
+    user,
+    allowedRoles,
+    navigate,
+    openLoginModal,
+    location.pathname,
+  ]);
 
-  if (loading) return <div>Carregando...</div>;
+  if (loading)
+    return (
+      <div className={styles.loading}>
+        <div className={styles.loader}></div>
+      </div>
+    );
   if (!token) return null;
 
   return <Outlet />;
