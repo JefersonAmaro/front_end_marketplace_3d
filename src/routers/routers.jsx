@@ -8,7 +8,9 @@ import MarketplaceProducts from "../pages/marketplace/marketplaceProducts";
 import Perfil from "../pages/perfil";
 import Orcamento from "../pages/orcamento";
 import Produtos from "../pages/produtos";
+
 import FornecedorDashboard from "../pages/fornecedor/dashboard";
+import ProdutosFornecedor from "../pages/fornecedor/produtos";
 
 export const router = createBrowserRouter([
   {
@@ -39,7 +41,10 @@ export const router = createBrowserRouter([
       {
         path: "/fornecedor",
         element: <PrivateRoute allowedRoles={["fornecedor"]} />,
-        children: [{ path: "", element: <FornecedorDashboard /> }],
+        children: [
+          { index: true, element: <FornecedorDashboard /> }, // /fornecedor
+          { path: "produtos", element: <ProdutosFornecedor /> }, // /fornecedor/produtos
+        ],
       },
     ],
   },
