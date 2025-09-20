@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
+import { useNavigate } from "react-router-dom";
 import ReactDOM from "react-dom";
 import styles from "./styles.module.css";
 import UserProfile from "../../assets/header/user-profile.svg";
@@ -11,6 +12,8 @@ function MenuPefil({ user, logout }) {
   const buttonRef = useRef(null);
   const menuRef = useRef(null);
   const [position, setPosition] = useState({ top: 0, left: 0 });
+
+  const navigate = useNavigate();
 
   // Menu de perfil
   useEffect(() => {
@@ -109,7 +112,12 @@ function MenuPefil({ user, logout }) {
               <button className={styles.btn}>Minha conta</button>
               <button className={styles.btn}>Meus Pedidos</button>
               <button className={styles.btn}>Meus Orçamentos</button>
-              <button onClick={logout} className={styles.logoutButton}>
+              <button
+                onClick={() => {
+                  logout(), navigate("/marketplace");
+                }}
+                className={styles.logoutButton}
+              >
                 Sair
                 <img src={Logout} alt="Logout" />
               </button>

@@ -8,6 +8,7 @@ import MarketplaceProducts from "../pages/marketplace/marketplaceProducts";
 import Perfil from "../pages/perfil";
 import Orcamento from "../pages/orcamento";
 import Produtos from "../pages/produtos";
+import FinalizarCadastro from "../pages/finalizarCadastro";
 
 import FornecedorDashboard from "../pages/fornecedor/dashboard";
 import ProdutosFornecedor from "../pages/fornecedor/produtos";
@@ -27,6 +28,7 @@ export const router = createBrowserRouter([
         ],
       },
       { path: "/produtos", element: <Produtos /> },
+      {path: "/finalizar-cadastro", element: <FinalizarCadastro />},
 
       // Rotas privadas CLIENTE
       {

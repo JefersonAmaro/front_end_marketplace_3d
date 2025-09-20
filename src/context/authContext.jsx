@@ -48,8 +48,11 @@ export const AuthContextProvider = ({ children }) => {
         const { name, email, role } = response.data.user;
         setUser({ name, email, role });
 
-        // Redireciona fornecedor automaticamente
-        if (role === "fornecedor" && window.location.pathname !== "/fornecedor") {
+        // Redireciona fornecedor automaticamente apenas se não estiver em nenhuma rota /fornecedor
+        if (
+          role === "fornecedor" &&
+          !window.location.pathname.startsWith("/fornecedor")
+        ) {
           window.location.href = "/fornecedor";
         }
 
@@ -102,8 +105,9 @@ export const AuthContextProvider = ({ children }) => {
     return () => clearInterval(intervalId);
   }, []);
 
-  function saveToken(newToken) {
+  function saveToken(newToken, needsAddress = false) {
     Cookies.set("token", newToken, { expires: 7 });
+    Cookies.set("needsAddress", needsAddress, { expires: 7 }); // salva o flag
     setToken(newToken);
   }
 
@@ -129,10 +133,16 @@ export const AuthContextProvider = ({ children }) => {
         password: loginData.senha,
       });
 
-      saveToken(response.data.token);
+      saveToken(response.data.token, response.data.needsAddress);
+
       await validateToken();
 
       setLoading(false);
+
+      if (response.data.needsAddress) {
+        window.location.href = "/finalizar-cadastro";
+      }
+
       return response.status;
     } catch (error) {
       setErrorMessage(error.response?.data.message);
@@ -148,10 +158,16 @@ export const AuthContextProvider = ({ children }) => {
         password: loginData.senha,
       });
 
-      saveToken(response.data.token);
+      saveToken(response.data.token, response.data.needsAddress);
+
       await validateToken();
 
       setLoading(false);
+
+      if (response.data.needsAddress) {
+        window.location.href = "/finalizar-cadastro";
+      }
+
       return response.status;
     } catch (error) {
       setErrorMessage(error.response?.data.message);
@@ -215,10 +231,16 @@ export const AuthContextProvider = ({ children }) => {
         }
       );
 
-      saveToken(response.data.token);
+      saveToken(response.data.token, response.data.needsAddress);
+
       await validateToken();
 
       setLoading(false);
+
+      if (response.data.needsAddress) {
+        window.location.href = "/finalizar-cadastro";
+      }
+
       return response.data;
     } catch (error) {
       setErrorMessage(error.response?.data?.message || error.message);

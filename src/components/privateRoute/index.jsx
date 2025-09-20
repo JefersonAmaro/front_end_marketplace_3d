@@ -2,6 +2,8 @@ import { useContext, useEffect } from "react";
 import { Outlet, useNavigate, useLocation } from "react-router-dom";
 import { AuthContext } from "../../context/authContext";
 
+import Cookies from "js-cookie";
+
 import styles from "./styles.module.css";
 
 function PrivateRoute({ allowedRoles = [] }) {
@@ -10,12 +12,18 @@ function PrivateRoute({ allowedRoles = [] }) {
   const location = useLocation();
 
   useEffect(() => {
+    const needsAddress = Cookies.get("needsAddress") === "true";
+
     if (!token && !loading) {
       navigate("/marketplace", { replace: true });
       openLoginModal();
     } else if (token && user) {
+      // Se precisa cadastrar endereço
+      if (needsAddress && location.pathname !== "/cadastrar-endereco") {
+        navigate("/finalizar-cadastro", { replace: true });
+      }
       // Se allowedRoles definido e a role do usuário não está incluída
-      if (allowedRoles.length > 0 && !allowedRoles.includes(user.role)) {
+      else if (allowedRoles.length > 0 && !allowedRoles.includes(user.role)) {
         navigate("/marketplace", { replace: true });
       }
       // Redireciona fornecedor logado apenas se ele estiver na raiz "/"

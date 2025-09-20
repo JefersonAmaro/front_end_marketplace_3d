@@ -12,7 +12,7 @@ import { CartPreview } from "./components/cartPreview";
 function App() {
   const { user } = useContext(AuthContext);
 
-  const isSupplier = user.role === "fornecedor";
+  const isSupplier = user?.role === "fornecedor";
   const [collapsed, setCollapsed] = useState(false);
 
   if (isSupplier) {

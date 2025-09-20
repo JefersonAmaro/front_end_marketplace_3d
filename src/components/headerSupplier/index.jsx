@@ -60,7 +60,7 @@ function HeaderSupplier({ collapsed, setCollapsed }) {
       </nav>
 
       <div className={styles.footer}>
-        <button onClick={logout} className={`${styles.logoutBtn} ${collapsed ? styles.collapsed : ""}`}>
+        <button onClick={() => {logout(), navigate("/marketplace")}} className={`${styles.logoutBtn} ${collapsed ? styles.collapsed : ""}`}>
           <span className={styles.navText}>Sair</span>
           <FaSignOutAlt className={styles.navIcon} />
         </button>
