@@ -22,7 +22,7 @@ function getDistance(lat1, lon1, lat2, lon2) {
 }
 
 function SectionTwo() {
-  const { data, loading, filters, setFilters } = useContext(DataContext);
+  const { data, loading, filters, setFilters, status } = useContext(DataContext);
   const userLocation = useGeolocation(); // { latitude, longitude, error }
 
   const navigate = useNavigate();
@@ -34,6 +34,7 @@ function SectionTwo() {
   // Unifica todos os produtos em um único array
   const allProducts = Object.values(data).flat();
 
+  // Adiciona a distância sem ordenar por ela
   const cardsWithDistance = allProducts.map((produto) => {
     const supplier = produto.supplier;
     const distance =
@@ -44,14 +45,13 @@ function SectionTwo() {
             supplier.latitude,
             supplier.longitude
           )
-        : Infinity;
-
+        : null; // ou Infinity, se quiser
     return { ...produto, distance };
   });
 
-  // Ordena do mais próximo ao mais distante e pega os 4 primeiros
+  // Ordena pelo campo de data de cadastro (assumindo que exista produto.createdAt)
   const sortedCards = cardsWithDistance
-    .sort((a, b) => a.distance - b.distance)
+    .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
     .slice(0, 4);
 
   return (
@@ -64,6 +64,7 @@ function SectionTwo() {
         navigate("/produtos");
       }}
       cards={sortedCards}
+      status={status}
     />
   );
 }

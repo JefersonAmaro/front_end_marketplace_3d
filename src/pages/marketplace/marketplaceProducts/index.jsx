@@ -7,6 +7,7 @@ import { DataContext } from "../../../context/dataContext";
 import Loading from "../../../components/loading";
 import ColorSelector from "../../../components/corSelector";
 import FinishingSelector from "../../../components/finishingSelector";
+import MaterialSelector from "../../../components/materialSelector";
 
 import CardsComponent from "../../../components/cardsComponent";
 import { useGeolocation } from "../../../hooks/useGeolocation";
@@ -14,6 +15,7 @@ import { useGeolocation } from "../../../hooks/useGeolocation";
 import LoadingCards from "../../../components/loadingCards";
 
 function MarketplaceProducts() {
+  const API_URL = import.meta.env.VITE_API_URL;
   const { id } = useParams();
   const { data, loading } = useContext(DataContext);
   const userLocation = useGeolocation(); // { latitude, longitude, error }
@@ -24,6 +26,7 @@ function MarketplaceProducts() {
   const [quantidade, setQuantidade] = useState(1);
   const [cor, setCor] = useState(null);
   const [acabamento, setAcabamento] = useState(null);
+  const [material, setMaterial] = useState(null); // igual a cor e acabamento
 
   // Função para calcular distância entre duas coordenadas (em km)
   function getDistance(lat1, lon1, lat2, lon2) {
@@ -120,11 +123,20 @@ function MarketplaceProducts() {
 
   const addToCart = () => {
     const cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+    // se o usuário ainda não selecionou, pega o primeiro disponível do produto
+    const selectedMaterial =
+      material ??
+      (Array.isArray(produto.material)
+        ? produto.material[0]
+        : produto.material?.split(",")[0]);
+
     const index = cart.findIndex(
       (item) =>
         item.produto.id === produto.id &&
         item.cor === cor &&
-        item.acabamento === acabamento
+        item.acabamento === acabamento &&
+        item.material === selectedMaterial
     );
 
     if (index >= 0) {
@@ -136,6 +148,7 @@ function MarketplaceProducts() {
         quantidade,
         cor,
         acabamento,
+        material: selectedMaterial,
       });
     }
 
@@ -151,16 +164,31 @@ function MarketplaceProducts() {
     <>
       <div className={styles.container}>
         <div className={styles.images}>
+          {/* Secundárias */}
           <div className={styles.imagesSection}>
-            <img src={produto.img} alt={produto.titulo} />
-            <img src={produto.img} alt={produto.titulo} />
-            <img src={produto.img} alt={produto.titulo} />
-            <img src={produto.img} alt={produto.titulo} />
+            {produto.file_paths
+              ?.split(",")
+              .slice(1) // pega a partir da segunda
+              .map((path, index) => (
+                <img
+                  key={index}
+                  src={`${API_URL}${path.replace(/\\/g, "/")}`}
+                  alt={`${produto.titulo} ${index + 2}`}
+                />
+              ))}
           </div>
+
+          {/* Principal */}
           <div className={styles.image}>
-            <img src={produto.img} alt={produto.titulo} />
+            <img
+              src={`${API_URL}${produto.file_paths
+                ?.split(",")[0]
+                ?.replace(/\\/g, "/")}`}
+              alt={produto.titulo}
+            />
           </div>
         </div>
+
         <div className={styles.info}>
           <div className={styles.text}>
             <div className={styles.title}>
@@ -168,9 +196,6 @@ function MarketplaceProducts() {
               <p className={styles.tag}>{produto.category}</p>
             </div>
             <p className={styles.description}>{produto.description}</p>
-            <p className={styles.material}>
-              Material: {produto.material?.join(", ")}
-            </p>
             <p className={styles.size}>
               Tamanho: {height.toFixed(1)} x {width.toFixed(1)} x{" "}
               {depth.toFixed(1)} cm
@@ -180,6 +205,10 @@ function MarketplaceProducts() {
             <FinishingSelector
               finishings={produto.finishing}
               setAcabamento={setAcabamento}
+            />
+            <MaterialSelector
+              materials={produto.material}
+              setMaterial={setMaterial}
             />
           </div>
           <div className={styles.buy}>

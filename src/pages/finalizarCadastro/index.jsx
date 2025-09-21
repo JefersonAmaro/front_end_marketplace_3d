@@ -257,8 +257,6 @@ function FinalizarCadastro() {
       };
       if (isFornecedor) payload.cpf_cnpj = formData.cpf_cnpj;
 
-      console.log(payload);
-
       await axios.post(
         `${API_URL}register/${
           isFornecedor ? "update-supplier" : "update-user"

@@ -3,7 +3,8 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 function CardsComponent(props) {
-  const { title, description, button, onClickButton, cards } = props;
+  const API_URL = import.meta.env.VITE_API_URL;
+  const { title, description, button, onClickButton, cards, status } = props;
 
   const navigate = useNavigate();
 
@@ -27,36 +28,55 @@ function CardsComponent(props) {
     return Date.now().toString(36) + Math.random().toString(36).substring(2);
   }
 
-  const addToCart = (produto, quantidade) => {
-    const cart = JSON.parse(localStorage.getItem("cart")) || [];
+const addToCart = (produto, quantidade) => {
+  const cart = JSON.parse(localStorage.getItem("cart")) || [];
 
-    const cor = produto.colors?.[0] || null;
-    const acabamento = produto.finishing?.[0] || null;
+  const cor = Array.isArray(produto.colors)
+    ? produto.colors[0]
+    : produto.colors
+    ? produto.colors.split(",")[0].trim()
+    : null;
 
-    const index = cart.findIndex(
-      (item) =>
-        item.produto.id === produto.id &&
-        item.cor === cor &&
-        item.acabamento === acabamento
-    );
+  const acabamento = Array.isArray(produto.finishing)
+    ? produto.finishing[0]
+    : produto.finishing
+    ? produto.finishing.split(",")[0].trim()
+    : null;
 
-    if (index >= 0) {
-      cart[index].quantidade += quantidade;
-    } else {
-      cart.push({
-        id: generateUUID(),
-        produto,
-        quantidade,
-        cor,
-        acabamento,
-      });
-    }
+  
+  const material = Array.isArray(produto.material)
+    ? produto.material[0]
+    : produto.material
+    ? produto.material.split(",")[0].trim()
+    : null;
 
-    localStorage.setItem("cart", JSON.stringify(cart));
-    window.dispatchEvent(
-      new CustomEvent("cartUpdated", { detail: { open: true } })
-    );
-  };
+  const index = cart.findIndex(
+    (item) =>
+      item.produto.id === produto.id &&
+      item.cor === cor &&
+      item.acabamento === acabamento &&
+      item.material === material 
+  );
+
+  if (index >= 0) {
+    cart[index].quantidade += quantidade;
+  } else {
+    cart.push({
+      id: generateUUID(),
+      produto,
+      quantidade,
+      cor,
+      acabamento,
+      material, 
+    });
+  }
+
+  localStorage.setItem("cart", JSON.stringify(cart));
+  window.dispatchEvent(
+    new CustomEvent("cartUpdated", { detail: { open: true } })
+  );
+};
+
 
   return (
     <div className={styles.container}>
@@ -66,11 +86,21 @@ function CardsComponent(props) {
           <p>{description}</p>
         </div>
         <div className={styles.contentButton}>
-          <button className={styles.contentButtonBtn} onClick={onClickButton}>{button}</button>
+          <button className={styles.contentButtonBtn} onClick={onClickButton}>
+            {button}
+          </button>
         </div>
       </div>
 
-      <div className={styles.containerCards}>
+      <div
+        className={styles.containerCards}
+        style={cards.length > 3 ? { justifyContent: "space-between" } : { justifyContent: "start" }}
+      >
+        {status === 404 && (
+          <p className={styles.notFound}>
+            Nenhum produto encontrado, tente novamente mais tarde.
+          </p>
+        )}
         {cards.map((card, index) => {
           const quantidadeAtual = quantidades[card.id] || 1;
 
@@ -80,8 +110,13 @@ function CardsComponent(props) {
               key={index}
               onClick={() => navigate(`/marketplace/${card.id}`)}
             >
-              <img src={card.img} alt={card.title} />
-              <p className={styles.distance}>{card.distance?.toFixed(1)} km de você</p>
+              <img
+                src={`${API_URL}${card.file_paths.split(",")[0]}`}
+                alt={card.name}
+              />
+              <p className={styles.distance}>
+                {card.distance?.toFixed(1)} km de você
+              </p>
               <div className={styles.contentCard}>
                 <div className={styles.contentTitleCard}>
                   <h4>{card.name}</h4>

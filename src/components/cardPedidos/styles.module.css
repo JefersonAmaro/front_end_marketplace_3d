@@ -1,0 +1,160 @@
+.container {
+    width: 100%;
+    padding: 1rem;
+    border-radius: 10px;
+    border: .2px solid #e6e6e6;
+    background-color: #fff;
+    box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.25);
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    transition: all 0.3s ease-in-out;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #e6e6e6;
+    padding-bottom: 1rem;
+}
+
+.content {
+    display: flex;
+    gap: 1rem;
+
+    img {
+        width: 150px;
+        aspect-ratio: 1/1;
+        object-fit: cover;
+        border-radius: 10px;
+    }
+}
+
+.info {
+    display: flex;
+    gap: .5rem;
+    justify-content: space-between;
+    width: 100%;
+
+    .text {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        width: 40%;
+        gap: .5rem;
+        color: #353535;
+    }
+
+    .titleDescription {
+        display: flex;
+        flex-direction: column;
+        gap: .5rem;
+    }
+
+    .title {
+        font-weight: 500;
+        font-size: 18px;
+        white-space: nowrap;
+        /* Mantém tudo em uma linha */
+        overflow: hidden;
+        /* Esconde o excesso */
+        text-overflow: ellipsis;
+        /* Mostra "..." no final */
+    }
+
+
+    .description {
+        font-weight: 300;
+        font-size: 14px;
+        display: -webkit-box;
+        /* necessário para line-clamp */
+        -webkit-line-clamp: 5;
+        /* número de linhas */
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+
+    .details {
+        display: flex;
+        gap: .5rem;
+
+        color: #4d4d4d;
+        font-weight: 400;
+        font-size: 14px;
+
+        .separator {
+            width: 1px;
+            height: 100%;
+            background-color: #e6e6e6;
+        }
+    }
+
+    .supplier {
+        /* background-color: azure; */
+        width: 30%;
+        color: #353535;
+        display: flex;
+        flex-direction: column;
+        gap: .5rem;
+
+        .supplierName {
+            font-weight: 400;
+            font-size: 16px;
+            white-space: nowrap;
+            /* Mantém tudo em uma linha */
+            overflow: hidden;
+            /* Esconde o excesso */
+            text-overflow: ellipsis;
+            /* Mostra "..." no final */
+        }
+
+        a {
+            color: #4D00FF;
+            font-weight: 500;
+            text-decoration: none;
+        }
+    }
+
+    .buttons {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: end;
+
+        .price {
+            font-size: 20px;
+            font-weight: 500;
+            color: #4D00FF;
+        }
+    }
+
+    .button {
+        display: flex;
+        flex-direction: column;
+        justify-content: end;
+        align-items: end;
+        gap: .5rem;
+
+        button {
+            width: 100%;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            border: none;
+            background-color: #4D00FF;
+            color: #fff;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 400;
+            transition: all 0.3s ease-in-out;
+        }
+
+        .buttonComprarNovamente {
+            background-color: #F5F5F5;
+            color: #4D00FF;
+            border: 1px solid #4D00FF;
+        }
+    }
+}

@@ -195,7 +195,7 @@ function Produtos() {
             <div className={styles.card} key={model.id}>
               <div className={styles.imageContainer}>
                 <img
-                  src={`${API_URL}${model.file_paths.replace("\\", "/")}`}
+                  src={`${API_URL}${model.file_paths.split(",")[0]?.replace(/\\/g, "/") || ""}`}
                   alt={model.name}
                   className={styles.cardImage}
                 />

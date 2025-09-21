@@ -22,7 +22,7 @@ function getDistance(lat1, lon1, lat2, lon2) {
 }
 
 function SectionFive() {
-  const { data, loading, setFilters } = useContext(DataContext);
+  const { data, loading, setFilters, status } = useContext(DataContext);
   const userLocation = useGeolocation(); // { latitude, longitude, error }
   const navigate = useNavigate();
 
@@ -70,6 +70,7 @@ function SectionFive() {
         navigate("/produtos");
       }}
       cards={sortedCards}
+      status={status}
     />
   );
 }

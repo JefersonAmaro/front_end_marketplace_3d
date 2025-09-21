@@ -22,7 +22,7 @@ function getDistance(lat1, lon1, lat2, lon2) {
 }
 
 function SectionThree() {
-  const { data, loading, setFilters } = useContext(DataContext);
+  const { data, loading, setFilters, status } = useContext(DataContext);
   const userLocation = useGeolocation(); // { latitude, longitude, error }
   const navigate = useNavigate();
 
@@ -35,6 +35,7 @@ function SectionThree() {
     .flat()
     .filter((produto) => produto.category === "Brinquedos");
 
+  // Adiciona a distância
   const cardsWithDistance = brinquedos.map((produto) => {
     const supplier = produto.supplier;
     const distance =
@@ -50,8 +51,10 @@ function SectionThree() {
     return { ...produto, distance };
   });
 
-  // Ordena do mais próximo ao mais distante
-  const sortedCards = cardsWithDistance.sort((a, b) => a.distance - b.distance);
+  // Ordena pelo mais próximo e limita a 4 cards
+  const sortedCards = cardsWithDistance
+    .sort((a, b) => a.distance - b.distance)
+    .slice(0, 4);
 
   return (
     <CardsComponent
@@ -68,6 +71,7 @@ function SectionThree() {
         navigate("/produtos");
       }}
       cards={sortedCards}
+      status={status}
     />
   );
 }
