@@ -407,7 +407,13 @@ function Products({ filters, onRemoveFilter, products, status }) {
                     <h4>{product.name}</h4>
                     <p>{toArray(product.category).join(", ")}</p>
                   </div>
-                  <h4>R$ {Number(product.price).toFixed(2)}</h4>
+                  <h4>
+                    R${" "}
+                    {Number(product.price).toLocaleString("pt-BR", {
+                      minimumFractionDigits: 2,
+                    })}
+                  </h4>
+
                   <div className={styles.contentBuy}>
                     <div className={styles.buy}>
                       <div className={styles.quantidadeWrapper}>

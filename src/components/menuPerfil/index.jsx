@@ -76,6 +76,12 @@ function MenuPefil({ user, logout }) {
     }
   }, [isProfileMenuOpen]);
 
+  // Função para navegar + fechar menu
+  const handleNavigate = (path) => {
+    navigate(path);
+    setIsProfileMenuOpen(false);
+  };
+
   return (
     <>
       <div
@@ -110,7 +116,12 @@ function MenuPefil({ user, logout }) {
             </div>
             <div className={styles.profileOptions}>
               <button className={styles.btn}>Minha conta</button>
-              <button className={styles.btn} onClick={() => navigate("/pedidos")}>Meus Pedidos</button>
+              <button
+                className={styles.btn}
+                onClick={() => handleNavigate("/pedidos")}
+              >
+                Meus Pedidos
+              </button>
               <button className={styles.btn}>Meus Orçamentos</button>
               <button
                 onClick={() => {

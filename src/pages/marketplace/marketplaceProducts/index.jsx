@@ -158,7 +158,10 @@ function MarketplaceProducts() {
     );
   };
 
-  const { width = 0, height = 0, depth = 0 } = produto.size || {};
+  const size = produto.size
+    ? JSON.parse(produto.size)
+    : { width: 0, height: 0, depth: 0 };
+  const { width, height, depth } = size;
 
   return (
     <>
@@ -200,7 +203,14 @@ function MarketplaceProducts() {
               Tamanho: {height.toFixed(1)} x {width.toFixed(1)} x{" "}
               {depth.toFixed(1)} cm
             </p>
-            <p className={styles.price}>R$ {produto.price}</p>
+
+            <p className={styles.price}>
+              R${" "}
+              {produto.price.toLocaleString("pt-BR", {
+                minimumFractionDigits: 2,
+              })}
+            </p>
+
             <ColorSelector colors={produto.colors} setCor={setCor} />
             <FinishingSelector
               finishings={produto.finishing}

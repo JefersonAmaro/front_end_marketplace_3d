@@ -49,7 +49,7 @@ function HeaderSupplier({ collapsed, setCollapsed }) {
           <FaBox className={styles.navIcon} />
           <span className={styles.navText}>Produtos</span>
         </div>
-        <div className={styles.navItem}>
+        <div className={styles.navItem} onClick={() => navigate("/fornecedor/pedidos")}>
           <FaShoppingCart className={styles.navIcon} />
           <span className={styles.navText}>Pedidos</span>
         </div>

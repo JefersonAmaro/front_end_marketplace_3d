@@ -1,12 +1,17 @@
 import styles from "./styles.module.css";
 
+import StatusTag from "../statusTag";
+
 function CardPedidos(props) {
   const API_URL = import.meta.env.VITE_API_URL;
+
   return (
     <div className={styles.container}>
       <div className={styles.header}>
         <p className={styles.date}>{props.date}</p>
-        <p className={styles.status}>{props.status}</p>
+        <div className={styles.statusTag}>
+          <StatusTag status={props.status} />
+        </div>
       </div>
       <div className={styles.content}>
         <img src={`${API_URL}${props.file_paths}`} alt={props.title} />
@@ -34,12 +39,18 @@ function CardPedidos(props) {
             <a href="">Ver mais</a>
           </div>
           <div className={styles.buttons}>
-            <p className={styles.price}>R$ {props.price}</p>
+            <p className={styles.price}>
+              R${" "}
+              {Number(props.price).toLocaleString("pt-BR", {
+                minimumFractionDigits: 2,
+              })}
+            </p>
+
             <div className={styles.button}>
+              <button>Ver Compra</button>
               <button className={styles.buttonComprarNovamente}>
                 Comprar Novamente
               </button>
-              <button>Ver Compra</button>
             </div>
           </div>
         </div>

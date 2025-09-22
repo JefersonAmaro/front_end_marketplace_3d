@@ -227,7 +227,10 @@ export function CartPreview() {
                       </div>
                       <div className={styles.cartItemDetails}>
                         <p className={styles.cartItemPrice}>
-                          R$ {item.produto?.price}
+                          R${" "}
+                          {Number(item.produto?.price).toLocaleString("pt-BR", {
+                            minimumFractionDigits: 2,
+                          })}
                         </p>
 
                         <div className={styles.quantidadeWrapper}>

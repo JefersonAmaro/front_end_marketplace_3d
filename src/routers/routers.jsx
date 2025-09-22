@@ -13,6 +13,7 @@ import Pedidos from "../pages/pedidos";
 
 import FornecedorDashboard from "../pages/fornecedor/dashboard";
 import ProdutosFornecedor from "../pages/fornecedor/produtos";
+import PedidosFornecedor from "../pages/fornecedor/pedidos";
 
 export const router = createBrowserRouter([
   {
@@ -48,6 +49,7 @@ export const router = createBrowserRouter([
         children: [
           { index: true, element: <FornecedorDashboard /> }, // /fornecedor
           { path: "produtos", element: <ProdutosFornecedor /> }, // /fornecedor/produtos
+          { path: "pedidos", element: <PedidosFornecedor /> }, // /fornecedor/pedidos
         ],
       },
     ],

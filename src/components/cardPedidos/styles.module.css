@@ -143,8 +143,9 @@
             padding: 0.5rem 1rem;
             border-radius: 5px;
             border: none;
-            background-color: #4D00FF;
-            color: #fff;
+            background-color: #F5F5F5;
+            color: #4D00FF;
+            border: 1px solid #4D00FF;
             cursor: pointer;
             font-size: 16px;
             font-weight: 400;
@@ -152,9 +153,9 @@
         }
 
         .buttonComprarNovamente {
-            background-color: #F5F5F5;
-            color: #4D00FF;
-            border: 1px solid #4D00FF;
+            background-color: #4D00FF;
+            color: #fff;
         }
     }
 }
+

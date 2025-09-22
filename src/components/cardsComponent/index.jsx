@@ -28,55 +28,53 @@ function CardsComponent(props) {
     return Date.now().toString(36) + Math.random().toString(36).substring(2);
   }
 
-const addToCart = (produto, quantidade) => {
-  const cart = JSON.parse(localStorage.getItem("cart")) || [];
+  const addToCart = (produto, quantidade) => {
+    const cart = JSON.parse(localStorage.getItem("cart")) || [];
 
-  const cor = Array.isArray(produto.colors)
-    ? produto.colors[0]
-    : produto.colors
-    ? produto.colors.split(",")[0].trim()
-    : null;
+    const cor = Array.isArray(produto.colors)
+      ? produto.colors[0]
+      : produto.colors
+      ? produto.colors.split(",")[0].trim()
+      : null;
 
-  const acabamento = Array.isArray(produto.finishing)
-    ? produto.finishing[0]
-    : produto.finishing
-    ? produto.finishing.split(",")[0].trim()
-    : null;
+    const acabamento = Array.isArray(produto.finishing)
+      ? produto.finishing[0]
+      : produto.finishing
+      ? produto.finishing.split(",")[0].trim()
+      : null;
 
-  
-  const material = Array.isArray(produto.material)
-    ? produto.material[0]
-    : produto.material
-    ? produto.material.split(",")[0].trim()
-    : null;
+    const material = Array.isArray(produto.material)
+      ? produto.material[0]
+      : produto.material
+      ? produto.material.split(",")[0].trim()
+      : null;
 
-  const index = cart.findIndex(
-    (item) =>
-      item.produto.id === produto.id &&
-      item.cor === cor &&
-      item.acabamento === acabamento &&
-      item.material === material 
-  );
+    const index = cart.findIndex(
+      (item) =>
+        item.produto.id === produto.id &&
+        item.cor === cor &&
+        item.acabamento === acabamento &&
+        item.material === material
+    );
 
-  if (index >= 0) {
-    cart[index].quantidade += quantidade;
-  } else {
-    cart.push({
-      id: generateUUID(),
-      produto,
-      quantidade,
-      cor,
-      acabamento,
-      material, 
-    });
-  }
+    if (index >= 0) {
+      cart[index].quantidade += quantidade;
+    } else {
+      cart.push({
+        id: generateUUID(),
+        produto,
+        quantidade,
+        cor,
+        acabamento,
+        material,
+      });
+    }
 
-  localStorage.setItem("cart", JSON.stringify(cart));
-  window.dispatchEvent(
-    new CustomEvent("cartUpdated", { detail: { open: true } })
-  );
-};
-
+    localStorage.setItem("cart", JSON.stringify(cart));
+    window.dispatchEvent(
+      new CustomEvent("cartUpdated", { detail: { open: true } })
+    );
+  };
 
   return (
     <div className={styles.container}>
@@ -94,7 +92,11 @@ const addToCart = (produto, quantidade) => {
 
       <div
         className={styles.containerCards}
-        style={cards.length > 3 ? { justifyContent: "space-between" } : { justifyContent: "start" }}
+        style={
+          cards.length > 3
+            ? { justifyContent: "space-between" }
+            : { justifyContent: "start" }
+        }
       >
         {status === 404 && (
           <p className={styles.notFound}>
@@ -122,7 +124,12 @@ const addToCart = (produto, quantidade) => {
                   <h4>{card.name}</h4>
                   <p>{card.category}</p>
                 </div>
-                <h4>R$ {card.price}</h4>
+                <h4 className={styles.price}>
+                  R${" "}
+                  {card.price.toLocaleString("pt-BR", {
+                    minimumFractionDigits: 2,
+                  })}
+                </h4>
 
                 <div className={styles.contentBuy}>
                   <div className={styles.buy}>

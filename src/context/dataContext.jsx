@@ -40,7 +40,6 @@ export const DataContextProvider = ({ children }) => {
           setStatus(response.status);
         } catch (err) {
           if (err.response?.status === 404) {
-            console.log("Nenhum dado encontrado no backend.");
             setStatus(404);
           } else {
             console.error("Erro ao buscar os dados do backend:", err);
@@ -53,6 +52,7 @@ export const DataContextProvider = ({ children }) => {
         setData(combinedData);
       } finally {
         setLoading(false);
+        setStatus(null);
       }
     };
 
