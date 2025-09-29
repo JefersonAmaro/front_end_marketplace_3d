@@ -1,14 +1,17 @@
 import { useEffect, useState, useContext } from "react";
-import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { AuthContext } from "../../context/authContext";
-import CardPedidos from "../../components/cardPedidos";
 import styles from "./styles.module.css";
+
+import HeaderPedidos from "../../components/headerPedidos";
+import MeusPedidos from "../../components/meusPedidos";
 
 function Pedidos() {
   const [cards, setCards] = useState([]);
   const { token } = useContext(AuthContext);
-  const navigate = useNavigate();
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 5;
 
   useEffect(() => {
     async function fetchBudgets() {
@@ -27,52 +30,41 @@ function Pedidos() {
     }
   }, [token]);
 
+  // ordenar do mais novo pro mais velho
+  const sortedCards = cards
+    .slice()
+    .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+
+  // paginação
+  const lastItemIndex = currentPage * itemsPerPage;
+  const firstItemIndex = lastItemIndex - itemsPerPage;
+  const currentItems = sortedCards.slice(firstItemIndex, lastItemIndex);
+  const totalPages = Math.ceil(sortedCards.length / itemsPerPage);
+
+  const maxButtons = 7;
+  let startPage = Math.max(1, currentPage - Math.floor(maxButtons / 2));
+  let endPage = Math.min(totalPages, startPage + maxButtons - 1);
+
+  if (endPage - startPage + 1 < maxButtons) {
+    startPage = Math.max(1, endPage - maxButtons + 1);
+  }
+
+  const pageNumbers = [];
+  for (let i = startPage; i <= endPage; i++) {
+    pageNumbers.push(i);
+  }
+
   return (
     <div className={styles.container}>
-      <h4>Meus Pedidos</h4>
+      <HeaderPedidos
+        currentPage={currentPage}
+        totalPages={totalPages}
+        pageNumbers={pageNumbers}
+        onPageChange={setCurrentPage}
+      />
+
       <div className={styles.content}>
-        {cards.length > 0 ? (
-          cards
-            .slice()
-            .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)) // mais novo primeiro
-            .map((card) => (
-              <CardPedidos
-                key={card.id}
-                status={card.status}
-                date={new Date(card.createdAt).toLocaleString("pt-BR", {
-                  day: "numeric",
-                  month: "long",
-                  year: "numeric",
-                  hour: "2-digit",
-                  minute: "2-digit",
-                })}
-                file_paths={
-                  card.model?.file_paths?.split(",")[0]?.replace(/\\/g, "/") ||
-                  ""
-                }
-                title={card.model?.name}
-                description={card.model?.description}
-                color={card.color}
-                material={card.material}
-                finishing={card.finishing}
-                quantity={card.quantity}
-                supplier={card.supplier}
-                price={card.price}
-              />
-            ))
-        ) : (
-          <div className={styles.emptyBox}>
-            <p className={styles.emptyMessage}>
-              Você ainda não possui pedidos feitos.
-            </p>
-            <button
-              className={styles.emptyButton}
-              onClick={() => navigate("/produtos")}
-            >
-              Veja os modelos agora
-            </button>
-          </div>
-        )}
+        <MeusPedidos cards={currentItems} />
       </div>
     </div>
   );

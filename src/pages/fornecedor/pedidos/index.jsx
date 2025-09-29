@@ -1,13 +1,13 @@
-import styles from './styles.module.css';
-import HeaderPedidos from '../../../components/headerPedidosSupllier';
-import BarraFiltros from '../../../components/barraFiltrosSupplier';
-import TabelaPedidos from '../../../components/tabelaPedidosSupplier';
+import styles from "./styles.module.css";
+import HeaderChildren from "../../../components/headerChildrenSupllier";
+import BarraFiltros from "../../../components/barraFiltrosPedidosSupplier";
+import TabelaPedidos from "../../../components/tabelaPedidosSupplier";
 
 function PedidosFornecedor() {
   return (
     <div className={styles.container}>
       <div className={styles.conteudoPrincipal}>
-        <HeaderPedidos />
+        <HeaderChildren titulo="Pedidos" />
         <BarraFiltros />
         <TabelaPedidos />
       </div>

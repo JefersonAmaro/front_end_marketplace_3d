@@ -74,7 +74,7 @@
     cursor: pointer;
     transition: all 0.3s ease-in-out;
     padding: 0.5rem;
-    border-radius: 10px;
+    border-radius: 5px;
     transition: all 0.3s ease-in-out;
 }
 
@@ -88,7 +88,7 @@
 
 .navItem:hover {
     background-color: #ffffff;
-    border-radius: 10px;
+    border-radius: 5px;
     color: #0f1724;
 }
 
@@ -126,7 +126,7 @@
     background-color: #0f1724;
     border: #ffffff 1px solid;
     padding: 0.5rem;
-    border-radius: 10px;
+    border-radius: 5px;
     transition: all 0.3s ease-in-out;
     color: #ffffff;
 }

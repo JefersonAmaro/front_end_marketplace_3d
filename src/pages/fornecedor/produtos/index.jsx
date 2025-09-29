@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
 import styles from "./styles.module.css";
 import axios from "axios";
-import { s } from "framer-motion/client";
+import HeaderChildren from "../../../components/headerChildrenSupllier";
+import BarraFiltros from "../../../components/barraFIltrosProdutosSupplier";
 
 function Produtos() {
   const API_URL = import.meta.env.VITE_API_URL;
@@ -174,16 +175,8 @@ function Produtos() {
 
   return (
     <div className={styles.container}>
-      <div className={styles.header}>
-        <div className={styles.inputContainer}>
-          <input type="text" placeholder="Pesquisar" />
-        </div>
-        <div className={styles.buttonContainer}>
-          <button className={styles.button} onClick={toggleModal}>
-            Adicionar Produto
-          </button>
-        </div>
-      </div>
+      <HeaderChildren titulo="Produtos" />
+      <BarraFiltros onAddProductClick={toggleModal} />
 
       <div className={styles.cardContainer}>
         {loading ? (
@@ -195,7 +188,9 @@ function Produtos() {
             <div className={styles.card} key={model.id}>
               <div className={styles.imageContainer}>
                 <img
-                  src={`${API_URL}${model.file_paths.split(",")[0]?.replace(/\\/g, "/") || ""}`}
+                  src={`${API_URL}${
+                    model.file_paths.split(",")[0]?.replace(/\\/g, "/") || ""
+                  }`}
                   alt={model.name}
                   className={styles.cardImage}
                 />
