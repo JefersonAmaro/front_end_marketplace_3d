@@ -47,3 +47,15 @@
     align-items: center;
     gap: 5px;
 }
+
+.btnLimpar{
+    background-color: #007bff;
+    color: #fff;
+    border: 1px solid #ddd;
+    padding: 8px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}

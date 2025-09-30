@@ -23,15 +23,6 @@
     width: 100%;
 }
 
-.btnPesquisa {
-    background-color: #007bff;
-    color: #fff;
-    border: none;
-    padding: 8px 12px;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
 .secaoBotoes {
     display: flex;
     align-items: center;

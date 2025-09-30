@@ -9,6 +9,7 @@ function Produtos() {
   const [isOpen, setIsOpen] = useState(false);
   const [models, setModels] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [searchTerm, setSearchTerm] = useState("");
 
   // Dados do produto
   const [name, setName] = useState("");
@@ -45,13 +46,12 @@ function Produtos() {
       const response = await axios.get(`${API_URL}model-supplier/list-all`);
       const data = response.data.map((model) => ({
         ...model,
-        size:
-          typeof model.size === "string" ? JSON.parse(model.size) : model.size,
+        size: typeof model.size === "string" ? JSON.parse(model.size) : model.size,
       }));
       setModels(data);
-      setLoading(false);
     } catch (error) {
       console.error("Erro ao buscar modelos:", error);
+    } finally {
       setLoading(false);
     }
   };
@@ -66,9 +66,9 @@ function Produtos() {
       setMaterialsArray(data.material || []);
       setFinishingsArray(data.finishing || []);
       setCategoriesArray(data.category || []);
-      setLoading(false);
     } catch (error) {
       console.error("Erro ao buscar infos:", error);
+    } finally {
       setLoading(false);
     }
   };
@@ -81,29 +81,20 @@ function Produtos() {
   useEffect(() => {
     const newPreviews = files.map((file) => URL.createObjectURL(file));
     setPreviews(newPreviews);
-    return () => {
-      newPreviews.forEach(URL.revokeObjectURL);
-    };
+    return () => newPreviews.forEach(URL.revokeObjectURL);
   }, [files]);
 
   const handleCheckboxChange = (value, state, setState) => {
-    if (state.includes(value)) {
-      setState(state.filter((item) => item !== value));
-    } else {
-      setState([...state, value]);
-    }
+    setState(state.includes(value) ? state.filter((item) => item !== value) : [...state, value]);
   };
 
   const handleFileChange = (e) => {
     const selectedFiles = Array.from(e.target.files);
     if (files.length + selectedFiles.length > 6) {
-      setErrors((prev) => ({
-        ...prev,
-        files: "Você só pode enviar até 6 imagens",
-      }));
+      setErrors((prev) => ({ ...prev, files: "Você só pode enviar até 6 imagens" }));
       return;
     }
-    setFiles((prevFiles) => [...prevFiles, ...selectedFiles]);
+    setFiles((prev) => [...prev, ...selectedFiles]);
     setErrors((prev) => ({ ...prev, files: null }));
   };
 
@@ -119,23 +110,16 @@ function Produtos() {
     if (!height) newErrors.height = "Campo obrigatório";
     if (!depth) newErrors.depth = "Campo obrigatório";
     if (colors.length === 0) newErrors.colors = "Selecione pelo menos uma cor";
-    if (materials.length === 0)
-      newErrors.materials = "Selecione pelo menos um material";
-    if (finishings.length === 0)
-      newErrors.finishings = "Selecione pelo menos um acabamento";
-    if (categories.length === 0)
-      newErrors.categories = "Selecione uma categoria";
+    if (materials.length === 0) newErrors.materials = "Selecione pelo menos um material";
+    if (finishings.length === 0) newErrors.finishings = "Selecione pelo menos um acabamento";
+    if (categories.length === 0) newErrors.categories = "Selecione uma categoria";
     if (files.length === 0) newErrors.files = "Selecione pelo menos um arquivo";
 
     setErrors(newErrors);
     if (Object.keys(newErrors).length > 0) return;
 
     try {
-      const size = {
-        width: Number(width),
-        height: Number(height),
-        depth: Number(depth),
-      };
+      const size = { width: Number(width), height: Number(height), depth: Number(depth) };
       const formData = new FormData();
       formData.append("name", name);
       formData.append("description", description);
@@ -151,9 +135,7 @@ function Produtos() {
         headers: { "Content-Type": "multipart/form-data" },
       });
 
-      // 🔥 Atualiza lista de produtos após cadastrar
       await fetchModels();
-
       toggleModal();
     } catch (error) {
       console.error("Erro ao enviar produto:", error);
@@ -173,24 +155,30 @@ function Produtos() {
     Purple: "Roxo",
   };
 
+  const filteredModels = models.filter((model) =>
+    model.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   return (
     <div className={styles.container}>
       <HeaderChildren titulo="Produtos" />
-      <BarraFiltros onAddProductClick={toggleModal} />
+      <BarraFiltros
+        onAddProductClick={toggleModal}
+        searchTerm={searchTerm}
+        setSearchTerm={setSearchTerm}
+      />
 
       <div className={styles.cardContainer}>
         {loading ? (
           <div className={styles.loadingContainer}>
             <div className={styles.loadingSpinner}></div>
           </div>
-        ) : models.length > 0 ? (
-          models.map((model) => (
+        ) : filteredModels.length > 0 ? (
+          filteredModels.map((model) => (
             <div className={styles.card} key={model.id}>
               <div className={styles.imageContainer}>
                 <img
-                  src={`${API_URL}${
-                    model.file_paths.split(",")[0]?.replace(/\\/g, "/") || ""
-                  }`}
+                  src={`${API_URL}${model.file_paths.split(",")[0]?.replace(/\\/g, "/") || ""}`}
                   alt={model.name}
                   className={styles.cardImage}
                 />
@@ -208,31 +196,12 @@ function Produtos() {
                 </div>
                 <div className={styles.cardDetails}>
                   <div className={styles.detailsContainer}>
+                    <p>Tamanho: {model.size.width} x {model.size.height} x {model.size.depth}</p>
                     <p>
-                      Tamanho: {model.size.width} x {model.size.height} x{" "}
-                      {model.size.depth}
+                      Cores: {model.colors.split(",").map((c) => colorMap[c] || c).join(", ")}
                     </p>
-                    <p>
-                      Cores:{" "}
-                      {model.colors
-                        .split(",")
-                        .map((c) => colorMap[c] || c)
-                        .join(", ")}
-                    </p>
-                    <p>
-                      Material:{" "}
-                      {model.material
-                        ?.split(",")
-                        .map((m) => m.trim())
-                        .join(", ")}
-                    </p>
-                    <p>
-                      Acabamento:{" "}
-                      {model.finishing
-                        ?.split(",")
-                        .map((f) => f.trim())
-                        .join(", ")}
-                    </p>
+                    <p>Material: {model.material?.split(",").map((m) => m.trim()).join(", ")}</p>
+                    <p>Acabamento: {model.finishing?.split(",").map((f) => f.trim()).join(", ")}</p>
                     <p>Categoria: {model.category}</p>
                   </div>
                   <div className={styles.priceContainer}>
@@ -244,7 +213,7 @@ function Produtos() {
           ))
         ) : (
           <div className={styles.emptyContainer}>
-            <h3>Nenhum produto cadastrado</h3>
+            <h3>Nenhum produto encontrado</h3>
           </div>
         )}
       </div>

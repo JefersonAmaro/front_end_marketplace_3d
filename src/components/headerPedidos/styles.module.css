@@ -60,3 +60,26 @@
     color: #fff !important;
     border-color: #4d00ff !important;
 }
+
+@media screen and (max-width: 1919px) {
+    .container h4 {
+        font-size: 20px;
+    }
+
+    .pagination button {
+        font-size: 12px;
+    }
+}
+
+@media screen and (max-width: 799px) {
+    .container {
+        flex-direction: column;
+        gap: 1rem;
+        align-items: start;
+    }
+
+    .pagination {
+        width: 100%;
+        justify-content: center;
+    }
+}

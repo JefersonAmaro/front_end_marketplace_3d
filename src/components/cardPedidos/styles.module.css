@@ -160,3 +160,139 @@
     }
 }
 
+@media screen and (max-width: 1919px) {
+    .container {
+        padding: 0.5rem 1rem;
+    }
+
+    .header {
+        padding: 0.5rem;
+    }
+
+    .header p {
+        font-size: 14px;
+    }
+
+    .info {
+        .text {
+            width: 50%;
+        }
+
+        .title {
+            font-size: 16px;
+        }
+
+        .description {
+            font-size: 12px;
+        }
+
+        .details {
+            font-size: 12px;
+        }
+
+        .supplier {
+            width: 20%;
+        }
+
+        .buttons {
+            .price {
+                font-size: 16px;
+            }
+
+            button {
+                font-size: 12px;
+            }
+        }
+    }
+}
+
+@media screen and (max-width: 799px) {
+    .header p {
+        font-size: 12px;
+    }
+
+    .info {
+        display: contents;
+
+        .text {
+            width: 100%;
+            display: contents;
+        }
+    }
+
+    .content {
+        display: grid;
+        grid-template-columns: 150px 1fr;
+        /* imagem fixa, conteúdo flexível */
+        grid-template-rows: auto auto auto auto auto auto;
+        grid-template-areas:
+            "image title"
+            "image description"
+            "image description"
+            "details details"
+            "supplier supplier"
+            "buttons buttons";
+        gap: 1rem;
+    }
+
+    /* Imagem */
+    .content img {
+        grid-area: image;
+        width: 100%;
+        aspect-ratio: 1/1;
+        object-fit: cover;
+        border-radius: 10px;
+    }
+
+    /* Título */
+    .info .title {
+        grid-area: title;
+        font-size: 12px;
+    }
+
+    /* Descrição */
+    .info .description {
+        grid-area: description;
+        font-size: 10px;
+        -webkit-line-clamp: 9;
+    }
+
+    /* Detalhes */
+    .info .details {
+        grid-area: details;
+        font-size: 10px;
+    }
+
+    /* Fornecedor */
+    .info .supplier {
+        grid-area: supplier;
+        width: 100%;
+        flex-direction: row;
+        justify-content: space-between;
+
+        .supplierName {
+            font-size: 12px;
+        }
+
+        a {
+            font-size: 12px;
+        }
+    }
+
+    /* Preço e botões */
+    .info .buttons {
+        grid-area: buttons;
+        align-items: normal;
+        gap: 1rem;
+
+        .button {
+            flex-direction: row;
+            gap: 1rem;
+        }
+
+        button {
+            font-size: 10px;
+        }
+    }
+
+}

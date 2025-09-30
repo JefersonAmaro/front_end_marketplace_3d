@@ -1,13 +1,15 @@
 import styles from "./styles.module.css";
 
-function BarraFiltros({ onAddProductClick }) {
+function BarraFiltros({ onAddProductClick, searchTerm, setSearchTerm }) {
   return (
     <div className={styles.barraFiltros}>
       <div className={styles.secaoPesquisa}>
-        <input type="text" placeholder="Produto" />
-        <button className={styles.btnPesquisa}>
-          {/* Ícone de pesquisa */}
-        </button>
+        <input 
+          type="text" 
+          placeholder="Produto" 
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+        />
       </div>
       <div className={styles.secaoBotoes}>
         <button className={styles.btnAcoes} onClick={onAddProductClick}>
@@ -17,5 +19,6 @@ function BarraFiltros({ onAddProductClick }) {
     </div>
   );
 }
+
 
 export default BarraFiltros;
