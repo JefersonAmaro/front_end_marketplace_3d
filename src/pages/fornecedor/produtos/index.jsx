@@ -3,9 +3,12 @@ import styles from "./styles.module.css";
 import axios from "axios";
 import HeaderChildren from "../../../components/headerChildrenSupllier";
 import BarraFiltros from "../../../components/barraFIltrosProdutosSupplier";
+import EditProductSupplier from "../../../components/editProductSupplier";
+import ModelItem from "../../../components/modalItem";
 
 function Produtos() {
   const API_URL = import.meta.env.VITE_API_URL;
+
   const [isOpen, setIsOpen] = useState(false);
   const [models, setModels] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -25,28 +28,43 @@ function Produtos() {
   const [files, setFiles] = useState([]);
   const [previews, setPreviews] = useState([]);
 
-  // Arrays que vêm do backend
+  // Arrays do backend
   const [colorsArray, setColorsArray] = useState([]);
   const [materialsArray, setMaterialsArray] = useState([]);
   const [finishingsArray, setFinishingsArray] = useState([]);
   const [categoriesArray, setCategoriesArray] = useState([]);
 
-  // Estado para erros
   const [errors, setErrors] = useState({});
+
+  const [isEditOpen, setIsEditOpen] = useState(false);
+  const [selectedModel, setSelectedModel] = useState(null);
+
+  const [modelToDelete, setModelToDelete] = useState(null);
 
   const toggleModal = () => {
     setIsOpen((prev) => !prev);
     setErrors({});
   };
 
-  // 🔹 Buscar produtos
+  const openEditMenu = (model) => {
+    setSelectedModel(model);
+    setIsEditOpen(true);
+  };
+
+  const closeEditMenu = () => {
+    setIsEditOpen(false);
+    setSelectedModel(null);
+  };
+
+  // Buscar produtos
   const fetchModels = async () => {
     setLoading(true);
     try {
       const response = await axios.get(`${API_URL}model-supplier/list-all`);
       const data = response.data.map((model) => ({
         ...model,
-        size: typeof model.size === "string" ? JSON.parse(model.size) : model.size,
+        size:
+          typeof model.size === "string" ? JSON.parse(model.size) : model.size,
       }));
       setModels(data);
     } catch (error) {
@@ -56,7 +74,7 @@ function Produtos() {
     }
   };
 
-  // 🔹 Buscar infos fixas
+  // Buscar infos fixas
   const fetchInfo = async () => {
     setLoading(true);
     try {
@@ -85,13 +103,20 @@ function Produtos() {
   }, [files]);
 
   const handleCheckboxChange = (value, state, setState) => {
-    setState(state.includes(value) ? state.filter((item) => item !== value) : [...state, value]);
+    setState(
+      state.includes(value)
+        ? state.filter((item) => item !== value)
+        : [...state, value]
+    );
   };
 
   const handleFileChange = (e) => {
     const selectedFiles = Array.from(e.target.files);
     if (files.length + selectedFiles.length > 6) {
-      setErrors((prev) => ({ ...prev, files: "Você só pode enviar até 6 imagens" }));
+      setErrors((prev) => ({
+        ...prev,
+        files: "Você só pode enviar até 6 imagens",
+      }));
       return;
     }
     setFiles((prev) => [...prev, ...selectedFiles]);
@@ -110,9 +135,12 @@ function Produtos() {
     if (!height) newErrors.height = "Campo obrigatório";
     if (!depth) newErrors.depth = "Campo obrigatório";
     if (colors.length === 0) newErrors.colors = "Selecione pelo menos uma cor";
-    if (materials.length === 0) newErrors.materials = "Selecione pelo menos um material";
-    if (finishings.length === 0) newErrors.finishings = "Selecione pelo menos um acabamento";
-    if (categories.length === 0) newErrors.categories = "Selecione uma categoria";
+    if (materials.length === 0)
+      newErrors.materials = "Selecione pelo menos um material";
+    if (finishings.length === 0)
+      newErrors.finishings = "Selecione pelo menos um acabamento";
+    if (categories.length === 0)
+      newErrors.categories = "Selecione uma categoria";
     if (files.length === 0) newErrors.files = "Selecione pelo menos um arquivo";
 
     setErrors(newErrors);
@@ -159,6 +187,18 @@ function Produtos() {
     model.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
+  const [isWideScreen, setIsWideScreen] = useState(window.innerWidth > 700);
+  useEffect(() => {
+    const handleResize = () => setIsWideScreen(window.innerWidth > 700);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  const handleDeleteFromList = (id) => {
+    setModels((prev) => prev.filter((model) => model.id !== id));
+    setModelToDelete(null);
+  };
+
   return (
     <div className={styles.container}>
       <HeaderChildren titulo="Produtos" />
@@ -178,7 +218,9 @@ function Produtos() {
             <div className={styles.card} key={model.id}>
               <div className={styles.imageContainer}>
                 <img
-                  src={`${API_URL}${model.file_paths.split(",")[0]?.replace(/\\/g, "/") || ""}`}
+                  src={`${API_URL}${
+                    model.file_paths.split(",")[0]?.replace(/\\/g, "/") || ""
+                  }`}
                   alt={model.name}
                   className={styles.cardImage}
                 />
@@ -189,25 +231,57 @@ function Produtos() {
                     <h3>{model.name}</h3>
                     <p>{model.description}</p>
                   </div>
-                  <div className={styles.buttonCardContainer}>
-                    <button className={styles.editButton}>Editar</button>
-                    <button className={styles.deleteButton}>Excluir</button>
-                  </div>
+                  {isWideScreen && (
+                    <div className={styles.buttonCardContainer}>
+                      <button
+                        className={styles.editButton}
+                        onClick={() => openEditMenu(model)}
+                      >
+                        Editar
+                      </button>
+                      <button
+                        className={styles.deleteButton}
+                        onClick={() => setModelToDelete(model)}
+                      >
+                        Excluir
+                      </button>
+                    </div>
+                  )}
                 </div>
                 <div className={styles.cardDetails}>
                   <div className={styles.detailsContainer}>
                     <p>Tamanho: {model.size.width} x {model.size.height} x {model.size.depth}</p>
                     <p>
-                      Cores: {model.colors.split(",").map((c) => colorMap[c] || c).join(", ")}
+                      Cores:{" "}
+                      {model.colors
+                        .split(",")
+                        .map((c) => colorMap[c] || c)
+                        .join(", ")}
                     </p>
-                    <p>Material: {model.material?.split(",").map((m) => m.trim()).join(", ")}</p>
-                    <p>Acabamento: {model.finishing?.split(",").map((f) => f.trim()).join(", ")}</p>
+                    <p>Material: {model.material?.split(",").join(", ")}</p>
+                    <p>Acabamento: {model.finishing?.split(",").join(", ")}</p>
                     <p>Categoria: {model.category}</p>
                   </div>
                   <div className={styles.priceContainer}>
                     <p className={styles.price}>Preço: R$ {model.price}</p>
                   </div>
                 </div>
+                {!isWideScreen && (
+                  <div className={styles.buttonCardContainer}>
+                    <button
+                      className={styles.editButton}
+                      onClick={() => openEditMenu(model)}
+                    >
+                      Editar
+                    </button>
+                    <button
+                      className={styles.deleteButton}
+                      onClick={() => setModelToDelete(model)}
+                    >
+                      Excluir
+                    </button>
+                  </div>
+                )}
               </div>
             </div>
           ))
@@ -432,6 +506,21 @@ function Produtos() {
             </form>
           </div>
         </div>
+      )}
+
+      {/* Modal de edição */}
+      <EditProductSupplier
+        isEditOpen={isEditOpen}
+        selectedModel={selectedModel}
+        setSelectedModel={setSelectedModel}
+        closeEditMenu={closeEditMenu}
+        fetchModels={fetchModels}
+        API_URL={API_URL}
+      />
+
+      {/* Modal de exclusão */}
+      {modelToDelete && (
+        <ModelItem model={modelToDelete} onDelete={handleDeleteFromList} />
       )}
     </div>
   );

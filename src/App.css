@@ -1,10 +1,29 @@
 /* Normal (sidebar aberta) */
 main {
-  margin-left: 15%;
+  margin-left: 275px;
   transition: margin-left 0.3s ease;
 }
 
-/* Quando a sidebar está colapsada */
+/* Sidebar fechada */
 main.sidebar-collapsed {
-  margin-left: 4vw; /* mesma largura da sidebar.collapsed */
+  margin-left: 75px;
+}
+
+@media screen and (max-width: 1919px) {
+  main{
+    margin-left: 230px;
+  }
+
+  main.sidebar-collapsed {
+    margin-left: 55px;
+  }
+}
+
+/* Mobile: não empurra conteúdo */
+@media screen and (max-width: 799px) {
+
+  main {
+    margin-left: 0 !important; 
+    padding-bottom: 60px; /* reserva espaço pra navbar fixa */
+  }
 }

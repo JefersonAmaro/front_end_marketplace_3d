@@ -17,16 +17,9 @@ function App() {
 
   if (isSupplier) {
     return (
-      <div style={{ display: "flex", minHeight: "100vh", overflowY: "hidden" }}>
+      <div style={{ display: "flex", minHeight: "100vh" }}>
         <HeaderSupplier collapsed={collapsed} setCollapsed={setCollapsed} />
-        <main
-          className={collapsed ? "sidebar-collapsed" : ""}
-          style={{
-            flex: 1,
-            padding: "1rem",
-            transition: "margin-left 0.3s ease",
-          }}
-        >
+        <main className={collapsed ? "sidebar-collapsed" : ""}>
           <ScrollToTop />
           <Outlet />
         </main>

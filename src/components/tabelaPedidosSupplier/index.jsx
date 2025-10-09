@@ -10,7 +10,23 @@ function TabelaPedidos({ busca, filtros }) {
   const [error, setError] = useState(null);
   const [messageClass, setMessageClass] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 8;
+
+  // 🔹 Novo estado para itens por página
+  const [itemsPerPage, setItemsPerPage] = useState(
+    window.innerWidth > 1919 ? 8 : 6
+  );
+
+  // --- Detecta resize da tela ---
+  useEffect(() => {
+    const handleResize = () => {
+      setItemsPerPage(window.innerWidth > 1919 ? 8 : 6);
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    // Cleanup
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   // --- Fetch pedidos da API ---
   useEffect(() => {
@@ -41,21 +57,33 @@ function TabelaPedidos({ busca, filtros }) {
 
   // --- Função copiar ID ---
   const handleCopy = (text) => {
-    navigator.clipboard.writeText(text)
+    navigator.clipboard
+      .writeText(text)
       .then(() => alert("ID do pedido copiado!"))
       .catch((err) => console.error("Erro ao copiar:", err));
   };
 
   if (loading) return <div>Carregando pedidos...</div>;
-  if (error) return <div className={styles.container}><p className={messageClass}>{error}</p></div>;
+  if (error)
+    return (
+      <div className={styles.container}>
+        <p className={messageClass}>{error}</p>
+      </div>
+    );
 
   // --- Filtro de busca e filtros aplicados ---
   let pedidosFiltrados = pedidos.filter((pedido) => {
     const matchId = pedido.id.toLowerCase().includes(busca.id.toLowerCase());
-    const matchCliente = pedido.user?.name?.toLowerCase().includes(busca.cliente.toLowerCase());
-    const matchProduto = pedido.model?.name?.toLowerCase().includes(busca.produto.toLowerCase());
+    const matchCliente = pedido.user?.name
+      ?.toLowerCase()
+      .includes(busca.cliente.toLowerCase());
+    const matchProduto = pedido.model?.name
+      ?.toLowerCase()
+      .includes(busca.produto.toLowerCase());
 
-    const matchStatus = filtros.status ? pedido.status === filtros.status : true;
+    const matchStatus = filtros.status
+      ? pedido.status === filtros.status
+      : true;
 
     return matchId && matchCliente && matchProduto && matchStatus;
   });
@@ -91,7 +119,8 @@ function TabelaPedidos({ busca, filtros }) {
   const maxButtons = 7;
   let startPage = Math.max(1, currentPage - Math.floor(maxButtons / 2));
   let endPage = Math.min(totalPages, startPage + maxButtons - 1);
-  if (endPage - startPage + 1 < maxButtons) startPage = Math.max(1, endPage - maxButtons + 1);
+  if (endPage - startPage + 1 < maxButtons)
+    startPage = Math.max(1, endPage - maxButtons + 1);
   const pageNumbers = [];
   for (let i = startPage; i <= endPage; i++) pageNumbers.push(i);
 
@@ -114,22 +143,34 @@ function TabelaPedidos({ busca, filtros }) {
           {currentItems.length ? (
             currentItems.map((pedido) => (
               <tr key={pedido.id}>
-                <td className={styles.copyableId} onClick={() => handleCopy(pedido.id)}>{pedido.id}</td>
+                <td
+                  className={styles.copyableId}
+                  onClick={() => handleCopy(pedido.id)}
+                >
+                  {pedido.id}
+                </td>
                 <td>{pedido.user?.name || "N/A"}</td>
                 <td>{pedido.model?.name || "N/A"}</td>
                 <td>{new Date(pedido.createdAt).toLocaleDateString()}</td>
                 <td>
-                  R${(pedido.price * pedido.quantity).toLocaleString("pt-BR", {
+                  R$
+                  {(pedido.price * pedido.quantity).toLocaleString("pt-BR", {
                     minimumFractionDigits: 2,
                     maximumFractionDigits: 2,
                   })}
                 </td>
-                <td><StatusTag status={pedido.status} /></td>
-                <td><button className={styles.btnAcao}>Ver Detalhes</button></td>
+                <td>
+                  <StatusTag status={pedido.status} />
+                </td>
+                <td>
+                  <button className={styles.btnAcao}>Ver Detalhes</button>
+                </td>
               </tr>
             ))
           ) : (
-            <tr><td colSpan="7">Nenhum pedido encontrado.</td></tr>
+            <tr>
+              <td colSpan="7">Nenhum pedido encontrado.</td>
+            </tr>
           )}
         </tbody>
       </table>
@@ -137,7 +178,12 @@ function TabelaPedidos({ busca, filtros }) {
       {/* --- Paginação --- */}
       {pedidosFiltrados.length > 0 && (
         <div className={styles.pagination}>
-          <button onClick={() => handlePageChange(currentPage - 1)} disabled={currentPage === 1}>Anterior</button>
+          <button
+            onClick={() => handlePageChange(currentPage - 1)}
+            disabled={currentPage === 1}
+          >
+            Anterior
+          </button>
           {pageNumbers.map((num) => (
             <button
               key={num}
@@ -147,7 +193,12 @@ function TabelaPedidos({ busca, filtros }) {
               {num}
             </button>
           ))}
-          <button onClick={() => handlePageChange(currentPage + 1)} disabled={currentPage === totalPages}>Próxima</button>
+          <button
+            onClick={() => handlePageChange(currentPage + 1)}
+            disabled={currentPage === totalPages}
+          >
+            Próxima
+          </button>
         </div>
       )}
     </div>

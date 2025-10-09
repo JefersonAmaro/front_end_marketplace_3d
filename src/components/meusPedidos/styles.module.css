@@ -1,5 +1,5 @@
-.containerCards{
-     -webkit-overflow-scrolling: touch;
+.containerCards {
+  -webkit-overflow-scrolling: touch;
   /* Suaviza rolagem em iOS */
 
   /* Personalização para WebKit (Chrome, Safari, etc.) */

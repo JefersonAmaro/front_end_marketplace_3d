@@ -1,8 +1,8 @@
 .container {
   display: flex;
   flex-direction: column;
-  flex: 1; 
-  background-color: #f5f6fa; 
+  flex: 1;
+  background-color: #f5f6fa;
   padding: 20px;
   border-radius: 10px;
   height: 100%;
@@ -11,6 +11,13 @@
 .conteudoPrincipal {
   display: flex;
   flex-direction: column;
-  gap: 20px; /* Espaçamento entre os componentes */
+  gap: 20px;
+  /* Espaçamento entre os componentes */
   height: 100%;
+}
+
+@media screen and (max-width: 699px) {
+  .container {
+    width: 100vw;
+  }
 }
