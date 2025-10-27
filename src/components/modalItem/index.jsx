@@ -12,7 +12,6 @@ function ModelItem({ model, onDelete }) {
       onDelete(model.id); // Remove da lista
       setShowConfirm(false);
     } catch (error) {
-
       // Mostra a mensagem específica do backend, se existir
       if (
         error.response &&
@@ -42,6 +41,9 @@ function ModelItem({ model, onDelete }) {
     <div className={styles.modalOverlay}>
       <div className={styles.modalContent}>
         <h2 className={styles.modalTitle}>Tem certeza que deseja apagar?</h2>
+        <p className={styles.modalText}>
+          Se o modelo conter pedidos, ele sera arquivado.
+        </p>
         <p className={styles.modalText}>Esta ação não pode ser desfeita.</p>
         <div className={styles.modalButtons}>
           <button onClick={handleCancel} className={styles.cancelButton}>

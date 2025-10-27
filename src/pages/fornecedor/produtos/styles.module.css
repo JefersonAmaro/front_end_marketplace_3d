@@ -7,7 +7,7 @@
     gap: 20px;
     background-color: #f5f6fa;
     border-radius: 10px;
-    height: 100%;
+    min-height: 100vh;
 }
 
 .loadingContainer {
@@ -43,6 +43,7 @@
     justify-content: center;
     align-items: center;
     height: 100%;
+    width: 100%;
 
     h3 {
         color: #000000;
@@ -56,7 +57,7 @@
     display: flex;
     flex-direction: column;
     gap: 1rem;
-    height: 100%;
+    flex: 1;
     border-radius: 10px;
 }
 
@@ -317,6 +318,12 @@
 
 .buttonCardContainer {
     display: flex;
+    width: 100%;
+    justify-content: space-between;
+}
+
+.buttonContainer {
+    display: flex;
     gap: 0.5rem;
 }
 
@@ -392,37 +399,105 @@
 
 
 .editSidebarOverlay {
-  position: fixed;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  background: rgba(0, 0, 0, 0.4);
-  display: flex;
-  justify-content: flex-end;
-  z-index: 999;
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background: rgba(0, 0, 0, 0.4);
+    display: flex;
+    justify-content: flex-end;
+    z-index: 999;
 }
 
 .editSidebar {
-  width: 400px;
-  max-width: 90%;
-  height: 100%;
-  background: #fff;
-  box-shadow: -2px 0 10px rgba(0, 0, 0, 0.2);
-  padding: 20px;
-  overflow-y: auto;
-  animation: slideIn 0.3s ease-out;
+    width: 400px;
+    max-width: 90%;
+    height: 100%;
+    background: #fff;
+    box-shadow: -2px 0 10px rgba(0, 0, 0, 0.2);
+    padding: 20px;
+    overflow-y: auto;
+    animation: slideIn 0.3s ease-out;
 }
+
+.archivedCard {
+    opacity: 0.5;
+    /* dá uma aparência de desativado */
+    pointer-events: none;
+    /* impede interação */
+}
+
 
 @keyframes slideIn {
-  from {
-    transform: translateX(100%);
-  }
-  to {
-    transform: translateX(0);
-  }
+    from {
+        transform: translateX(100%);
+    }
+
+    to {
+        transform: translateX(0);
+    }
 }
 
+.switchContainer {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 52px;
+    height: 28px;
+}
+
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+/* Base do switch */
+.slider {
+    position: absolute;
+    cursor: pointer;
+    inset: 0;
+    background-color: #ccc;
+    /* Cinza quando desligado */
+    transition: background-color 0.4s;
+    border-radius: 28px;
+}
+
+/* Bolinha */
+.slider::before {
+    content: "";
+    position: absolute;
+    height: 22px;
+    width: 22px;
+    left: 3px;
+    bottom: 3px;
+    background-color: #fff;
+    transition: transform 0.4s;
+    border-radius: 50%;
+}
+
+/* Quando o switch estiver ligado */
+.switch input:checked+.slider {
+    background-color: #4caf50;
+    /* Verde */
+}
+
+/* Move a bolinha para a direita quando ligado */
+.switch input:checked+.slider::before {
+    transform: translateX(24px);
+}
+
+.switchLabel {
+    font-size: 14px;
+    color: #5f5f5f;
+    font-weight: 500;
+}
 
 
 
@@ -474,7 +549,8 @@
         flex-direction: column;
     }
 
-    .cardTitle, .cardDetails {
+    .cardTitle,
+    .cardDetails {
         width: 100%;
     }
 }

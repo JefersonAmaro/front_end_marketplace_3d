@@ -41,7 +41,7 @@ function HeaderSupplier({ collapsed, setCollapsed }) {
       </div>
 
       <nav className={styles.nav}>
-        <div className={styles.navItem}>
+        <div className={styles.navItem} onClick={() => navigate("/fornecedor")}>
           <FaHome className={styles.navIcon} />
           <span className={styles.navText}>Painel</span>
         </div>

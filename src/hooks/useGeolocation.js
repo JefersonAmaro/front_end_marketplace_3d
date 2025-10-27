@@ -36,7 +36,6 @@ export function useGeolocation() {
 
           const result = await response.json();
 
-          console.log(result);
 
           const address = result.address || {};
           const street =

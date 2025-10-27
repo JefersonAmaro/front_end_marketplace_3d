@@ -1,6 +1,6 @@
 import styles from "./styles.module.css";
 
-const statusOptions = ["", "Pendente", "Enviado", "Entregue", "Cancelado"];
+const statusOptions = ["", "Pendente", "Enviado", "A Caminho", "Entregue", "Cancelado"];
 
 function BarraFiltros({ busca, setBusca, filtros, setFiltros, onSearch }) {
   const handleNextStatus = () => {

@@ -1,11 +1,260 @@
-.container{
-    width: 100%;
-    height: 100%;
+.container {
+    padding: 20px;
+    background: #f5f6fa;
+    min-height: 100vh;
+    color: #333;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
 }
 
-.content{
-    width: 100%;
-    height: 100%;
-    background-color: rgb(224, 224, 224);
+.header {
+    display: flex;
+    align-items: flex-start;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 20px;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.title {
+    display: flex;
+    flex-direction: column;
+}
+
+.profile {
+    background-color: #ffffff;
     border-radius: 10px;
+    display: flex;
+    padding: 10px 20px;
+    justify-content: center;
+    align-items: start;
+    flex-direction: column;
+    gap: 5px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+}
+
+.profile p {
+    font-size: 16px;
+    color: #333;
+    font-weight: 400;
+}
+
+.header h1 {
+    font-size: 24px;
+    font-weight: 600;
+    color: #333;
+}
+
+.subtitle {
+    color: #6b7280;
+    margin-top: 4px;
+}
+
+.cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1rem;
+}
+
+.card {
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    transition: transform 0.2s ease;
+}
+
+.card:hover {
+    transform: translateY(-3px);
+}
+
+.cardContent {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+
+    h3 {
+        font-size: 18px;
+        font-weight: 600;
+        color: #333;
+    }
+}
+
+.icon {
+    font-size: 2rem;
+    color: #6366f1;
+}
+
+.value {
+    font-size: 20px;
+    font-weight: 600;
+    color: #3b82f6;
+}
+
+.cardBlue {
+    border-top: 4px solid #3b82f6;
+}
+
+.cardGreen {
+    border-top: 4px solid #10b981;
+}
+
+.cardPurple {
+    border-top: 4px solid #8b5cf6;
+}
+
+.cardOrange {
+    border-top: 4px solid #f97316;
+}
+
+.cardYellow {
+    border-top: 4px solid #facc15;
+}
+
+.chartSection {
+    background: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+}
+
+.chartSection h2 {
+    color: #333;
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 16px;
+}
+
+.topProducts {
+    background: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+}
+
+.topProducts h2 {
+    color: #333;
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 16px;
+}
+
+.progressItem {
+    margin-bottom: 10px;
+}
+
+.progressHeader {
+    display: flex;
+    justify-content: space-between;
+    font-size: 14px;
+    color: #333;
+    margin-bottom: 4px;
+}
+
+.progressBar {
+    background: #e5e7eb;
+    height: 8px;
+    border-radius: 10px;
+}
+
+.progressFill {
+    height: 8px;
+    border-radius: 10px;
+    background: linear-gradient(90deg, #3b82f6, #60a5fa);
+}
+
+.recentActivity {
+    background: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+}
+
+.recentActivity h2 {
+    color: #333;
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 16px;
+}
+
+.recentActivity ul {
+    list-style: none;
+    padding: 0;
+    color: #333;
+    font-size: 14px;
+}
+
+.recentActivity li {
+    padding: 6px 0;
+    border-bottom: 1px solid #eee;
+    font-size: 14px;
+}
+
+.recentActivity li span {
+    color: #6b7280;
+    font-size: 14px;
+}
+
+.statsFooter {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: space-between;
+    background: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+}
+
+.statsFooter p {
+    font-size: 15px;
+    color: #333;
+}
+
+.statsFooter svg {
+    vertical-align: middle;
+    color: #facc15;
+}
+
+/* 🔹 Estilo para o container do filtro de ano/mês/tipo */
+.yearFilter {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: #fff;
+    padding: 15px 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    flex-wrap: wrap;
+}
+
+.yearFilter label {
+    font-size: 14px;
+    color: #333;
+    font-weight: 500;
+}
+
+.yearFilter select {
+    padding: 6px 12px;
+    border-radius: 6px;
+    border: 1px solid #d1d5db;
+    background: #fff;
+    color: #333;
+    font-size: 14px;
+    font-weight: 400;
+    transition: border 0.2s ease, box-shadow 0.2s ease;
+    cursor: pointer;
+}
+
+.yearFilter select:hover {
+    border-color: #3b82f6;
+}
+
+.yearFilter select:focus {
+    outline: none;
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
 }

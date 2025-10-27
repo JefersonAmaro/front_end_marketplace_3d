@@ -158,9 +158,18 @@ function MarketplaceProducts() {
     );
   };
 
-  const size = produto.size
-    ? JSON.parse(produto.size)
-    : { width: 0, height: 0, depth: 0 };
+  let size;
+  if (typeof produto.size === "string") {
+    try {
+      size = JSON.parse(produto.size);
+    } catch (err) {
+      console.error("Erro ao parsear size:", err);
+      size = { width: 0, height: 0, depth: 0 };
+    }
+  } else {
+    size = produto.size || { width: 0, height: 0, depth: 0 };
+  }
+
   const { width, height, depth } = size;
 
   return (

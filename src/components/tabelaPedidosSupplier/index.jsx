@@ -2,8 +2,11 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import styles from "./styles.module.css";
 import StatusTag from "../statusTag";
+import { useNavigate } from "react-router-dom";
+import { s } from "framer-motion/client";
 
 function TabelaPedidos({ busca, filtros }) {
+  const navigate = useNavigate();
   const API_URL = import.meta.env.VITE_API_URL;
   const [pedidos, setPedidos] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -35,7 +38,7 @@ function TabelaPedidos({ busca, filtros }) {
         const response = await axios.get(`${API_URL}budgets/supplier/list-all`);
         const dados = response.data;
 
-        if (!dados.length) {
+        if (dados.status === 400) {
           setError("Não há pedidos disponíveis no momento.");
           setMessageClass(styles.infoMessage);
         } else {
@@ -43,7 +46,12 @@ function TabelaPedidos({ busca, filtros }) {
           setLoading(false);
         }
       } catch (err) {
-        console.error(err);
+        if (err.response?.status === 400) {
+          setError("Não há pedidos disponíveis no momento.");
+          setMessageClass(styles.infoMessage);
+          setLoading(false);
+          return;
+        }
         setError(
           "Ocorreu um erro ao carregar os pedidos. Por favor, tente novamente mais tarde."
         );
@@ -62,6 +70,9 @@ function TabelaPedidos({ busca, filtros }) {
       .then(() => alert("ID do pedido copiado!"))
       .catch((err) => console.error("Erro ao copiar:", err));
   };
+
+  const handleDetalhes = (pedido) =>
+    navigate(`/fornecedor/pedidos/${pedido.id}`);
 
   if (loading) return <div>Carregando pedidos...</div>;
   if (error)
@@ -153,8 +164,8 @@ function TabelaPedidos({ busca, filtros }) {
                 <td>{pedido.model?.name || "N/A"}</td>
                 <td>{new Date(pedido.createdAt).toLocaleDateString()}</td>
                 <td>
-                  R$
-                  {(pedido.price * pedido.quantity).toLocaleString("pt-BR", {
+                  R${" "}
+                  {pedido.price.toLocaleString("pt-BR", {
                     minimumFractionDigits: 2,
                     maximumFractionDigits: 2,
                   })}
@@ -163,7 +174,12 @@ function TabelaPedidos({ busca, filtros }) {
                   <StatusTag status={pedido.status} />
                 </td>
                 <td>
-                  <button className={styles.btnAcao}>Ver Detalhes</button>
+                  <button
+                    className={styles.btnAcao}
+                    onClick={() => handleDetalhes(pedido)}
+                  >
+                    Ver Detalhes
+                  </button>
                 </td>
               </tr>
             ))
