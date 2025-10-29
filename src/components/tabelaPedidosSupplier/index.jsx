@@ -3,7 +3,6 @@ import axios from "axios";
 import styles from "./styles.module.css";
 import StatusTag from "../statusTag";
 import { useNavigate } from "react-router-dom";
-import { s } from "framer-motion/client";
 
 function TabelaPedidos({ busca, filtros }) {
   const navigate = useNavigate();

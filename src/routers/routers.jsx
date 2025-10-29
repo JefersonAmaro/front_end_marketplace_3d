@@ -13,6 +13,7 @@ import Pedidos from "../pages/pedidos";
 
 import FornecedorDashboard from "../pages/fornecedor/dashboard";
 import ProdutosFornecedor from "../pages/fornecedor/produtos";
+import AdicionarProduto from "../pages/fornecedor/produtos/adicionarProduto";
 import PedidosFornecedor from "../pages/fornecedor/pedidos";
 import DetalhesPedidos from "../pages/fornecedor/detalhesPedidos";
 // import { path } from "framer-motion/client";
@@ -51,6 +52,7 @@ export const router = createBrowserRouter([
         children: [
           { index: true, element: <FornecedorDashboard /> }, // /fornecedor
           { path: "produtos", element: <ProdutosFornecedor /> }, // /fornecedor/produtos
+          { path: "produtos/adicionar-produto", element: <AdicionarProduto /> }, // /fornecedor/produtos/adicionar-produto
           { path: "pedidos", element: <PedidosFornecedor /> }, // /fornecedor/pedidos
           { path: "pedidos/:id", element: <DetalhesPedidos /> }, // /fornecedor/pedidos/:id
         ],

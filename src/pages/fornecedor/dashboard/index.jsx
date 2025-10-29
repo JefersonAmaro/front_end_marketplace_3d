@@ -149,8 +149,8 @@ function FornecedorDashboard() {
 
   const averageTicket =
     metrics.deliveredBudgets > 0
-      ? (metrics.totalRevenue / metrics.deliveredBudgets).toFixed(2)
-      : "0.00";
+      ? metrics.totalRevenue / metrics.deliveredBudgets
+      : 0;
 
   const yearsAvailable = [
     ...new Set(metrics.monthlySales.map((m) => m.year)),
@@ -269,9 +269,12 @@ function FornecedorDashboard() {
       <section className={styles.chartSection}>
         <h2>
           {viewType === "anual"
-            ? `Vendas por Mês - ${selectedYear}`
-            : `Vendas por Dia - ${selectedMonth} ${selectedYear}`}
+            ? `Vendas por Mês${selectedYear ? ` - ${selectedYear}` : ""}`
+            : `Vendas por Dia${selectedMonth ? ` - ${selectedMonth}` : ""}${
+                selectedYear ? ` ${selectedYear}` : ""
+              }`}
         </h2>
+
         <ResponsiveContainer width="100%" height={300}>
           <BarChart data={chartData}>
             <CartesianGrid strokeDasharray="3 3" stroke="#eee" />
@@ -291,9 +294,14 @@ function FornecedorDashboard() {
       <section className={styles.chartSection}>
         <h2>
           {viewType === "anual"
-            ? `Comparativo Vendas x Receita - ${selectedYear}`
-            : `Comparativo Vendas x Receita Diário - ${selectedMonth} ${selectedYear}`}
+            ? `Comparativo Vendas x Receita${
+                selectedYear ? ` - ${selectedYear}` : ""
+              }`
+            : `Comparativo Vendas x Receita Diário${
+                selectedMonth ? ` - ${selectedMonth}` : ""
+              }${selectedYear ? ` ${selectedYear}` : ""}`}
         </h2>
+
         <ResponsiveContainer width="100%" height={300}>
           <LineChart data={chartData}>
             <CartesianGrid strokeDasharray="3 3" stroke="#eee" />
@@ -320,6 +328,11 @@ function FornecedorDashboard() {
       {/* 🔹 Ranking de produtos */}
       <div className={styles.topProducts}>
         <h2>Produtos Mais Vendidos</h2>
+        {metrics.topProducts.length === 0 && (
+          <p className={styles.infoMessage}>
+            Nenhuma informação disponível no momento
+          </p>
+        )}
         {metrics.topProducts.map((p, i) => (
           <div key={p.id} className={styles.progressItem}>
             <div className={styles.progressHeader}>
@@ -343,6 +356,11 @@ function FornecedorDashboard() {
       {/* 🔹 Últimas atividades */}
       <div className={styles.recentActivity}>
         <h2>Últimas Atividades</h2>
+        {metrics.recentActivity.length === 0 && (
+          <p className={styles.infoMessage}>
+            Nenhuma informação disponível no momento
+          </p>
+        )}
         <ul>
           {metrics.recentActivity.map((item) => (
             <li key={item.id}>

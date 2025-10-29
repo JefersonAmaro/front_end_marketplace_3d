@@ -17,15 +17,32 @@ function EditProductSupplier({
   const [loading, setLoading] = useState(false);
   const [newFiles, setNewFiles] = useState([]);
   const [previews, setPreviews] = useState([]);
-
   const [isClosing, setIsClosing] = useState(false);
 
+  // Quando o componente abre, formata o preço da API
+  useEffect(() => {
+    if (isEditOpen && selectedModel?.price != null) {
+      // Transforma o valor float da API em string numérica sem vírgula
+      const numericString = Math.round(Number(selectedModel.price) * 100).toString();
+      setSelectedModel((prev) => ({ ...prev, price: numericString }));
+    }
+
+    if (isEditOpen && selectedModel?.file_paths) {
+      const existingImages = selectedModel.file_paths
+        .split(",")
+        .map((path) => path.trim().replace(/\\/g, "/"));
+      setSelectedModel((prev) => ({ ...prev, existingImages }));
+    }
+
+    fetchInfo();
+  }, [isEditOpen]);
+
   const handleClose = () => {
-    setIsClosing(true); // dispara animação de saída
+    setIsClosing(true);
     setTimeout(() => {
-      closeEditMenu(); // chama função para fechar de fato
+      closeEditMenu();
       setIsClosing(false);
-    }, 300); // tempo da animação
+    }, 300);
   };
 
   const colorMap = {
@@ -41,19 +58,6 @@ function EditProductSupplier({
     Purple: "Roxo",
   };
 
-  useEffect(() => {
-    if (isEditOpen) {
-      fetchInfo();
-      // Cria array de imagens existentes
-      if (selectedModel?.file_paths) {
-        const existingImages = selectedModel.file_paths
-          .split(",")
-          .map((path) => path.trim().replace(/\\/g, "/"));
-        setSelectedModel((prev) => ({ ...prev, existingImages }));
-      }
-    }
-  }, [isEditOpen]);
-
   const fetchInfo = async () => {
     try {
       const response = await axios.get(`${API_URL}model-supplier/info`);
@@ -67,7 +71,6 @@ function EditProductSupplier({
     }
   };
 
-  // ✅ Cria previews das novas imagens
   useEffect(() => {
     const newPreviews = newFiles.map((file) => URL.createObjectURL(file));
     setPreviews(newPreviews);
@@ -100,6 +103,13 @@ function EditProductSupplier({
     setNewFiles((prev) => prev.filter((_, i) => i !== index));
   };
 
+  const formatPriceInput = (numericString) => {
+    if (!numericString) return "R$ 0,00";
+
+    const numberValue = Number(numericString) / 100;
+    return `R$ ${numberValue.toFixed(2).replace(".", ",")}`;
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -111,59 +121,46 @@ function EditProductSupplier({
         depth: Number(selectedModel.size?.depth),
       };
 
-      // Converte arrays para string separada por vírgula
       const colors = Array.isArray(selectedModel.colors)
         ? selectedModel.colors.join(",")
         : selectedModel.colors || "";
-
       const material = Array.isArray(selectedModel.material)
         ? selectedModel.material.join(",")
         : selectedModel.material || "";
-
       const finishing = Array.isArray(selectedModel.finishing)
         ? selectedModel.finishing.join(",")
         : selectedModel.finishing || "";
 
-      // 🔴 Verificação de imagens
-      if (
-        (!selectedModel.existingImages ||
-          selectedModel.existingImages.length === 0) &&
-        newFiles.length === 0
-      ) {
+      if ((!selectedModel.existingImages || selectedModel.existingImages.length === 0) && newFiles.length === 0) {
         alert("É necessário ter pelo menos uma imagem do produto.");
         setLoading(false);
         return;
       }
 
-      // Se tiver novas imagens, usamos multipart/form-data
+      const priceFloat = parseFloat(selectedModel.price) / 100;
+
       if (newFiles.length > 0) {
         const formData = new FormData();
         formData.append("name", selectedModel.name);
         formData.append("description", selectedModel.description);
-        formData.append("price", selectedModel.price);
+        formData.append("price", priceFloat);
         formData.append("size", JSON.stringify(size));
         formData.append("colors", colors);
         formData.append("material", material);
         formData.append("finishing", finishing);
         formData.append("category", selectedModel.category);
-        formData.append(
-          "existingImages",
-          selectedModel.existingImages.join(",")
-        );
+        formData.append("existingImages", selectedModel.existingImages.join(","));
 
         newFiles.forEach((file) => formData.append("images", file));
 
-        await axios.put(
-          `${API_URL}model-supplier/update/${selectedModel.id}`,
-          formData,
-          { headers: { "Content-Type": "multipart/form-data" } }
-        );
+        await axios.put(`${API_URL}model-supplier/update/${selectedModel.id}`, formData, {
+          headers: { "Content-Type": "multipart/form-data" },
+        });
       } else {
-        // Sem novas imagens — atualização simples
         await axios.put(`${API_URL}model-supplier/update/${selectedModel.id}`, {
           name: selectedModel.name,
           description: selectedModel.description,
-          price: selectedModel.price,
+          price: priceFloat,
           size,
           colors,
           material,
@@ -187,15 +184,12 @@ function EditProductSupplier({
 
   return (
     <div className={styles.editSidebarOverlay} onClick={handleClose}>
-      <div
-        className={`${styles.editSidebar} ${isClosing ? styles.exit : ""}`}
-        onClick={(e) => e.stopPropagation()}
-      >
+      <div className={`${styles.editSidebar} ${isClosing ? styles.exit : ""}`} onClick={(e) => e.stopPropagation()}>
         <div className={styles.formContainer}>
           <h2>Editar Produto</h2>
 
           <form className={styles.form} onSubmit={handleSubmit}>
-            {/* Campos básicos */}
+            {/* Nome */}
             <div className={styles.group}>
               <label>Nome do produto:</label>
               <input
@@ -207,15 +201,13 @@ function EditProductSupplier({
               />
             </div>
 
+            {/* Descrição */}
             <div className={styles.group}>
               <label>Descrição:</label>
               <textarea
                 value={selectedModel.description || ""}
                 onChange={(e) =>
-                  setSelectedModel({
-                    ...selectedModel,
-                    description: e.target.value,
-                  })
+                  setSelectedModel({ ...selectedModel, description: e.target.value })
                 }
               />
             </div>
@@ -225,12 +217,7 @@ function EditProductSupplier({
               {["width", "height", "depth"].map((dim) => (
                 <div className={styles.sizeContainer} key={dim}>
                   <label>
-                    {dim === "width"
-                      ? "Largura"
-                      : dim === "height"
-                      ? "Altura"
-                      : "Profundidade"}
-                    :
+                    {dim === "width" ? "Largura" : dim === "height" ? "Altura" : "Profundidade"}:
                   </label>
                   <input
                     type="number"
@@ -246,7 +233,7 @@ function EditProductSupplier({
               ))}
             </div>
 
-            {/* Checkbox grupos */}
+            {/* Checkbox */}
             <div className={styles.checkboxGroup}>
               <label>Cores:</label>
               <div className={styles.checkboxGroupContainer}>
@@ -254,11 +241,9 @@ function EditProductSupplier({
                   <label key={color}>
                     <input
                       type="checkbox"
-                      checked={
-                        Array.isArray(selectedModel.colors)
-                          ? selectedModel.colors.includes(color)
-                          : selectedModel.colors?.split(",").includes(color)
-                      }
+                      checked={Array.isArray(selectedModel.colors)
+                        ? selectedModel.colors.includes(color)
+                        : selectedModel.colors?.split(",").includes(color)}
                       onChange={() => handleCheckboxChange(color, "colors")}
                     />
                     {colorMap[color] || color}
@@ -274,11 +259,9 @@ function EditProductSupplier({
                   <label key={m}>
                     <input
                       type="checkbox"
-                      checked={
-                        Array.isArray(selectedModel.material)
-                          ? selectedModel.material.includes(m)
-                          : selectedModel.material?.split(",").includes(m)
-                      }
+                      checked={Array.isArray(selectedModel.material)
+                        ? selectedModel.material.includes(m)
+                        : selectedModel.material?.split(",").includes(m)}
                       onChange={() => handleCheckboxChange(m, "material")}
                     />
                     {m}
@@ -294,11 +277,9 @@ function EditProductSupplier({
                   <label key={f}>
                     <input
                       type="checkbox"
-                      checked={
-                        Array.isArray(selectedModel.finishing)
-                          ? selectedModel.finishing.includes(f)
-                          : selectedModel.finishing?.split(",").includes(f)
-                      }
+                      checked={Array.isArray(selectedModel.finishing)
+                        ? selectedModel.finishing.includes(f)
+                        : selectedModel.finishing?.split(",").includes(f)}
                       onChange={() => handleCheckboxChange(f, "finishing")}
                     />
                     {f}
@@ -313,17 +294,12 @@ function EditProductSupplier({
               <select
                 value={selectedModel.category || ""}
                 onChange={(e) =>
-                  setSelectedModel({
-                    ...selectedModel,
-                    category: e.target.value,
-                  })
+                  setSelectedModel({ ...selectedModel, category: e.target.value })
                 }
               >
                 <option value="">Selecione uma categoria</option>
                 {categoriesArray.map((cat) => (
-                  <option key={cat} value={cat}>
-                    {cat}
-                  </option>
+                  <option key={cat} value={cat}>{cat}</option>
                 ))}
               </select>
             </div>
@@ -332,30 +308,23 @@ function EditProductSupplier({
             <div className={styles.group}>
               <label>Preço:</label>
               <input
-                type="number"
-                value={selectedModel.price || ""}
-                onChange={(e) =>
-                  setSelectedModel({ ...selectedModel, price: e.target.value })
-                }
+                type="text"
+                value={formatPriceInput(selectedModel.price)}
+                onChange={(e) => {
+                  const numericOnly = e.target.value.replace(/\D/g, "");
+                  setSelectedModel({ ...selectedModel, price: numericOnly });
+                }}
               />
             </div>
 
-            {/* Imagens existentes */}
+            {/* Imagens */}
             <div className={styles.group}>
               <label>Imagens:</label>
               <div className={styles.previewContainer}>
                 {selectedModel.existingImages?.map((path, index) => (
                   <div key={index} className={styles.previewWrapper}>
-                    <img
-                      src={`${API_URL}${path}`}
-                      alt={`Imagem ${index}`}
-                      className={styles.previewImage}
-                    />
-                    <button
-                      type="button"
-                      className={styles.removeButton}
-                      onClick={() => removeExistingImage(index)}
-                    >
+                    <img src={`${API_URL}${path}`} alt={`Imagem ${index}`} className={styles.previewImage} />
+                    <button type="button" className={styles.removeButton} onClick={() => removeExistingImage(index)}>
                       &times;
                     </button>
                   </div>
@@ -363,31 +332,19 @@ function EditProductSupplier({
               </div>
             </div>
 
-            {/* Adicionar novas imagens */}
+            {/* Novas imagens */}
             <div className={styles.group}>
-              {/* Só mostra o input se ainda não houver 6 imagens no total */}
               {selectedModel.existingImages?.length + newFiles.length < 6 ? (
                 <input type="file" multiple onChange={handleFileChange} />
               ) : (
-                <p className={styles.limitText}>
-                  Limite máximo de 6 imagens atingido.
-                </p>
+                <p className={styles.limitText}>Limite máximo de 6 imagens atingido.</p>
               )}
-
               {previews.length > 0 && (
                 <div className={styles.previewContainer}>
                   {previews.map((src, index) => (
                     <div key={index} className={styles.previewWrapper}>
-                      <img
-                        src={src}
-                        alt={`Nova ${index}`}
-                        className={styles.previewImage}
-                      />
-                      <button
-                        type="button"
-                        className={styles.removeButton}
-                        onClick={() => removeNewImage(index)}
-                      >
+                      <img src={src} alt={`Nova ${index}`} className={styles.previewImage} />
+                      <button type="button" className={styles.removeButton} onClick={() => removeNewImage(index)}>
                         &times;
                       </button>
                     </div>
@@ -398,12 +355,8 @@ function EditProductSupplier({
 
             {/* Botões */}
             <div className={styles.actions}>
-              <button type="button" onClick={handleClose}>
-                Cancelar
-              </button>
-              <button type="submit" disabled={loading}>
-                {loading ? "Salvando..." : "Salvar"}
-              </button>
+              <button type="button" onClick={handleClose}>Cancelar</button>
+              <button type="submit" disabled={loading}>{loading ? "Salvando..." : "Salvar"}</button>
             </div>
           </form>
         </div>

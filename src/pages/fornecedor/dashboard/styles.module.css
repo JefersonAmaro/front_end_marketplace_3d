@@ -258,3 +258,16 @@
     border-color: #3b82f6;
     box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
 }
+
+.infoMessage {
+    text-align: center;
+    color: #333;
+    /* Cor neutra para o texto */
+    background-color: #e9ecef;
+    /* Fundo cinza claro */
+    border: 1px solid #dcdcdc;
+    border-radius: 5px;
+    padding: 15px;
+    max-width: 500px;
+    font-weight: bold;
+}
