@@ -3,6 +3,7 @@ import styles from "./styles.module.css";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import HeaderChildren from "../../../../components/headerChildrenSupllier";
+import DeliveryRadiusAlert from "../../../../components/deliveryRadiusAlert";
 
 import { IoIosArrowForward, IoIosArrowBack } from "react-icons/io";
 
@@ -28,6 +29,9 @@ function AdicionarProduto() {
   const [categories, setCategories] = useState([]);
   const [files, setFiles] = useState([]);
   const [previews, setPreviews] = useState([]);
+  const [deliveryTypes, setDeliveryTypes] = useState([]); // ["retirada", "propria", "correios"]
+  const [deliveryFee, setDeliveryFee] = useState("");
+  const [showDeliveryAlert, setShowDeliveryAlert] = useState(false);
 
   // opções
   const [colorsArray, setColorsArray] = useState([]);
@@ -73,6 +77,31 @@ function AdicionarProduto() {
     );
   };
 
+  const handleDeliveryChange = (type) => {
+    let updated = [...deliveryTypes];
+
+    if (updated.includes(type)) {
+      updated = updated.filter((t) => t !== type);
+    } else {
+      updated.push(type);
+    }
+
+    // 🔹 dispara alerta somente se tiver retirada, própria ou ambos, e nenhum outro tipo
+    const triggerTypes = ["retirada", "propria"];
+    const otherTypes = updated.filter((t) => !triggerTypes.includes(t));
+
+    if (
+      updated.some((t) => triggerTypes.includes(t)) &&
+      otherTypes.length === 0
+    ) {
+      setShowDeliveryAlert(true);
+    } else {
+      setShowDeliveryAlert(false);
+    }
+
+    setDeliveryTypes(updated);
+  };
+
   const handleFileChange = (e) => {
     const selectedFiles = Array.from(e.target.files);
     if (files.length + selectedFiles.length > 6) {
@@ -98,13 +127,22 @@ function AdicionarProduto() {
 
     if (!name) newErrors.name = "Campo obrigatório";
     if (!description) newErrors.description = "Campo obrigatório";
+
     const numericPrice = Number(price.replace(/\D/g, "")) / 100;
     if (isNaN(numericPrice) || numericPrice <= 0) {
       newErrors.price = "Informe o preço";
     }
+
     if (!width) newErrors.width = "Campo obrigatório";
     if (!height) newErrors.height = "Campo obrigatório";
     if (!depth) newErrors.depth = "Campo obrigatório";
+    if (Number(width) <= 0)
+      newErrors.width = "A largura deve ser maior que zero";
+    if (Number(height) <= 0)
+      newErrors.height = "A altura deve ser maior que zero";
+    if (Number(depth) <= 0)
+      newErrors.depth = "A profundidade deve ser maior que zero";
+
     if (colors.length === 0) newErrors.colors = "Selecione pelo menos uma cor";
     if (materials.length === 0)
       newErrors.materials = "Selecione pelo menos um material";
@@ -114,27 +152,53 @@ function AdicionarProduto() {
       newErrors.categories = "Selecione uma categoria";
     if (files.length === 0) newErrors.files = "Selecione pelo menos um arquivo";
 
+    // 🔍 Validação dos tipos de entrega
+    if (deliveryTypes.length === 0) {
+      newErrors.deliveryTypes = "Selecione ao menos uma forma de entrega";
+    }
+
+    // 🔍 Se o tipo de entrega for própria, valida a taxa
+    if (deliveryTypes.includes("propria")) {
+      const numericFee = Number(deliveryFee.replace(/\D/g, "")) / 100;
+
+      if (isNaN(numericFee) || numericFee < 0) {
+        newErrors.deliveryFee = "Informe uma taxa de entrega válida";
+      }
+    }
+
     setErrors(newErrors);
     if (Object.keys(newErrors).length > 0) return;
 
     try {
       setLoading(true);
+
       const size = {
         width: Number(width),
         height: Number(height),
         depth: Number(depth),
       };
+
       const formData = new FormData();
       formData.append("name", name);
       formData.append("description", description);
-      const rawPrice = Number(price.replace(/\D/g, "")) / 100;
-      formData.append("price", rawPrice);
+      formData.append("price", numericPrice);
       formData.append("size", JSON.stringify(size));
       formData.append("colors", colors.join(","));
       formData.append("material", materials.join(","));
       formData.append("finishing", finishings.join(","));
       formData.append("category", categories[0] || "");
       files.forEach((file) => formData.append("images", file));
+
+      // Envia as formas de entrega
+      formData.append("deliveryTypes", deliveryTypes.join(","));
+
+      // Se tiver entrega própria, adiciona a taxa
+      if (deliveryTypes.includes("propria")) {
+        const rawFee = Number(deliveryFee.replace(/\D/g, "")) / 100;
+        formData.append("deliveryFee", rawFee);
+      } else {
+        formData.append("deliveryFee", 0);
+      }
 
       await axios.post(`${API_URL}model-supplier/upload`, formData, {
         headers: { "Content-Type": "multipart/form-data" },
@@ -234,7 +298,11 @@ function AdicionarProduto() {
                     type="number"
                     placeholder="Largura (cm)"
                     value={width}
-                    onChange={(e) => setWidth(e.target.value)}
+                    min="0"
+                    onChange={(e) => {
+                      const val = e.target.value;
+                      setWidth(val >= 0 ? val : 0);
+                    }}
                     className={errors.width ? styles.inputError : ""}
                   />
                   {errors.width && (
@@ -247,7 +315,11 @@ function AdicionarProduto() {
                     type="number"
                     placeholder="Altura (cm)"
                     value={height}
-                    onChange={(e) => setHeight(e.target.value)}
+                    min="0"
+                    onChange={(e) => {
+                      const val = e.target.value;
+                      setHeight(val >= 0 ? val : 0);
+                    }}
                     className={errors.height ? styles.inputError : ""}
                   />
                   {errors.height && (
@@ -260,7 +332,11 @@ function AdicionarProduto() {
                     type="number"
                     placeholder="Profundidade (cm)"
                     value={depth}
-                    onChange={(e) => setDepth(e.target.value)}
+                    min="0"
+                    onChange={(e) => {
+                      const val = e.target.value;
+                      setDepth(val >= 0 ? val : 0);
+                    }}
                     className={errors.depth ? styles.inputError : ""}
                   />
                   {errors.depth && (
@@ -363,7 +439,9 @@ function AdicionarProduto() {
               <p>Etapa 3 de 3</p>
               <h2>Preencha as informações de preço e entrega</h2>
             </div>
+
             <div className={styles.content}>
+              {/* Campo de preço */}
               <div className={styles.group}>
                 <label>Preço:</label>
                 <input
@@ -373,9 +451,72 @@ function AdicionarProduto() {
                   onChange={(e) => formatPrice(e.target.value)}
                   className={errors.price ? styles.inputError : ""}
                 />
-
+                <span className={styles.helperText}>
+                  Uma taxa de 10% será automaticamente retida pela plataforma em
+                  cada venda.
+                </span>
                 {errors.price && <p className={styles.error}>{errors.price}</p>}
               </div>
+
+              {/* Formas de entrega */}
+              <div className={styles.group}>
+                <label>Formas de entrega:</label>
+                <div className={styles.checkboxGroupContainer}>
+                  <label>
+                    <input
+                      type="checkbox"
+                      checked={deliveryTypes.includes("retirada")}
+                      onChange={() => handleDeliveryChange("retirada")}
+                    />
+                    Retirada
+                  </label>
+                  <label>
+                    <input
+                      type="checkbox"
+                      checked={deliveryTypes.includes("propria")}
+                      onChange={() => handleDeliveryChange("propria")}
+                    />
+                    Entrega própria
+                  </label>
+                  <label>
+                    <input
+                      type="checkbox"
+                      checked={deliveryTypes.includes("correios")}
+                      onChange={() => handleDeliveryChange("correios")}
+                    />
+                    Correios
+                  </label>
+                </div>
+                <span className={styles.helperText}>
+                  A retirada e entrega própria só pode ser realizada em um raio
+                  máximo de 10 km a partir do seu endereço cadastrado.
+                </span>
+
+                {errors.deliveryTypes && (
+                  <p className={styles.error}>{errors.deliveryTypes}</p>
+                )}
+              </div>
+
+              {/* Taxa de entrega (só aparece se for própria) */}
+              {deliveryTypes.includes("propria") && (
+                <div className={styles.group}>
+                  <label>Taxa de entrega:</label>
+                  <input
+                    type="text"
+                    placeholder="R$ 0,00"
+                    value={deliveryFee}
+                    onChange={(e) => formatDeliveryFee(e.target.value)}
+                    className={errors.deliveryFee ? styles.inputError : ""}
+                  />
+                  <span className={styles.helperText}>
+                    Esse valor será cobrado apenas nas entregas feitas por conta
+                    própria.
+                  </span>
+                  {errors.deliveryFee && (
+                    <p className={styles.error}>{errors.deliveryFee}</p>
+                  )}
+                </div>
+              )}
             </div>
           </>
         );
@@ -398,6 +539,13 @@ function AdicionarProduto() {
       if (!width) newErrors.width = "Informe a largura";
       if (!height) newErrors.height = "Informe a altura";
       if (!depth) newErrors.depth = "Informe a profundidade";
+      if (Number(width) <= 0)
+        newErrors.width = "A largura deve ser maior que zero";
+      if (Number(height) <= 0)
+        newErrors.height = "A altura deve ser maior que zero";
+      if (Number(depth) <= 0)
+        newErrors.depth = "A profundidade deve ser maior que zero";
+
       if (colors.length === 0) newErrors.colors = "Selecione ao menos uma cor";
       if (materials.length === 0)
         newErrors.materials = "Selecione ao menos um material";
@@ -412,6 +560,16 @@ function AdicionarProduto() {
       const numericPrice = Number(price.replace(/\D/g, "")) / 100;
       if (isNaN(numericPrice) || numericPrice <= 0) {
         newErrors.price = "Informe o preço";
+      }
+
+      if (deliveryTypes.length === 0) {
+        newErrors.deliveryTypes = "Selecione ao menos uma forma de entrega";
+      }
+      if (deliveryTypes.includes("propria")) {
+        const numericFee = Number(deliveryFee.replace(/\D/g, "")) / 100;
+        if (isNaN(numericFee) || numericFee < 0) {
+          newErrors.deliveryFee = "Informe a taxa de entrega";
+        }
       }
     }
 
@@ -431,6 +589,13 @@ function AdicionarProduto() {
 
     // adiciona R$
     setPrice(`R$ ${numericValue}`);
+  };
+
+  const formatDeliveryFee = (value) => {
+    let numericValue = value.replace(/\D/g, "");
+    numericValue = (numericValue / 100).toFixed(2);
+    numericValue = numericValue.replace(".", ",");
+    setDeliveryFee(`R$ ${numericValue}`);
   };
 
   const voltar = () => navigate("/fornecedor/produtos");
@@ -466,6 +631,9 @@ function AdicionarProduto() {
           )}
         </div>
       </form>
+      {showDeliveryAlert && (
+        <DeliveryRadiusAlert onClose={() => setShowDeliveryAlert(false)} />
+      )}
     </div>
   );
 }

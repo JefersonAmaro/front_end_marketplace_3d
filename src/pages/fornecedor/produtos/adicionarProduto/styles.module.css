@@ -129,6 +129,11 @@ textarea {
     border-color: #007bff;
 }
 
+.helperText {
+    font-size: 12px;
+    color: #6b7280;
+}
+
 /* --- Imagens preview --- */
 .previewContainer {
     display: flex;
