@@ -35,6 +35,11 @@ function SectionFour() {
     .flat()
     .filter((produto) => produto.category === "Casa e Decoração");
 
+  // 🔹 Se nao houver produtos, nao renderiza nada
+  if (!casaEDecoracao.length) {
+    return null;
+  }
+
   // Adiciona a distância sem ordenar por ela
   const cardsWithDistance = casaEDecoracao.map((produto) => {
     const supplier = produto.supplier;

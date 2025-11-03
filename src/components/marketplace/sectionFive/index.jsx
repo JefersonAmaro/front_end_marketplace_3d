@@ -26,7 +26,7 @@ function SectionFive() {
   const { latitude, longitude, loading: geoLoading, skipped } = useGeo(); // ✅ do contexto
   const navigate = useNavigate();
 
-  if (loading || !data || geoLoading ) {
+  if (loading || !data || geoLoading) {
     return <LoadingCards />; // espera geolocalização
   }
 
@@ -34,6 +34,11 @@ function SectionFive() {
   const ferramentas = Object.values(data)
     .flat()
     .filter((produto) => produto.category === "Ferramentas");
+
+  // 🔹 Se nao houver produtos, nao renderiza nada
+  if (!ferramentas.length) {
+    return null;
+  }
 
   // Adiciona a distância sem ordenar por ela
   const cardsWithDistance = ferramentas.map((produto) => {

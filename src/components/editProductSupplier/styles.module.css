@@ -95,6 +95,11 @@
 
 }
 
+.group label {
+    font-weight: 500;
+    color: #444;
+}
+
 .group label,
 .group input {
     overflow: hidden;
@@ -109,6 +114,13 @@
     border-radius: 6px;
     background-color: #fafafa;
     box-sizing: border-box;
+}
+
+.group input:focus,
+.group textarea:focus {
+    border-color: #007bff;
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.15);
 }
 
 .group textarea {
@@ -129,6 +141,11 @@
     gap: 0.5rem;
     width: 100%;
 
+    label {
+        font-weight: 500;
+        color: #444;
+    }
+
     input {
         width: 100%;
         padding: 0.5rem;
@@ -136,6 +153,12 @@
         border-radius: 6px;
         background-color: #fafafa;
         box-sizing: border-box;
+    }
+
+    input:focus {
+        border-color: #007bff;
+        outline: none;
+        box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.15);
     }
 }
 
@@ -155,6 +178,25 @@
     align-items: center;
     gap: 0.5rem;
     cursor: pointer;
+    font-weight: 500;
+    color: #444;
+}
+
+.labelInput {
+    background: #f8f9fa;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 6px 12px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+}
+
+.labelInput:hover {
+    background: #eef3ff;
+    border-color: #007bff;
 }
 
 .checkboxGroup input {
@@ -182,6 +224,11 @@
     display: flex;
     gap: 0.5rem;
     align-items: center;
+}
+
+.category label {
+    font-weight: 500;
+    color: #444;
 }
 
 .category select {
@@ -260,6 +307,50 @@
     background-color: #2563eb;
     color: white;
 }
+
+.helperText {
+    font-size: 12px;
+    color: #6b7280;
+}
+
+/* --- Upload de arquivos estilizado --- */
+.fileUploadContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.fileUploadLabel {
+    background-color: #007bff;
+    color: #fff !important;
+    border: 1px solid #ddd;
+    padding: 8px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    width: fit-content;
+}
+
+.fileInput {
+    display: none;
+}
+
+.fileUploadLabel span {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 15px;
+}
+
+/* se houver erro, dá destaque no botão */
+.fileUploadContainer:has(.error) .fileUploadLabel {
+    border: 1px solid #e63946;
+    background: #ffeaea;
+    color: #e63946;
+}
+
 
 /* Animação de entrada do sidebar */
 @keyframes slideIn {

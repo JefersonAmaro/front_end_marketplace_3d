@@ -35,6 +35,11 @@ function SectionTwo() {
   // Unifica todos os produtos em um único array
   const allProducts = Object.values(data).flat();
 
+  // 🔹 Se não houver produtos, não renderiza nada
+  if (!allProducts.length) {
+    return null;
+  }
+
   // Adiciona a distância sem ordenar por ela
   const cardsWithDistance = allProducts.map((produto) => {
     const supplier = produto.supplier;

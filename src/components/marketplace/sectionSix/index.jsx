@@ -26,7 +26,7 @@ function SectionSix() {
   const { latitude, longitude, loading: geoLoading, skipped } = useGeo(); // ✅ usar contexto
   const navigate = useNavigate();
 
-  if (loading || !data || geoLoading ) {
+  if (loading || !data || geoLoading) {
     return <LoadingCards />; // espera o contexto
   }
 
@@ -36,7 +36,12 @@ function SectionSix() {
     (produto) => produto.category === "Outros"
   );
 
-// Adiciona a distância sem ordenar por ela
+  // 🔹 Se nao houver produtos, nao renderiza nada
+  if (!filteredProducts.length) {
+    return null;
+  }
+
+  // Adiciona a distância sem ordenar por ela
   const cardsWithDistance = filteredProducts.map((produto) => {
     const supplier = produto.supplier;
     // Se o usuário skipou, não calcula a distância

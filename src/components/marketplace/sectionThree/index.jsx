@@ -26,7 +26,7 @@ function SectionThree() {
   const { latitude, longitude, loading: geoLoading, skipped } = useGeo(); // ✅ do contexto
   const navigate = useNavigate();
 
-  if (loading || !data || geoLoading ) {
+  if (loading || !data || geoLoading) {
     return <LoadingCards />; // mostra loading enquanto geolocalização carrega
   }
 
@@ -34,6 +34,11 @@ function SectionThree() {
   const brinquedos = Object.values(data)
     .flat()
     .filter((produto) => produto.category === "Brinquedos");
+
+  // 🔹 Se nao houver produtos, nao renderiza nada
+  if (!brinquedos.length) {
+    return null;
+  }
 
   // Adiciona a distância sem ordenar por ela
   const cardsWithDistance = brinquedos.map((produto) => {

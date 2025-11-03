@@ -19,11 +19,16 @@ function EditProductSupplier({
   const [previews, setPreviews] = useState([]);
   const [isClosing, setIsClosing] = useState(false);
 
-  // Quando o componente abre, formata o preço da API
+  // 🟣 Novos estados para entrega
+  const [deliveryTypes, setDeliveryTypes] = useState([]);
+  const [deliveryFee, setDeliveryFee] = useState("R$ 0,00");
+
+  // Quando o componente abre
   useEffect(() => {
     if (isEditOpen && selectedModel?.price != null) {
-      // Transforma o valor float da API em string numérica sem vírgula
-      const numericString = Math.round(Number(selectedModel.price) * 100).toString();
+      const numericString = Math.round(
+        Number(selectedModel.price) * 100
+      ).toString();
       setSelectedModel((prev) => ({ ...prev, price: numericString }));
     }
 
@@ -32,6 +37,21 @@ function EditProductSupplier({
         .split(",")
         .map((path) => path.trim().replace(/\\/g, "/"));
       setSelectedModel((prev) => ({ ...prev, existingImages }));
+    }
+
+    if (isEditOpen && selectedModel) {
+      setDeliveryTypes(
+        selectedModel.deliveryTypes
+          ? selectedModel.deliveryTypes.split(",").map((t) => t.trim())
+          : []
+      );
+      setDeliveryFee(
+        selectedModel.deliveryFee
+          ? `R$ ${Number(selectedModel.deliveryFee)
+              .toFixed(2)
+              .replace(".", ",")}`
+          : "R$ 0,00"
+      );
     }
 
     fetchInfo();
@@ -105,9 +125,23 @@ function EditProductSupplier({
 
   const formatPriceInput = (numericString) => {
     if (!numericString) return "R$ 0,00";
-
     const numberValue = Number(numericString) / 100;
     return `R$ ${numberValue.toFixed(2).replace(".", ",")}`;
+  };
+
+  // 🟣 Lida com checkboxes de entrega
+  const handleDeliveryChange = (type) => {
+    setDeliveryTypes((prev) =>
+      prev.includes(type) ? prev.filter((t) => t !== type) : [...prev, type]
+    );
+  };
+
+  // 🟣 Formata taxa de entrega
+  const formatDeliveryFee = (value) => {
+    let numericValue = value.replace(/\D/g, "");
+    numericValue = (numericValue / 100).toFixed(2);
+    numericValue = numericValue.replace(".", ",");
+    setDeliveryFee(`R$ ${numericValue}`);
   };
 
   const handleSubmit = async (e) => {
@@ -131,7 +165,11 @@ function EditProductSupplier({
         ? selectedModel.finishing.join(",")
         : selectedModel.finishing || "";
 
-      if ((!selectedModel.existingImages || selectedModel.existingImages.length === 0) && newFiles.length === 0) {
+      if (
+        (!selectedModel.existingImages ||
+          selectedModel.existingImages.length === 0) &&
+        newFiles.length === 0
+      ) {
         alert("É necessário ter pelo menos uma imagem do produto.");
         setLoading(false);
         return;
@@ -139,36 +177,31 @@ function EditProductSupplier({
 
       const priceFloat = parseFloat(selectedModel.price) / 100;
 
-      if (newFiles.length > 0) {
-        const formData = new FormData();
-        formData.append("name", selectedModel.name);
-        formData.append("description", selectedModel.description);
-        formData.append("price", priceFloat);
-        formData.append("size", JSON.stringify(size));
-        formData.append("colors", colors);
-        formData.append("material", material);
-        formData.append("finishing", finishing);
-        formData.append("category", selectedModel.category);
-        formData.append("existingImages", selectedModel.existingImages.join(","));
+      const formData = new FormData();
+      formData.append("name", selectedModel.name);
+      formData.append("description", selectedModel.description);
+      formData.append("price", priceFloat);
+      formData.append("size", JSON.stringify(size));
+      formData.append("colors", colors);
+      formData.append("material", material);
+      formData.append("finishing", finishing);
+      formData.append("category", selectedModel.category);
+      formData.append("existingImages", selectedModel.existingImages.join(","));
 
-        newFiles.forEach((file) => formData.append("images", file));
+      // 🟣 Entregas
+      formData.append("deliveryTypes", deliveryTypes.join(","));
+      const feeValue = deliveryTypes.includes("propria")
+        ? Number(deliveryFee.replace(/\D/g, "")) / 100
+        : 0;
+      formData.append("deliveryFee", feeValue);
 
-        await axios.put(`${API_URL}model-supplier/update/${selectedModel.id}`, formData, {
-          headers: { "Content-Type": "multipart/form-data" },
-        });
-      } else {
-        await axios.put(`${API_URL}model-supplier/update/${selectedModel.id}`, {
-          name: selectedModel.name,
-          description: selectedModel.description,
-          price: priceFloat,
-          size,
-          colors,
-          material,
-          finishing,
-          category: selectedModel.category,
-          existingImages: selectedModel.existingImages.join(","),
-        });
-      }
+      newFiles.forEach((file) => formData.append("images", file));
+
+      await axios.put(
+        `${API_URL}model-supplier/update/${selectedModel.id}`,
+        formData,
+        { headers: { "Content-Type": "multipart/form-data" } }
+      );
 
       await fetchModels();
       handleClose();
@@ -184,7 +217,10 @@ function EditProductSupplier({
 
   return (
     <div className={styles.editSidebarOverlay} onClick={handleClose}>
-      <div className={`${styles.editSidebar} ${isClosing ? styles.exit : ""}`} onClick={(e) => e.stopPropagation()}>
+      <div
+        className={`${styles.editSidebar} ${isClosing ? styles.exit : ""}`}
+        onClick={(e) => e.stopPropagation()}
+      >
         <div className={styles.formContainer}>
           <h2>Editar Produto</h2>
 
@@ -207,7 +243,10 @@ function EditProductSupplier({
               <textarea
                 value={selectedModel.description || ""}
                 onChange={(e) =>
-                  setSelectedModel({ ...selectedModel, description: e.target.value })
+                  setSelectedModel({
+                    ...selectedModel,
+                    description: e.target.value,
+                  })
                 }
               />
             </div>
@@ -217,7 +256,12 @@ function EditProductSupplier({
               {["width", "height", "depth"].map((dim) => (
                 <div className={styles.sizeContainer} key={dim}>
                   <label>
-                    {dim === "width" ? "Largura" : dim === "height" ? "Altura" : "Profundidade"}:
+                    {dim === "width"
+                      ? "Largura"
+                      : dim === "height"
+                      ? "Altura"
+                      : "Profundidade"}
+                    :
                   </label>
                   <input
                     type="number"
@@ -238,12 +282,14 @@ function EditProductSupplier({
               <label>Cores:</label>
               <div className={styles.checkboxGroupContainer}>
                 {colorsArray.map((color) => (
-                  <label key={color}>
+                  <label key={color} className={styles.labelInput}>
                     <input
                       type="checkbox"
-                      checked={Array.isArray(selectedModel.colors)
-                        ? selectedModel.colors.includes(color)
-                        : selectedModel.colors?.split(",").includes(color)}
+                      checked={
+                        Array.isArray(selectedModel.colors)
+                          ? selectedModel.colors.includes(color)
+                          : selectedModel.colors?.split(",").includes(color)
+                      }
                       onChange={() => handleCheckboxChange(color, "colors")}
                     />
                     {colorMap[color] || color}
@@ -256,12 +302,14 @@ function EditProductSupplier({
               <label>Materiais:</label>
               <div className={styles.checkboxGroupContainer}>
                 {materialsArray.map((m) => (
-                  <label key={m}>
+                  <label key={m} className={styles.labelInput}>
                     <input
                       type="checkbox"
-                      checked={Array.isArray(selectedModel.material)
-                        ? selectedModel.material.includes(m)
-                        : selectedModel.material?.split(",").includes(m)}
+                      checked={
+                        Array.isArray(selectedModel.material)
+                          ? selectedModel.material.includes(m)
+                          : selectedModel.material?.split(",").includes(m)
+                      }
                       onChange={() => handleCheckboxChange(m, "material")}
                     />
                     {m}
@@ -274,12 +322,14 @@ function EditProductSupplier({
               <label>Acabamentos:</label>
               <div className={styles.checkboxGroupContainer}>
                 {finishingsArray.map((f) => (
-                  <label key={f}>
+                  <label key={f} className={styles.labelInput}>
                     <input
                       type="checkbox"
-                      checked={Array.isArray(selectedModel.finishing)
-                        ? selectedModel.finishing.includes(f)
-                        : selectedModel.finishing?.split(",").includes(f)}
+                      checked={
+                        Array.isArray(selectedModel.finishing)
+                          ? selectedModel.finishing.includes(f)
+                          : selectedModel.finishing?.split(",").includes(f)
+                      }
                       onChange={() => handleCheckboxChange(f, "finishing")}
                     />
                     {f}
@@ -294,12 +344,17 @@ function EditProductSupplier({
               <select
                 value={selectedModel.category || ""}
                 onChange={(e) =>
-                  setSelectedModel({ ...selectedModel, category: e.target.value })
+                  setSelectedModel({
+                    ...selectedModel,
+                    category: e.target.value,
+                  })
                 }
               >
                 <option value="">Selecione uma categoria</option>
                 {categoriesArray.map((cat) => (
-                  <option key={cat} value={cat}>{cat}</option>
+                  <option key={cat} value={cat}>
+                    {cat}
+                  </option>
                 ))}
               </select>
             </div>
@@ -317,34 +372,121 @@ function EditProductSupplier({
               />
             </div>
 
-            {/* Imagens */}
-            <div className={styles.group}>
-              <label>Imagens:</label>
-              <div className={styles.previewContainer}>
-                {selectedModel.existingImages?.map((path, index) => (
-                  <div key={index} className={styles.previewWrapper}>
-                    <img src={`${API_URL}${path}`} alt={`Imagem ${index}`} className={styles.previewImage} />
-                    <button type="button" className={styles.removeButton} onClick={() => removeExistingImage(index)}>
-                      &times;
-                    </button>
-                  </div>
-                ))}
+            {/* 🟣 Tipos de entrega */}
+            <div className={styles.checkboxGroup}>
+              <label>Formas de entrega:</label>
+              <div className={styles.checkboxGroupContainer}>
+                <label className={styles.labelInput}>
+                  <input
+                    type="checkbox"
+                    checked={deliveryTypes.includes("retirada")}
+                    onChange={() => handleDeliveryChange("retirada")}
+                  />
+                  Retirada
+                </label>
+                <label className={styles.labelInput}>
+                  <input
+                    type="checkbox"
+                    checked={deliveryTypes.includes("propria")}
+                    onChange={() => handleDeliveryChange("propria")}
+                  />
+                  Entrega própria
+                </label>
+                <label className={styles.labelInput}>
+                  <input
+                    type="checkbox"
+                    checked={deliveryTypes.includes("correios")}
+                    onChange={() => handleDeliveryChange("correios")}
+                  />
+                  Correios
+                </label>
               </div>
+              <span className={styles.helperText}>
+                Retirada e entrega própria só podem ocorrer num raio de até 10
+                km do endereço do fornecedor.
+              </span>
             </div>
 
-            {/* Novas imagens */}
+            {deliveryTypes.includes("propria") && (
+              <div className={styles.group}>
+                <label>Taxa de entrega:</label>
+                <input
+                  type="text"
+                  placeholder="R$ 0,00"
+                  value={deliveryFee}
+                  onChange={(e) => formatDeliveryFee(e.target.value)}
+                />
+                <span className={styles.helperText}>
+                  Esse valor será cobrado apenas nas entregas feitas por conta
+                  própria.
+                </span>
+              </div>
+            )}
+
+            {/* Imagens */}
             <div className={styles.group}>
+              <label>Imagens do produto</label>
+
+              {/* Upload moderno */}
               {selectedModel.existingImages?.length + newFiles.length < 6 ? (
-                <input type="file" multiple onChange={handleFileChange} />
+                <div className={styles.fileUploadContainer}>
+                  <label
+                    htmlFor="fileUpload"
+                    className={styles.fileUploadLabel}
+                  >
+                    <span>Adicionar imagens</span>
+                  </label>
+                  <input
+                    id="fileUpload"
+                    type="file"
+                    multiple
+                    onChange={handleFileChange}
+                    className={styles.fileInput}
+                  />
+                </div>
               ) : (
-                <p className={styles.limitText}>Limite máximo de 6 imagens atingido.</p>
+                <p className={styles.limitText}>
+                  Limite máximo de 6 imagens atingido.
+                </p>
               )}
+
+              {/* Imagens existentes */}
+              {selectedModel.existingImages?.length > 0 && (
+                <div className={styles.previewContainer}>
+                  {selectedModel.existingImages.map((path, index) => (
+                    <div key={index} className={styles.previewWrapper}>
+                      <img
+                        src={`${API_URL}${path}`}
+                        alt={`Imagem ${index}`}
+                        className={styles.previewImage}
+                      />
+                      <button
+                        type="button"
+                        className={styles.removeButton}
+                        onClick={() => removeExistingImage(index)}
+                      >
+                        &times;
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              )}
+
+              {/* Novas imagens */}
               {previews.length > 0 && (
                 <div className={styles.previewContainer}>
                   {previews.map((src, index) => (
                     <div key={index} className={styles.previewWrapper}>
-                      <img src={src} alt={`Nova ${index}`} className={styles.previewImage} />
-                      <button type="button" className={styles.removeButton} onClick={() => removeNewImage(index)}>
+                      <img
+                        src={src}
+                        alt={`Nova ${index}`}
+                        className={styles.previewImage}
+                      />
+                      <button
+                        type="button"
+                        className={styles.removeButton}
+                        onClick={() => removeNewImage(index)}
+                      >
                         &times;
                       </button>
                     </div>
@@ -355,8 +497,12 @@ function EditProductSupplier({
 
             {/* Botões */}
             <div className={styles.actions}>
-              <button type="button" onClick={handleClose}>Cancelar</button>
-              <button type="submit" disabled={loading}>{loading ? "Salvando..." : "Salvar"}</button>
+              <button type="button" onClick={handleClose}>
+                Cancelar
+              </button>
+              <button type="submit" disabled={loading}>
+                {loading ? "Salvando..." : "Salvar"}
+              </button>
             </div>
           </form>
         </div>
