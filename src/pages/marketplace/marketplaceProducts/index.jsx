@@ -10,7 +10,7 @@ import FinishingSelector from "../../../components/finishingSelector";
 import MaterialSelector from "../../../components/materialSelector";
 
 import CardsComponent from "../../../components/cardsComponent";
-import { useGeolocation } from "../../../hooks/useGeolocation";
+import { useGeo } from "../../../context/geoContext";
 
 import LoadingCards from "../../../components/loadingCards";
 
@@ -18,7 +18,7 @@ function MarketplaceProducts() {
   const API_URL = import.meta.env.VITE_API_URL;
   const { id } = useParams();
   const { data, loading } = useContext(DataContext);
-  const userLocation = useGeolocation(); // { latitude, longitude, error }
+  const { latitude, longitude, loading: geoLoading } = useGeo();
   const navigate = useNavigate();
 
   const [randomFourProducts, setRandomFourProducts] = useState([]);
@@ -54,60 +54,56 @@ function MarketplaceProducts() {
   // Calcula distância de cada produto até o usuário
   const productsWithDistance = allProducts.map((p) => {
     const supplier = p.supplier;
-    const distance = supplier?.latitude
-      ? getDistance(
-          userLocation.latitude,
-          userLocation.longitude,
-          supplier.latitude,
-          supplier.longitude
-        )
-      : Infinity;
+    const distance =
+      supplier?.latitude && supplier?.longitude && latitude && longitude
+        ? getDistance(
+            latitude,
+            longitude,
+            supplier.latitude,
+            supplier.longitude
+          )
+        : Infinity;
     return { ...p, distance };
   });
 
   const produto = productsWithDistance.find((item) => item.id === id);
 
-  useEffect(() => {
-    if (!produto) return;
+useEffect(() => {
+  if (!produto) return;
 
-    // cria cópia com distância só uma vez
-    const outros = allProducts
-      .filter((item) => item.id !== id)
-      .map((p) => {
-        const supplier = p.supplier;
-        const distance =
-          supplier?.latitude && supplier?.longitude && userLocation.latitude
-            ? getDistance(
-                userLocation.latitude,
-                userLocation.longitude,
-                supplier.latitude,
-                supplier.longitude
-              )
-            : Infinity;
-        return { ...p, distance };
-      });
+  const outros = allProducts
+    .filter((item) => item.id !== id)
+    .map((p) => {
+      const supplier = p.supplier;
+      const distance =
+        supplier?.latitude && supplier?.longitude && latitude && longitude
+          ? getDistance(latitude, longitude, supplier.latitude, supplier.longitude)
+          : Infinity;
+      return { ...p, distance };
+    });
 
-    // Produtos do mesmo fornecedor
-    const doMesmoFornecedor = outros.filter(
-      (item) => item.supplier?.id === produto.supplier?.id
-    );
+  // Produtos do mesmo fornecedor
+  const doMesmoFornecedor = outros.filter(
+    (item) => item.supplier?.id === produto.supplier?.id
+  );
 
-    const aleatorios = doMesmoFornecedor
-      .slice()
-      .sort(() => 0.5 - Math.random())
-      .slice(0, 4);
+  const aleatorios = doMesmoFornecedor
+    .slice()
+    .sort(() => 0.5 - Math.random())
+    .slice(0, 4);
 
-    setRandomFourProducts(aleatorios);
+  setRandomFourProducts(aleatorios);
 
-    // Produtos relacionados (mesma categoria) ordenados pela distância
-    const relacionados = outros
-      .filter((item) => item.category === produto.category)
-      .slice()
-      .sort((a, b) => a.distance - b.distance)
-      .slice(0, 4);
+  // Produtos relacionados (mesma categoria) ordenados pela distância
+  const relacionados = outros
+    .filter((item) => item.category === produto.category)
+    .slice()
+    .sort((a, b) => a.distance - b.distance)
+    .slice(0, 4);
 
-    setProductsRelated(relacionados);
-  }, [id, allProducts, userLocation]);
+  setProductsRelated(relacionados);
+}, [id, allProducts, latitude, longitude]);
+
 
   if (loading) {
     return <Loading />;
@@ -251,7 +247,7 @@ function MarketplaceProducts() {
         </div>
       </div>
 
-      {loading || !data || !userLocation.latitude ? (
+      {loading || !data || geoLoading ? (
         <LoadingCards />
       ) : (
         <>

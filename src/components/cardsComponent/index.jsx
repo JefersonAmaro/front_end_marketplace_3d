@@ -1,10 +1,12 @@
 import styles from "./styles.module.css";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useGeo } from "../../context/geoContext";
 
 function CardsComponent(props) {
   const API_URL = import.meta.env.VITE_API_URL;
   const { title, description, button, onClickButton, cards, status } = props;
+  const { skipped } = useGeo();
 
   const navigate = useNavigate();
 
@@ -48,6 +50,14 @@ function CardsComponent(props) {
       : produto.material
       ? produto.material.split(",")[0].trim()
       : null;
+
+    console.log("Adicionando ao carrinho:", {
+      produto,
+      cor,
+      acabamento,
+      material,
+      quantidade,
+    });
 
     const index = cart.findIndex(
       (item) =>
@@ -116,9 +126,11 @@ function CardsComponent(props) {
                 src={`${API_URL}${card.file_paths.split(",")[0]}`}
                 alt={card.name}
               />
-              <p className={styles.distance}>
-                {card.distance?.toFixed(1)} km de você
-              </p>
+              {!skipped && card.distance != null && (
+                <p className={styles.distance}>
+                  {card.distance?.toFixed(1)} km de você
+                </p>
+              )}
               <div className={styles.contentCard}>
                 <div className={styles.contentTitleCard}>
                   <h4>{card.name}</h4>

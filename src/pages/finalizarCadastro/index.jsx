@@ -138,19 +138,48 @@ function FinalizarCadastro() {
         longitude: "",
       }));
 
-      // Busca coordenadas
-      const coordsUrl = `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(
-        enderecoCompleto
-      )}&format=json&limit=1`;
-      const coordsResponse = await axios.get(coordsUrl);
-      if (coordsResponse.data.length > 0) {
-        const { lat, lon } = coordsResponse.data[0];
-        setFormData((prev) => ({ ...prev, latitude: lat, longitude: lon }));
+      // Função auxiliar com fallback progressivo
+      const buscarCoordenadas = async (enderecoBase) => {
+        const tentativas = [
+          enderecoBase,
+          enderecoBase.replace(/\d+/, ""), // remove número
+          endereco.localidade && endereco.uf
+            ? `${endereco.logradouro}, ${endereco.localidade}, ${endereco.uf}`
+            : endereco.logradouro,
+        ];
+
+        for (const tentativa of tentativas) {
+          const url = `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(
+            tentativa
+          )}&format=json&limit=1`;
+
+          const resposta = await axios.get(url, {
+            headers: {
+              "User-Agent": "GNConnectSystem/1.0 (contato@gnconnect.com)",
+            },
+          });
+
+          if (resposta.data.length > 0) return resposta.data[0];
+        }
+        return null;
+      };
+
+      // Busca coordenadas (com fallback)
+      const coordenadas = await buscarCoordenadas(enderecoCompleto);
+
+      if (coordenadas) {
+        setFormData((prev) => ({
+          ...prev,
+          latitude: coordenadas.lat,
+          longitude: coordenadas.lon,
+        }));
       } else {
         console.warn("Não foi possível obter coordenadas para este endereço");
+        setErrorMessage("Não foi possível encontrar coordenadas do endereço.");
       }
     } catch (err) {
       console.error("Erro ao buscar CEP ou coordenadas:", err);
+      setErrorMessage("Erro ao buscar CEP ou coordenadas");
     }
   };
 

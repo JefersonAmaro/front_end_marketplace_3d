@@ -28,6 +28,10 @@
 }
 
 .locationContainer {
+  background-color: #ffffff;
+  border: 1px solid #ccc;
+  padding: 0.5rem 1rem;
+  border-radius: 10px;
   width: 58%;
 
   .location {

@@ -1,6 +1,6 @@
 import { useContext } from "react";
 import { DataContext } from "../../../context/dataContext";
-import { useGeolocation } from "../../../hooks/useGeolocation";
+import { useGeo } from "../../../context/geoContext"; // ✅ pegar do contexto
 import CardsComponent from "../../cardsComponent";
 import LoadingCards from "../../loadingCards";
 import { useNavigate } from "react-router-dom";
@@ -23,11 +23,11 @@ function getDistance(lat1, lon1, lat2, lon2) {
 
 function SectionSix() {
   const { data, loading, setFilters, status } = useContext(DataContext);
-  const userLocation = useGeolocation(); // { latitude, longitude, error }
+  const { latitude, longitude, loading: geoLoading, skipped } = useGeo(); // ✅ usar contexto
   const navigate = useNavigate();
 
-  if (loading || !data || !userLocation.latitude) {
-    return <LoadingCards />;
+  if (loading || !data || geoLoading ) {
+    return <LoadingCards />; // espera o contexto
   }
 
   // Unifica todos os produtos e filtra pela categoria "Outros"
@@ -36,18 +36,19 @@ function SectionSix() {
     (produto) => produto.category === "Outros"
   );
 
-  // Calcula a distância em relação ao usuário
+// Adiciona a distância sem ordenar por ela
   const cardsWithDistance = filteredProducts.map((produto) => {
     const supplier = produto.supplier;
+    // Se o usuário skipou, não calcula a distância
     const distance =
-      supplier?.latitude && supplier?.longitude
+      !skipped && supplier?.latitude && supplier?.longitude
         ? getDistance(
-            userLocation.latitude,
-            userLocation.longitude,
+            latitude,
+            longitude,
             supplier.latitude,
             supplier.longitude
           )
-        : Infinity;
+        : null;
     return { ...produto, distance };
   });
 

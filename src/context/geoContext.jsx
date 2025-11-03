@@ -1,22 +1,30 @@
-import { useState, useEffect } from "react";
+import { createContext, useContext, useState, useEffect } from "react";
 
-export function useGeolocation() {
-  const [data, setData] = useState({
+const GeoContext = createContext();
+
+export function GeoProvider({ children }) {
+  const [geo, setGeo] = useState({
     latitude: null,
     longitude: null,
     street: null,
     postalCode: null,
-    error: null,
     loading: true,
-    skipped: false, // 🔹 nova flag
+    error: null,
+    permissionDenied: false,
+    skipped: false,
   });
 
+  const skipLocation = () =>
+    setGeo((prev) => ({ ...prev, loading: false, skipped: true }));
+
   useEffect(() => {
+    if (geo.skipped) return;
+    
     if (!navigator.geolocation) {
-      setData((prev) => ({ 
-        ...prev, 
-        error: "Geolocalização não suportada", 
-        loading: false 
+      setGeo((prev) => ({
+        ...prev,
+        loading: false,
+        error: "Geolocalização não suportada",
       }));
       return;
     }
@@ -34,8 +42,8 @@ export function useGeolocation() {
             {
               headers: {
                 "Accept-Language": "pt-BR",
-                "User-Agent": "MyReactApp/1.0 (https://example.com)"
-              }
+                "User-Agent": "MyReactApp/1.0 (https://example.com)",
+              },
             }
           );
 
@@ -52,29 +60,29 @@ export function useGeolocation() {
             result.display_name?.split(",")[0] ||
             "Endereço não identificado";
 
-          setData({
+          setGeo({
             latitude: lat,
             longitude: lon,
             street,
             postalCode: address.postcode || null,
-            error: null,
             loading: false,
+            error: null,
+            permissionDenied: false,
             skipped: false,
           });
         } catch (err) {
-          setData((prev) => ({ ...prev, loading: false, error: err.message }));
+          setGeo((prev) => ({ ...prev, loading: false, error: err.message }));
         }
       },
       (err) => {
         if (err.code === err.PERMISSION_DENIED) {
-          setData((prev) => ({
+          setGeo((prev) => ({
             ...prev,
             loading: false,
-            skipped: false, // usuário negou, mas ainda pode pular explicitamente
-            error: "Permissão negada",
+            permissionDenied: true,
           }));
         } else {
-          setData((prev) => ({
+          setGeo((prev) => ({
             ...prev,
             loading: false,
             error: err.message,
@@ -84,19 +92,13 @@ export function useGeolocation() {
     );
   }, []);
 
-  // Função para o usuário "continuar sem localização"
-  const skipLocation = () => {
-    setData((prev) => ({
-      ...prev,
-      latitude: null,
-      longitude: null,
-      street: null,
-      postalCode: null,
-      error: null,
-      loading: false,
-      skipped: true,
-    }));
-  };
+  return (
+    <GeoContext.Provider value={{ ...geo, skipLocation }}>
+      {children}
+    </GeoContext.Provider>
+  );
+}
 
-  return { ...data, skipLocation };
+export function useGeo() {
+  return useContext(GeoContext);
 }

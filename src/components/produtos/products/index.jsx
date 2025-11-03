@@ -1,6 +1,7 @@
-import { useRef, useEffect, useState, useMemo } from "react";
+import { useRef, useEffect, useState, useMemo, useContext } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { useGeolocation } from "../../../hooks/useGeolocation";
+import { useGeo } from "../../../context/geoContext";
+
 import styles from "./styles.module.css";
 
 function Products({ filters, onRemoveFilter, products, status }) {
@@ -8,7 +9,7 @@ function Products({ filters, onRemoveFilter, products, status }) {
   const location = useLocation();
   const navigate = useNavigate();
 
-  const userLocation = useGeolocation();
+  const { latitude, longitude, loading: geoLoading, skipped } = useGeo(); // ✅ usar contexto
 
   const { categorias = [], materiais = [], cor, preco } = filters;
   const temFiltros =
@@ -35,22 +36,24 @@ function Products({ filters, onRemoveFilter, products, status }) {
   };
 
   const productsWithDistance = useMemo(() => {
-    if (!userLocation.latitude || !userLocation.longitude) return products;
+    // Se skipou, não calcula distância
+    if (skipped || !latitude || !longitude)
+      return products.map((p) => ({ ...p, distance: null }));
 
     return products.map((p) => {
       const supplier = p.supplier;
       const distance =
         supplier?.latitude && supplier?.longitude
           ? getDistance(
-              userLocation.latitude,
-              userLocation.longitude,
+              latitude,
+              longitude,
               supplier.latitude,
               supplier.longitude
             )
-          : Infinity;
+          : null;
       return { ...p, distance };
     });
-  }, [products, userLocation]);
+  }, [products, latitude, longitude, skipped]);
 
   // 🔹 Mapeamento cores português → inglês
   const coresPTparaEN = {
@@ -173,6 +176,8 @@ function Products({ filters, onRemoveFilter, products, status }) {
 
       switch (orderBy) {
         case "distancia":
+          // Se skipou, não ordena por distância
+          if (skipped) return 0;
           return (a.distance || Infinity) - (b.distance || Infinity);
         case "maior":
           return precoB - precoA;
@@ -303,6 +308,12 @@ function Products({ filters, onRemoveFilter, products, status }) {
     );
   }, [filters]);
 
+  useEffect(() => {
+    if (skipped && orderBy === "distancia") {
+      setOrderBy("data");
+    }
+  }, [skipped]);
+
   // 🔹 Render
   return (
     <div className={styles.container}>
@@ -359,7 +370,7 @@ function Products({ filters, onRemoveFilter, products, status }) {
         <div className={styles.order}>
           <p>Ordenar por:</p>
           <select value={orderBy} onChange={(e) => setOrderBy(e.target.value)}>
-            <option value="distancia">Distância</option>
+            {!skipped && <option value="distancia">Distância</option>}
             <option value="data">Lançamentos</option>
             <option value="maior">Maior Preço</option>
             <option value="menor">Menor Preço</option>
@@ -397,11 +408,13 @@ function Products({ filters, onRemoveFilter, products, status }) {
                   )}`}
                   alt={product.name}
                 />
-                {product.distance && (
+                {/* Mostrar distância apenas se não skipou */}
+                {!skipped && product.distance != null && (
                   <p className={styles.distance}>
                     {product.distance.toFixed(1)} km de você
                   </p>
                 )}
+
                 <div className={styles.contentProduct}>
                   <div className={styles.contentTitleProduct}>
                     <h4>{product.name}</h4>

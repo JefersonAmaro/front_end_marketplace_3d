@@ -5,7 +5,7 @@ import Products from "../../components/produtos/products";
 
 import { useContext, useState } from "react";
 import { DataContext } from "../../context/dataContext";
-import { useGeolocation } from "../../hooks/useGeolocation";
+import { useGeo } from "../../context/geoContext";
 
 // Função para calcular distância entre duas coordenadas (em km)
 function getDistance(lat1, lon1, lat2, lon2) {
@@ -26,7 +26,7 @@ function getDistance(lat1, lon1, lat2, lon2) {
 function Produtos() {
   const { data, loading, filters, setFilters, status } =
     useContext(DataContext);
-  const userLocation = useGeolocation(); // { latitude, longitude, error }
+  const { latitude, longitude, loading: geoLoading } = useGeo();
 
   // 🔹 Converte qualquer valor em array seguro
   const toArray = (value) => {
@@ -52,10 +52,10 @@ function Produtos() {
   const productsWithDistance = products.map((product) => {
     const supplier = product.supplier;
     const distance =
-      supplier?.latitude && supplier?.longitude
+      supplier?.latitude && supplier?.longitude && latitude && longitude
         ? getDistance(
-            userLocation.latitude,
-            userLocation.longitude,
+            latitude,
+            longitude,
             supplier.latitude,
             supplier.longitude
           )
@@ -127,7 +127,7 @@ function Produtos() {
   return (
     <div className={styles.container}>
       <Filtro filters={filters} setFilters={setFilters} />
-      {loading || !data || !userLocation.latitude ? (
+      {loading || !data || geoLoading ? (
         <div className={styles.loadingContainer}>
           <div className={styles.loading}></div>
         </div>
