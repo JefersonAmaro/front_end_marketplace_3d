@@ -78,6 +78,7 @@ function AppContent() {
   return (
     <>
       <Header />
+      <ScrollToTop />
       <Outlet />
       <Footer />
       <CartPreview />

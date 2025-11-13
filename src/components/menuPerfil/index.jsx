@@ -115,7 +115,7 @@ function MenuPefil({ user, logout }) {
               <p className={styles.email}>{user?.email ?? ""}</p>
             </div>
             <div className={styles.profileOptions}>
-              <button className={styles.btn}>Minha conta</button>
+              <button className={styles.btn} onClick={() => handleNavigate("/minha-conta")}>Minha conta</button>
               <button
                 className={styles.btn}
                 onClick={() => handleNavigate("/pedidos")}

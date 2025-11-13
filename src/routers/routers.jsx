@@ -10,6 +10,7 @@ import Orcamento from "../pages/orcamento";
 import Produtos from "../pages/produtos";
 import FinalizarCadastro from "../pages/finalizarCadastro";
 import Pedidos from "../pages/pedidos";
+import MinhaConta from "../pages/minhaConta";
 
 import FornecedorDashboard from "../pages/fornecedor/dashboard";
 import ProdutosFornecedor from "../pages/fornecedor/produtos";
@@ -42,6 +43,7 @@ export const router = createBrowserRouter([
           { path: "perfil", element: <Perfil /> },
           { path: "solicitar-orcamento", element: <Orcamento /> },
           { path: "pedidos", element: <Pedidos /> },
+          { path: "minha-conta", element: <MinhaConta /> },
         ],
       },
 
