@@ -45,22 +45,36 @@ function HeaderSupplier({ collapsed, setCollapsed }) {
           <FaHome className={styles.navIcon} />
           <span className={styles.navText}>Painel</span>
         </div>
-        <div className={styles.navItem} onClick={() => navigate("/fornecedor/produtos")}>
+        <div
+          className={styles.navItem}
+          onClick={() => navigate("/fornecedor/produtos")}
+        >
           <FaBox className={styles.navIcon} />
           <span className={styles.navText}>Produtos</span>
         </div>
-        <div className={styles.navItem} onClick={() => navigate("/fornecedor/pedidos")}>
+        <div
+          className={styles.navItem}
+          onClick={() => navigate("/fornecedor/pedidos")}
+        >
           <FaShoppingCart className={styles.navIcon} />
           <span className={styles.navText}>Pedidos</span>
         </div>
-        <div className={styles.navItem}>
+        <div
+          className={styles.navItem}
+          onClick={() => navigate("/fornecedor/configuracoes")}
+        >
           <FaCog className={styles.navIcon} />
           <span className={styles.navText}>Configurações</span>
         </div>
       </nav>
 
       <div className={styles.footer}>
-        <button onClick={() => {logout(), navigate("/marketplace")}} className={`${styles.logoutBtn} ${collapsed ? styles.collapsed : ""}`}>
+        <button
+          onClick={() => {
+            logout(), navigate("/marketplace");
+          }}
+          className={`${styles.logoutBtn} ${collapsed ? styles.collapsed : ""}`}
+        >
           <span className={styles.navText}>Sair</span>
           <FaSignOutAlt className={styles.navIcon} />
         </button>

@@ -261,7 +261,7 @@ function MinhaConta() {
           </div>
           <div className={styles.formGroup}>
             <label>CPF/CNPJ</label>
-            <input type="text" name="cpf_cnpj" value={user.cpf_cnpj || ""} onChange={handleCpfCnpjChange} placeholder="000.000.000-00 ou 00.000.000/0000-00" required />
+            <input type="text" disabled name="cpf_cnpj" value={user.cpf_cnpj || ""} placeholder="000.000.000-00 ou 00.000.000/0000-00" required />
           </div>
         </div>
         <button type="submit" disabled={saveDisabled} className={`${styles.saveBtn} ${saveDisabled ? styles.disabled : ""}`}>
@@ -275,7 +275,7 @@ function MinhaConta() {
         <div className={styles.contentForm}>
           <div className={styles.formGroup}>
             <label>E-mail</label>
-            <input type="email" name="email" value={user.email || ""} onChange={handleChange} placeholder="seuemail@exemplo.com" required />
+            <input type="email" disabled name="email" value={user.email || ""} placeholder="seuemail@exemplo.com" required />
           </div>
           <div className={styles.formGroup}>
             <label>Telefone</label>

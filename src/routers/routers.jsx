@@ -17,7 +17,7 @@ import ProdutosFornecedor from "../pages/fornecedor/produtos";
 import AdicionarProduto from "../pages/fornecedor/produtos/adicionarProduto";
 import PedidosFornecedor from "../pages/fornecedor/pedidos";
 import DetalhesPedidos from "../pages/fornecedor/detalhesPedidos";
-// import { path } from "framer-motion/client";
+import Configuracoes from "../pages/fornecedor/configuracoes";
 
 export const router = createBrowserRouter([
   {
@@ -57,6 +57,7 @@ export const router = createBrowserRouter([
           { path: "produtos/adicionar-produto", element: <AdicionarProduto /> }, // /fornecedor/produtos/adicionar-produto
           { path: "pedidos", element: <PedidosFornecedor /> }, // /fornecedor/pedidos
           { path: "pedidos/:id", element: <DetalhesPedidos /> }, // /fornecedor/pedidos/:id
+          { path: "configuracoes", element: <Configuracoes /> },
         ],
       },
     ],

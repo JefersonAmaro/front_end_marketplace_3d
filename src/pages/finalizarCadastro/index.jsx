@@ -9,6 +9,7 @@ import { IoIosArrowForward, IoIosArrowBack } from "react-icons/io";
 function FinalizarCadastro() {
   const { user, token, validateToken, setErrorMessage } =
     useContext(AuthContext);
+
   const navigate = useNavigate();
   const API_URL = import.meta.env.VITE_API_URL;
   const isFornecedor = user.role === "fornecedor";
@@ -33,39 +34,45 @@ function FinalizarCadastro() {
   const [dadosEndereco, setDadosEndereco] = useState({});
   const [cepValido, setCepValido] = useState(false);
 
-  // 🔧 Função para montar o endereço completo
+  // ---------------------------------------------
+  // 🔧 MONTA O ENDEREÇO COMPLETO
+  // ---------------------------------------------
   function montarEndereco(endereco, numero, complemento, cep) {
-    let enderecoCompleto = [
-      endereco?.logradouro,
-      numero,
-      endereco?.bairro,
-      endereco?.localidade,
-      endereco?.uf,
-    ]
-      .filter(Boolean)
-      .join(", ");
+    if (!endereco?.logradouro) return "";
 
-    if (complemento) enderecoCompleto += ` - ${complemento}`;
-    if (cep) enderecoCompleto += `, CEP: ${cep}`;
-    return enderecoCompleto;
+    const partes = [
+      `${endereco.logradouro}${numero ? `, ${numero}` : ""}`,
+      complemento ? ` - ${complemento}` : "",
+      endereco.bairro,
+      `${endereco.localidade} - ${endereco.uf}`,
+      cep ? `CEP: ${cep}` : "",
+    ];
+
+    return partes.filter(Boolean).join(", ").replace(",  -", " -");
   }
 
+  // ---------------------------------------------
+  // 📌 Funções de máscara
+  // ---------------------------------------------
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
+    setFormData((p) => ({ ...p, [name]: value }));
   };
 
   const handleTelefoneChange = (e) => {
     let input = e.target.value.replace(/\D/g, "");
     if (input.length > 11) input = input.slice(0, 11);
-    if (input.length > 6)
+
+    if (input.length > 6) {
       input = input.replace(
         /^(\d{2})(\d{1})(\d{4})(\d{0,4})$/,
         "($1) $2 $3-$4"
       );
-    else if (input.length > 2)
+    } else if (input.length > 2) {
       input = input.replace(/^(\d{2})(\d{0,5})$/, "($1) $2");
-    setFormData((prev) => ({ ...prev, telefone: input }));
+    }
+
+    setFormData((p) => ({ ...p, telefone: input }));
   };
 
   const handleCpfCnpjChange = (e) => {
@@ -84,165 +91,157 @@ function FinalizarCadastro() {
         .replace(/\.(\d{3})(\d)/, ".$1/$2")
         .replace(/(\d{4})(\d)/, "$1-$2");
     }
-    setFormData((prev) => ({ ...prev, cpf_cnpj: valor }));
+
+    setFormData((p) => ({ ...p, cpf_cnpj: valor }));
   };
 
+  // ---------------------------------------------
+  // 📌 CEP
+  // ---------------------------------------------
   const handleCepChange = (e) => {
     let cep = e.target.value.replace(/\D/g, "");
     if (cep.length > 8) cep = cep.slice(0, 8);
-    setFormData((prev) => ({ ...prev, cep }));
+
     setCepValido(false);
     setErrorMessage(null);
-    if (cep.length === 8) buscarCep(cep);
+
+    setFormData((p) => ({ ...p, cep }));
   };
+
+  // 🔍 Detecta autofill do CEP e faz a busca automaticamente
+  useEffect(() => {
+    if (formData.cep.length === 8) buscarCep(formData.cep);
+  }, [formData.cep]);
 
   const buscarCep = async (cep) => {
     try {
       const response = await axios.get(`https://viacep.com.br/ws/${cep}/json/`);
+
       if (response.data.erro) {
-        setErrorMessage("CEP não encontrado");
         setCepValido(false);
+        setErrorMessage("CEP não encontrado");
         return;
       }
 
       const endereco = response.data;
+
       setDadosEndereco(endereco);
       setCepValido(true);
 
-      const enderecoCompleto = montarEndereco(
-        endereco,
-        formData.numero,
-        formData.complemento,
-        cep
-      );
-
-      setFormData((prev) => ({
-        ...prev,
-        endereco: enderecoCompleto,
-        latitude: "",
-        longitude: "",
-      }));
-
       // Busca coordenadas com fallback
-      const buscarCoordenadas = async (enderecoBase) => {
+      const buscarCoordenadas = async (texto) => {
         const tentativas = [
-          enderecoBase,
-          enderecoBase.replace(/\d+/, ""),
+          texto,
+          texto.replace(/\d+/, ""),
           `${endereco.logradouro}, ${endereco.localidade}, ${endereco.uf}`,
         ];
-        for (const tentativa of tentativas) {
+
+        for (const t of tentativas) {
           const url = `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(
-            tentativa
+            t
           )}&format=json&limit=1`;
 
-          const resposta = await axios.get(url, {
-            headers: {
-              "User-Agent": "GNConnectSystem/1.0 (contato@gnconnect.com)",
-            },
+          const res = await axios.get(url, {
+            headers: { "User-Agent": "GNConnectSystem/1.0" },
           });
 
-          if (resposta.data.length > 0) return resposta.data[0];
+          if (res.data.length > 0) return res.data[0];
         }
+
         return null;
       };
 
-      const coordenadas = await buscarCoordenadas(enderecoCompleto);
-      if (coordenadas) {
-        setFormData((prev) => ({
-          ...prev,
-          latitude: coordenadas.lat,
-          longitude: coordenadas.lon,
+      const coords = await buscarCoordenadas(
+        `${endereco.logradouro}, ${endereco.localidade}, ${endereco.uf}`
+      );
+
+      if (coords) {
+        setFormData((p) => ({
+          ...p,
+          latitude: coords.lat,
+          longitude: coords.lon,
         }));
       }
     } catch (err) {
-      console.error("Erro ao buscar CEP ou coordenadas:", err);
-      setErrorMessage("Erro ao buscar CEP ou coordenadas");
+      console.error(err);
+      setErrorMessage("Erro ao buscar CEP");
     }
   };
 
+  // ---------------------------------------------
+  // 🔄 Atualiza endereço ao mudar número / complemento (inclui autofill)
+  // ---------------------------------------------
+  useEffect(() => {
+    if (dadosEndereco.logradouro) {
+      const completo = montarEndereco(
+        dadosEndereco,
+        formData.numero,
+        formData.complemento,
+        formData.cep
+      );
+
+      setFormData((p) => ({ ...p, endereco: completo }));
+    }
+  }, [formData.numero, formData.complemento]);
+
   const handleNumeroChange = (e) => {
     const numero = e.target.value.replace(/\D/g, "");
-    const enderecoCompleto = montarEndereco(
-      dadosEndereco,
-      numero,
-      formData.complemento,
-      formData.cep
-    );
-    setFormData((prev) => ({ ...prev, numero, endereco: enderecoCompleto }));
+    setFormData((p) => ({ ...p, numero }));
   };
 
   const handleComplementoChange = (e) => {
-    const comp = e.target.value;
-    const enderecoCompleto = montarEndereco(
-      dadosEndereco,
-      formData.numero,
-      comp,
-      formData.cep
-    );
-    setFormData((prev) => ({
-      ...prev,
-      complemento: comp,
-      endereco: enderecoCompleto,
-    }));
+    setFormData((p) => ({ ...p, complemento: e.target.value }));
   };
 
-  const handleVoltarEtapa = (etapa) => setCadastroEtapa(etapa);
-
-  const handleSubmit = async (e, etapa) => {
+  // ---------------------------------------------
+  // 🔘 NAVEGAÇÃO ENTRE ETAPAS
+  // ---------------------------------------------
+  const handleSubmit = async (e) => {
     if (e) e.preventDefault();
     setError("");
     setErrorMessage(null);
 
     if (cadastroEtapa === "pessoal") {
       if (!formData.telefone || !formData.cpf_cnpj) {
-        const msg = "Preencha todos os campos pessoais.";
-        setError(msg);
-        setErrorMessage(msg);
-        return;
+        return setError("Preencha todos os campos.");
       }
-      setCadastroEtapa("endereco");
-      return;
+      return setCadastroEtapa("endereco");
     }
 
     if (cadastroEtapa === "endereco") {
-      if (!formData.cep || !formData.numero) {
-        const msg = "Preencha o CEP e o número.";
-        setError(msg);
-        setErrorMessage(msg);
-        return;
-      }
-      if (!cepValido) {
-        const msg = "CEP não encontrado.";
-        setError(msg);
-        setErrorMessage(msg);
-        return;
-      }
-      setCadastroEtapa("senha");
-      return;
+      if (!formData.cep || !cepValido)
+        return setError("Informe um CEP válido.");
+
+      if (!formData.numero) return setError("Informe o número.");
+
+      return setCadastroEtapa("senha");
     }
 
     if (cadastroEtapa === "senha") {
-      if (!formData.password || !formData.confirmPassword) {
-        const msg = "Preencha os dois campos de senha.";
-        setError(msg);
-        setErrorMessage(msg);
-        return;
-      }
-      if (formData.password !== formData.confirmPassword) {
-        const msg = "As senhas não coincidem.";
-        setError(msg);
-        setErrorMessage(msg);
-        return;
-      }
+      if (!formData.password || !formData.confirmPassword)
+        return setError("Preencha as duas senhas.");
+
+      if (formData.password !== formData.confirmPassword)
+        return setError("As senhas não coincidem.");
     }
 
-    // 🔒 Submissão final
-    setLoading(true);
+    const enderecoFinal = montarEndereco(
+      dadosEndereco,
+      formData.numero,
+      formData.complemento,
+      formData.cep
+    );
+
+    // ---------------------------------------------
+    // 🔒 Envio final
+    // ---------------------------------------------
     try {
+      setLoading(true);
+
       const payload = {
         telefone: formData.telefone,
         cpf_cnpj: formData.cpf_cnpj,
-        endereco: formData.endereco,
+        endereco: enderecoFinal,
         latitude: formData.latitude,
         longitude: formData.longitude,
         password: formData.password,
@@ -259,141 +258,156 @@ function FinalizarCadastro() {
 
       Cookies.set("needsAddress", false, { expires: 7 });
       await validateToken();
+
       navigate(user.role === "usuario" ? "/marketplace" : "/fornecedor", {
         replace: true,
       });
     } catch (err) {
-      const msg = err.response?.data?.message || "Erro ao finalizar cadastro";
-      setError(msg);
+      setError(err.response?.data?.message || "Erro ao finalizar cadastro");
     } finally {
       setLoading(false);
     }
   };
 
+  // ---------------------------------------------
+  // 🖥️ RENDERIZAÇÃO POR ETAPA
+  // ---------------------------------------------
   return (
     <div className={styles.container}>
       <div className={styles.formContainer}>
         <h2>Finalizar Cadastro</h2>
+
         <form
+          autoComplete="off"
           className={styles.form}
-          onSubmit={(e) => handleSubmit(e, cadastroEtapa)}
+          onSubmit={handleSubmit}
         >
+          {/* ---------------------------------- ETAPA 1 */}
           {cadastroEtapa === "pessoal" && (
             <>
               <h4>Informações Pessoais</h4>
+
               <label>
                 CPF/CNPJ
                 <input
                   type="text"
                   value={formData.cpf_cnpj}
                   onChange={handleCpfCnpjChange}
-                  required
-                  placeholder="Digite seu CPF/CNPJ"
+                  autoComplete="off"
+                  placeholder="000.000.000.00 / 00.000.000/0000-00"
                 />
               </label>
+
               <label>
                 Telefone
                 <input
                   type="text"
                   value={formData.telefone}
                   onChange={handleTelefoneChange}
-                  required
-                  placeholder="Digite seu telefone"
+                  autoComplete="off"
+                  placeholder="(00) 00000-0000"
                 />
               </label>
+
               <div className={styles.buttonProx}>
-                <button
-                  type="button"
-                  onClick={() => handleSubmit(null, "endereco")}
-                >
+                <button type="button" onClick={handleSubmit}>
                   <IoIosArrowForward />
                 </button>
               </div>
             </>
           )}
 
+          {/* ---------------------------------- ETAPA 2 */}
           {cadastroEtapa === "endereco" && (
             <>
               <h4>Endereço</h4>
+
               <label>
                 CEP
                 <input
                   type="text"
                   value={formData.cep}
                   onChange={handleCepChange}
-                  required
-                  placeholder="Digite seu CEP"
+                  autoComplete="off"
+                  placeholder="00000-000"
                 />
               </label>
+
               <label>
                 Número
                 <input
                   type="text"
                   value={formData.numero}
                   onChange={handleNumeroChange}
-                  required
-                  placeholder="Digite o número"
+                  autoComplete="off"
+                  placeholder="000"
                 />
               </label>
+
               <label>
-                Complemento (opcional)
+                Complemento
                 <input
                   type="text"
                   value={formData.complemento}
                   onChange={handleComplementoChange}
-                  placeholder="Digite o complemento"
+                  autoComplete="off"
+                  placeholder="Casa / Apartamento"
                 />
               </label>
+
               <div className={styles.buttonProx}>
                 <button
                   type="button"
-                  onClick={() => handleVoltarEtapa("pessoal")}
+                  onClick={() => setCadastroEtapa("pessoal")}
                 >
                   <IoIosArrowBack />
                 </button>
-                <button
-                  type="button"
-                  onClick={() => handleSubmit(null, "senha")}
-                >
+
+                <button type="button" onClick={handleSubmit}>
                   <IoIosArrowForward />
                 </button>
               </div>
             </>
           )}
 
+          {/* ---------------------------------- ETAPA 3 */}
           {cadastroEtapa === "senha" && (
             <>
               <h4>Crie uma senha</h4>
+
               <label>
                 Senha
                 <input
                   type="password"
+                  name="password"
                   value={formData.password}
                   onChange={handleChange}
-                  name="password"
-                  required
+                  autoComplete="off"
                   placeholder="Digite sua senha"
                 />
               </label>
+
               <label>
-                Confirmar Senha
+                Confirmar senha
                 <input
                   type="password"
+                  name="confirmPassword"
                   value={formData.confirmPassword}
                   onChange={handleChange}
-                  name="confirmPassword"
-                  required
+                  autoComplete="off"
                   placeholder="Confirme sua senha"
                 />
               </label>
+
               <div className={styles.buttonProx}>
                 <button
                   type="button"
-                  onClick={() => handleVoltarEtapa("endereco")}
+                  onClick={() => setCadastroEtapa("endereco")}
                 >
                   <IoIosArrowBack />
                 </button>
               </div>
+
               <button type="submit" disabled={loading}>
                 {loading ? "Finalizando..." : "Finalizar Cadastro"}
               </button>
