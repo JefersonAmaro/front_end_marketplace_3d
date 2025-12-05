@@ -1,6 +1,6 @@
 import styles from "./styles.module.css";
 
-function HeaderChildren({ titulo, subtitle, voltar }) {
+function HeaderChildren({ titulo, subtitle, voltar, btn, onClickBtn }) {
   return (
     <header className={styles.header}>
       <h1 className={styles.titulo}>
@@ -11,6 +11,7 @@ function HeaderChildren({ titulo, subtitle, voltar }) {
           Voltar
         </button>
       )}
+      {btn && <button className={styles.btn} onClick={onClickBtn}>{btn}</button>}
     </header>
   );
 }

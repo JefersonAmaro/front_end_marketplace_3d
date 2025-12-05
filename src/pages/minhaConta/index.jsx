@@ -261,7 +261,7 @@ function MinhaConta() {
           </div>
           <div className={styles.formGroup}>
             <label>CPF/CNPJ</label>
-            <input type="text" disabled name="cpf_cnpj" value={user.cpf_cnpj || ""} placeholder="000.000.000-00 ou 00.000.000/0000-00" required />
+            <input className={styles.disabled} type="text" disabled name="cpf_cnpj" value={user.cpf_cnpj || ""} placeholder="000.000.000-00 ou 00.000.000/0000-00" required />
           </div>
         </div>
         <button type="submit" disabled={saveDisabled} className={`${styles.saveBtn} ${saveDisabled ? styles.disabled : ""}`}>
@@ -275,7 +275,7 @@ function MinhaConta() {
         <div className={styles.contentForm}>
           <div className={styles.formGroup}>
             <label>E-mail</label>
-            <input type="email" disabled name="email" value={user.email || ""} placeholder="seuemail@exemplo.com" required />
+            <input className={styles.disabled} type="email" disabled name="email" value={user.email || ""} placeholder="seuemail@exemplo.com" required />
           </div>
           <div className={styles.formGroup}>
             <label>Telefone</label>
@@ -297,7 +297,7 @@ function MinhaConta() {
           </div>
           <div className={styles.formGroup}>
             <label>Endereço</label>
-            <input type="text" name="endereco" value={`${user.rua}${user.numero ? `, ${user.numero}` : ""}${user.complemento ? ` - ${user.complemento}` : ""}${user.bairro ? `, ${user.bairro}` : ""}, ${user.cidade}, ${user.estado}`} disabled placeholder="Rua, Número - Complemento, Bairro, Cidade, Estado" />
+            <input className={styles.disabled} type="text" name="endereco" value={`${user.rua}${user.numero ? `, ${user.numero}` : ""}${user.complemento ? ` - ${user.complemento}` : ""}${user.bairro ? `, ${user.bairro}` : ""}, ${user.cidade}, ${user.estado}`} disabled placeholder="Rua, Número - Complemento, Bairro, Cidade, Estado" />
           </div>
           <div className={styles.formGroup}>
             <label>Número</label>

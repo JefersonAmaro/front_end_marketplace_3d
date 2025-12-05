@@ -197,7 +197,7 @@ function FornecedorDashboard() {
         />
         <Card
           icon={FiClock}
-          title="Orçamentos Pendentes"
+          title="Pedidos Pendentes"
           value={metrics.pendingBudgets}
           colorClass={styles.cardOrange}
         />

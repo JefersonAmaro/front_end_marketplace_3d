@@ -51,14 +51,6 @@ function CardsComponent(props) {
       ? produto.material.split(",")[0].trim()
       : null;
 
-    console.log("Adicionando ao carrinho:", {
-      produto,
-      cor,
-      acabamento,
-      material,
-      quantidade,
-    });
-
     const index = cart.findIndex(
       (item) =>
         item.produto.id === produto.id &&

@@ -2,6 +2,8 @@ import "./App.css";
 import { Outlet } from "react-router-dom";
 import { useContext, useState } from "react";
 import { AuthContext } from "./context/authContext";
+import { OrcamentosContextProvider } from "./context/orcamentosContext.jsx";
+import { OrcamentosUserContextProvider } from "./context/orcamentosUserContext.jsx";
 import { GeoProvider, useGeo } from "./context/geoContext";
 
 import Header from "./components/header";
@@ -22,13 +24,15 @@ function AppContent() {
 
   if (isSupplier) {
     return (
-      <div style={{ minHeight: "100vh" }}>
-        <HeaderSupplier collapsed={collapsed} setCollapsed={setCollapsed} />
-        <main className={collapsed ? "sidebar-collapsed" : ""}>
-          <ScrollToTop />
-          <Outlet />
-        </main>
-      </div>
+      <OrcamentosContextProvider>
+        <div style={{ minHeight: "100vh" }}>
+          <HeaderSupplier collapsed={collapsed} setCollapsed={setCollapsed} />
+          <main className={collapsed ? "sidebar-collapsed" : ""}>
+            <ScrollToTop />
+            <Outlet />
+          </main>
+        </div>
+      </OrcamentosContextProvider>
     );
   }
 
@@ -41,10 +45,7 @@ function AppContent() {
       <div className="container">
         <div className="card">
           <div className="header">
-            <h1
-              onClick={() => navigate("/marketplace")}
-              className="title"
-            >
+            <h1 onClick={() => navigate("/marketplace")} className="title">
               Market3D
             </h1>
           </div>
@@ -59,9 +60,7 @@ function AppContent() {
           </div>
 
           <div className="content">
-            <p className="mainText">
-              Carregando localização...
-            </p>
+            <p className="mainText">Carregando localização...</p>
           </div>
         </div>
       </div>
@@ -71,17 +70,23 @@ function AppContent() {
   // Se houver erro na geolocalização, exibimos o componente de erro
   if (geo.permissionDenied && !geo.skipped) {
     return (
-      <GeoBlocker onRetry={() => window.location.reload()} permissionDenied onSkip={geo.skipLocation} />
+      <GeoBlocker
+        onRetry={() => window.location.reload()}
+        permissionDenied
+        onSkip={geo.skipLocation}
+      />
     );
   }
 
   return (
     <>
-      <Header />
-      <ScrollToTop />
-      <Outlet />
-      <Footer />
-      <CartPreview />
+      <OrcamentosUserContextProvider>
+        <Header />
+        <ScrollToTop />
+        <Outlet />
+        <Footer />
+        <CartPreview />
+      </OrcamentosUserContextProvider>
     </>
   );
 }

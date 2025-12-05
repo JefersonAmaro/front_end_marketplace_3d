@@ -1,7 +1,7 @@
 import { useState, useEffect, useContext } from "react";
 import { AuthContext } from "../../context/authContext";
 import { DataContext } from "../../context/dataContext";
-import { useGeo } from "../../context/geoContext"; // ✅ usar o contexto
+import { useGeo } from "../../context/geoContext";
 
 import { useNavigate } from "react-router-dom";
 import styles from "./styles.module.css";
@@ -123,7 +123,7 @@ function Header() {
             </button>
             <button
               className={styles.button}
-              onClick={() => navigate("/solicitar-orcamento")}
+              onClick={() => navigate("/novo-orcamento")}
             >
               Solicitar Orçamento
             </button>
@@ -247,7 +247,7 @@ function Header() {
             <button
               className={styles.button}
               onClick={() => {
-                navigate("/solicitar-orcamento");
+                navigate("/novo-orcamento");
                 setMenuAberto(false);
               }}
             >

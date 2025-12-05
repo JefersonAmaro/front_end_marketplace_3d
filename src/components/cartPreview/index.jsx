@@ -138,8 +138,6 @@ export function CartPreview() {
             headers: { Authorization: `Bearer ${token}` },
           }
         );
-
-        console.log("Orçamento criado:", response.data);
       }
 
       // Limpa o carrinho após finalizar

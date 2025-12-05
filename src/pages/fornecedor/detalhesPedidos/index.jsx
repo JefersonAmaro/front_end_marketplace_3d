@@ -30,7 +30,6 @@ function DetalhesPedidos() {
 
         if (response.data.length > 0) {
           setPedido(response.data[0]);
-          console.log(pedido);
         } else {
           setError("Pedido não encontrado.");
         }
