@@ -271,3 +271,12 @@
     max-width: 500px;
     font-weight: bold;
 }
+
+.pricingAlert {
+    padding: 12px;
+    background-color: #ffefc5;
+    border: 1px solid #ffd966;
+    border-radius: 6px;
+    color: #665c00;
+    text-align: center;
+}

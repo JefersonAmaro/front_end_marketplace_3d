@@ -12,6 +12,7 @@ import { useThree } from "@react-three/fiber";
 import { Link } from "react-router-dom";
 
 import BarraFiltrosOrcamentosSupplier from "../../../components/barraFiltrosOrcamentosSupplier";
+import SupplierPricingForm from "./pricingForm";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -118,7 +119,31 @@ function FornecedorOrcamentos() {
     calcularDistancia,
     latitude,
     longitude,
+    princing,
+    hasPricing,
+    checkingPricing,
   } = useContext(OrcamentosContext);
+
+  if (loading || checkingPricing) {
+    return <div className={styles.loading}>Carregando...</div>;
+  }
+
+  if (!hasPricing) {
+    return (
+      <div className={styles.container}>
+        <HeaderChildren titulo="Configuração obrigatória" />
+        <p className={styles.pricingAlert}>
+          Antes de enviar orçamentos, configure seus preços de impressão.{" "}
+          <span style={{ fontSize: "12px" }}>
+            ( Esse valor será uma base para seus orçamentos, você poderá
+            ajustá-los individualmente depois. )
+          </span>
+        </p>
+
+        <SupplierPricingForm />
+      </div>
+    );
+  }
 
   const [mostrarEnviados, setMostrarEnviados] = useState(false);
 

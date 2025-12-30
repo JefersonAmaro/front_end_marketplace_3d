@@ -1,0 +1,175 @@
+.form {
+    width: 100%;
+    margin: 0 auto;
+    background: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+
+    h2 {
+        font-size: 18px;
+        font-weight: 600;
+        color: #333;
+    }
+}
+
+.fieldGroup {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.label {
+    font-size: 16px;
+    font-weight: 500;
+    color: #444;
+
+}
+
+.input {
+    padding: 12px 14px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    background-color: #f5f6fa;
+    font-size: 14px;
+    outline: none;
+    transition: all 0.2s ease-in-out;
+}
+
+.help {
+    font-size: 12px;
+    color: #666666;
+}
+
+.checkboxGroup {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 6px;
+}
+
+.checkbox {
+    position: relative;
+    padding: 8px 14px;
+    border-radius: 999px;
+    border: 1px solid #d1d5db;
+    background: #f9fafb;
+    font-size: 14px;
+    font-weight: 500;
+    color: #374151;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+}
+
+.checkbox:hover {
+    border-color: #2563eb;
+    color: #2563eb;
+}
+
+/* Esconde checkbox nativo */
+.checkbox input {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+}
+
+/* Estado selecionado */
+.checkbox:has(input:checked) {
+    background: #2563eb;
+    border-color: #2563eb;
+    color: #ffffff;
+}
+
+.percentInput {
+    position: relative;
+
+    input {
+        width: 100%;
+        padding-right: 30px;
+        /* Espaço para o símbolo de porcentagem */
+    }
+}
+
+.percentSymbol {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-weight: 600;
+    color: #666;
+    pointer-events: none;
+}
+
+
+
+.previewBox {
+    margin-top: 8px;
+    padding: 16px;
+    border-radius: 8px;
+    background: #f9fafb;
+    border: 1px dashed #d1d5db;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.previewBox h3 {
+    font-size: 18px;
+    font-weight: 600;
+    color: #333;
+}
+
+.previewBox p {
+    font-size: 13px;
+    color: #555;
+}
+
+/* Valor final do preview */
+.previewPrice {
+    font-size: 20px;
+    font-weight: 700;
+    color: #16a34a;
+}
+
+/* Botão submit */
+.submitButton {
+    margin-top: 12px;
+    padding: 12px 16px;
+    background: #2563eb;
+    color: #fff;
+    font-size: 15px;
+    font-weight: 600;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.2s ease, transform 0.1s ease;
+}
+
+.submitButton:hover {
+    background: #1d4ed8;
+}
+
+.submitButton:active {
+    transform: scale(0.98);
+}
+
+.submitButton:disabled {
+    background: #93c5fd;
+    cursor: not-allowed;
+}
+
+.error {
+    color: #dc2626;
+    margin-bottom: 12px;
+}
+
+.success {
+    color: #16a34a;
+    margin-bottom: 12px;
+}

@@ -1,5 +1,6 @@
 import { useState, useEffect, useContext } from "react";
 import axios from "axios";
+import { Link } from "react-router-dom";
 import styles from "./styles.module.css";
 import {
   BarChart,
@@ -21,6 +22,7 @@ import {
   FiStar,
 } from "react-icons/fi";
 import { AuthContext } from "../../../context/authContext";
+import { OrcamentosContext } from "../../../context/orcamentosContext";
 
 // 🔹 Componente de Card
 function Card({ icon: Icon, title, value, colorClass }) {
@@ -41,6 +43,8 @@ function Card({ icon: Icon, title, value, colorClass }) {
 
 function FornecedorDashboard() {
   const { user, token } = useContext(AuthContext);
+  const { hasPricing } = useContext(OrcamentosContext);
+
   const API_URL = import.meta.env.VITE_API_URL;
 
   const [metrics, setMetrics] = useState(null);
@@ -158,6 +162,19 @@ function FornecedorDashboard() {
 
   return (
     <div className={styles.container}>
+      {!hasPricing && (
+        <div className={styles.pricingAlert}>
+          <p>
+            Para aproveitar ao máximo da plataforma, configure os preços dos
+            seus serviços na seção{" "}
+            <Link to="/fornecedor/orcamentos" className={styles.link}>
+              Orçamentos
+            </Link>
+            .
+          </p>
+        </div>
+      )}
+
       {/* Cabeçalho */}
       <header className={styles.header}>
         <div className={styles.title}>

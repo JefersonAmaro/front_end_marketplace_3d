@@ -7,8 +7,12 @@ export const OrcamentosContext = createContext();
 
 const API_URL = import.meta.env.VITE_API_URL;
 
-// Função utilitária para calcular distância entre 2 pontos (em km)
+// ==============================
+// Função utilitária distância
+// ==============================
 function calcularDistancia(lat1, lon1, lat2, lon2) {
+  if (!lat1 || !lon1 || !lat2 || !lon2) return null;
+
   const R = 6371;
   const dLat = (lat2 - lat1) * (Math.PI / 180);
   const dLon = (lon2 - lon1) * (Math.PI / 180);
@@ -24,62 +28,104 @@ function calcularDistancia(lat1, lon1, lat2, lon2) {
 
 export const OrcamentosContextProvider = ({ children }) => {
   const [orcamentos, setOrcamentos] = useState([]);
-  const [ orcamentosEnviados, setOrcamentosEnviados ] = useState([]);
+  const [orcamentosEnviados, setOrcamentosEnviados] = useState([]);
   const [loading, setLoading] = useState(true);
   const [erro, setErro] = useState(null);
 
-  // Pegar a URL atual
+  // 🔥 PRICING
+  const [pricing, setPricing] = useState(null);
+  const [checkingPricing, setCheckingPricing] = useState(true);
+
   const location = useLocation();
   const url = location.pathname;
 
-  // Localização do fornecedor (usuário logado fornecedor)
   const { latitude, longitude, error: geoError } = useGeolocation();
 
-  // Carregar pedidos / orçamentos
+  // ==============================
+  // Buscar pricing do fornecedor
+  // ==============================
+  async function checkSupplierPricing() {
+    try {
+      const response = await axios.get(`${API_URL}supplier/pricing/me`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
+
+      setPricing(response.data);
+      return response.data;
+    } catch (err) {
+      setPricing(null);
+      return null;
+    } finally {
+      setCheckingPricing(false);
+    }
+  }
+
+  // ==============================
+  // Buscar orçamentos recebidos
+  // ==============================
+  async function loadOrcamentos() {
+    try {
+      const response = await axios.get(`${API_URL}custom-request/list`);
+      setOrcamentos(response.data);
+    } catch (err) {
+      console.error("Erro ao buscar orçamentos:", err);
+      setErro(err);
+    }
+  }
+
+  // ==============================
+  // Buscar orçamentos enviados
+  // ==============================
+  async function loadOrcamentosEnviados() {
+    try {
+      const response = await axios.get(`${API_URL}custom-request/list-request`);
+      setOrcamentosEnviados(response.data);
+    } catch (err) {
+      console.error("Erro ao buscar orçamentos enviados:", err);
+      setErro(err);
+    }
+  }
+
+  // ==============================
+  // Init
+  // ==============================
   useEffect(() => {
-    async function loadOrcamentos() {
-      try {
-        const response = await axios.get(`${API_URL}custom-request/list`);
-        setOrcamentos(response.data);
-      } catch (err) {
-        console.error("Erro ao buscar orçamentos:", err);
-        setErro(err);
-      } finally {
-        setLoading(false);
-      }
+    async function init() {
+      setLoading(true);
+      await Promise.all([
+        loadOrcamentos(),
+        loadOrcamentosEnviados(),
+        checkSupplierPricing(),
+      ]);
+      setLoading(false);
     }
 
-    loadOrcamentos();
-  }, [ url ]);
-
-  useEffect(() => {
-    async function loadOrcamentosEnviados() {
-      try {
-        const response = await axios.get(`${API_URL}custom-request/list-request`);
-        setOrcamentosEnviados(response.data);
-      } catch (err) {
-        console.error("Erro ao buscar orçamentos:", err);
-        setErro(err);
-      } finally {
-        setLoading(false);
-      }
-    }
-
-    loadOrcamentosEnviados();
-  }, [ url ]);
-
+    init();
+  }, [url]);
 
   return (
     <OrcamentosContext.Provider
       value={{
+        // orçamentos
         orcamentos,
         orcamentosEnviados,
         loading,
         erro,
-        latitude, // localização do fornecedor
-        longitude, // localização do fornecedor
+
+        // localização
+        latitude,
+        longitude,
         geoError,
-        calcularDistancia, // função para calcular distância
+        calcularDistancia,
+
+        // pricing
+        pricing,
+        setPricing,
+        checkingPricing,
+        hasPricing: !!pricing,
+        checkSupplierPricing,
       }}
     >
       {children}
