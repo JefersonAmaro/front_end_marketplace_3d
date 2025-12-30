@@ -5,7 +5,7 @@ import Products from "../../components/produtos/products";
 
 import { useContext, useState } from "react";
 import { DataContext } from "../../context/dataContext";
-import { useGeolocation } from "../../hooks/useGeolocation";
+import { useGeo } from "../../context/geoContext";
 
 // Função para calcular distância entre duas coordenadas (em km)
 function getDistance(lat1, lon1, lat2, lon2) {
@@ -24,8 +24,26 @@ function getDistance(lat1, lon1, lat2, lon2) {
 }
 
 function Produtos() {
-  const { data, loading, filters, setFilters } = useContext(DataContext);
-  const userLocation = useGeolocation(); // { latitude, longitude, error }
+  const { data, loading, filters, setFilters, status } =
+    useContext(DataContext);
+  const { latitude, longitude, loading: geoLoading } = useGeo();
+
+  // 🔹 Converte qualquer valor em array seguro
+  const toArray = (value) => {
+    if (!value) return [];
+    if (Array.isArray(value)) return value;
+    if (typeof value === "string") {
+      try {
+        const parsed = JSON.parse(value);
+        if (Array.isArray(parsed)) return parsed;
+      } catch {}
+      return value
+        .split(",")
+        .map((v) => v.trim())
+        .filter(Boolean);
+    }
+    return [String(value)];
+  };
 
   // Junta todos os produtos
   const products = Object.values(data).flat();
@@ -34,10 +52,10 @@ function Produtos() {
   const productsWithDistance = products.map((product) => {
     const supplier = product.supplier;
     const distance =
-      supplier?.latitude && supplier?.longitude
+      supplier?.latitude && supplier?.longitude && latitude && longitude
         ? getDistance(
-            userLocation.latitude,
-            userLocation.longitude,
+            latitude,
+            longitude,
             supplier.latitude,
             supplier.longitude
           )
@@ -79,8 +97,9 @@ function Produtos() {
         return false;
       }
 
+      const materials = toArray(product.material);
       if (filters.materiais.length > 0) {
-        const temMaterial = product.material.some((m) =>
+        const temMaterial = materials.some((m) =>
           filters.materiais.includes(m)
         );
         if (!temMaterial) return false;
@@ -92,8 +111,8 @@ function Produtos() {
       }
 
       if (filters.preco) {
-        const precoNumber = Number(product.price.replace(",", "."));
-        if (precoNumber > filters.preco) return false;
+        const precoNumber = Number(product.price) || 0;
+        if (filters.preco && precoNumber > filters.preco) return false;
       }
 
       return true;
@@ -105,23 +124,23 @@ function Produtos() {
     (a, b) => a.distance - b.distance
   );
 
-return (
-  <div className={styles.container}>
-    <Filtro filters={filters} setFilters={setFilters} />
-    {loading || !data || !userLocation.latitude ? (
-      <div className={styles.loadingContainer}>
-        <div className={styles.loading}></div>
-      </div>
-    ) : (
-      <Products
-        filters={filters}
-        onRemoveFilter={handleRemoveFilter}
-        products={sortedProducts}
-      />
-    )}
-  </div>
-);
-
+  return (
+    <div className={styles.container}>
+      <Filtro filters={filters} setFilters={setFilters} />
+      {loading || !data || geoLoading ? (
+        <div className={styles.loadingContainer}>
+          <div className={styles.loading}></div>
+        </div>
+      ) : (
+        <Products
+          filters={filters}
+          onRemoveFilter={handleRemoveFilter}
+          products={sortedProducts}
+          status={status}
+        />
+      )}
+    </div>
+  );
 }
 
 export default Produtos;

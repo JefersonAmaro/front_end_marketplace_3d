@@ -180,9 +180,12 @@ export const AuthContextProvider = ({ children }) => {
     try {
       const response = await axios.post(`${API_URL}register/user`, {
         name: user.nome,
+        cpf_cnpj: user.cpfCnpj,
         email: user.email,
         telefone: user.tel,
         endereco: user.endereco,
+        latitude: user.latitude,
+        longitude: user.longitude,
         password: user.senha,
       });
 
@@ -202,6 +205,8 @@ export const AuthContextProvider = ({ children }) => {
         email: supplier.email,
         telefone: supplier.tel,
         endereco: supplier.endereco,
+        latitude: supplier.latitude,
+        longitude: supplier.longitude,
         cpf_cnpj: supplier.cpfCnpj,
         password: supplier.senha,
       });

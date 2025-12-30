@@ -1,0 +1,609 @@
+/* Container da tabela */
+.tabelaContainer {
+    background-color: #fff;
+    border-radius: 10px;
+    overflow-x: auto;
+    /* Adiciona scroll horizontal se a tabela for muito larga */
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    flex: 1;
+}
+
+/* Tabela em si */
+.tabela {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+    /* Fixa o layout da tabela, permitindo definir larguras fixas para as colunas */
+}
+
+/* Cabeçalho e células da tabela */
+.tabela th,
+.tabela td {
+    padding: 1.1rem 1rem;
+    text-align: left;
+    border-bottom: 1px solid #eee;
+    /* Garante que o texto não quebre a linha */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    /* Adiciona "..." no final do texto cortado */
+}
+
+.tabela th {
+    background-color: #fafafa;
+    font-weight: 600;
+    color: #555;
+    text-transform: uppercase;
+    font-size: 14px;
+}
+
+/* Definição das larguras das colunas */
+.tabela th:nth-child(1),
+/* Coluna do ID */
+.tabela td:nth-child(1) {
+    width: 100px;
+    /* Limita o tamanho do ID */
+}
+
+.tabela th:nth-child(2),
+/* Coluna do Cliente Nome */
+.tabela td:nth-child(2) {
+    width: 150px;
+    /* Aumenta a largura do nome do cliente */
+}
+
+.tabela th:nth-child(3),
+/* Coluna do Produto */
+.tabela td:nth-child(3) {
+    width: 200px;
+    /* Limita o tamanho do produto */
+}
+
+.tabela th:nth-child(4),
+/* Coluna de Data */
+.tabela td:nth-child(4) {
+    width: 80px;
+}
+
+.tabela th:nth-child(5),
+/* Coluna de Total */
+.tabela td:nth-child(5) {
+    width: 100px;
+}
+
+.tabela th:nth-child(6),
+/* Coluna de Pagamento Status */
+.tabela td:nth-child(6) {
+    width: 120px;
+}
+
+.tabela th:nth-child(7),
+/* Coluna de Pedido Status */
+.tabela td:nth-child(7) {
+    width: 120px;
+}
+
+.tabela th:nth-child(8),
+/* Coluna de Ações */
+.tabela td:nth-child(8) {
+    width: 90px;
+}
+
+/* Estilização da tag de status */
+.tagStatus {
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: bold;
+    text-transform: capitalize;
+    display: inline-block;
+}
+
+.Pendente {
+    background-color: #fff3cd;
+    /* Amarelo */
+    color: #856404;
+}
+
+.Enviado {
+    background-color: #d4edda;
+    /* Verde */
+    color: #155724;
+}
+
+.Entregue {
+    background-color: #d1ecf1;
+    /* Azul claro */
+    color: #0c5460;
+}
+
+.Cancelado {
+    background-color: #f8d7da;
+    /* Vermelho */
+    color: #721c24;
+}
+
+/* Botão de ação */
+.btnAcao {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+/* Estilos da paginação */
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    gap: 10px;
+}
+
+.pagination button {
+    background-color: #f0f0f0;
+    border: 1px solid #ddd;
+    padding: 8px 16px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.pagination button:hover:not([disabled]) {
+    background-color: #e9e9e9;
+}
+
+.pagination button:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+}
+
+.pagination .activePage {
+    background-color: #007bff;
+    color: #fff;
+    border-color: #007bff;
+}
+
+/* Estilos para a mensagem de erro */
+.errorMessage {
+    text-align: center;
+    color: #e9071eff;
+    /* Vermelho vibrante para indicar erro técnico */
+    background-color: #f8d7da;
+    border: 1px solid #f5c6cb;
+    border-radius: 5px;
+    padding: 15px;
+    margin: 20px auto;
+    max-width: 500px;
+    font-weight: bold;
+}
+
+/* Estilos para a mensagem de informação (ex: "não encontrado") */
+.infoMessage {
+    text-align: center;
+    color: #333;
+    /* Cor neutra para o texto */
+    background-color: #e9ecef;
+    /* Fundo cinza claro */
+    border: 1px solid #dcdcdc;
+    border-radius: 5px;
+    padding: 15px;
+    margin: 20px auto;
+    max-width: 500px;
+    font-weight: bold;
+}
+
+/* Estilo para o ID clicável */
+.copyableId {
+    cursor: pointer;
+}
+
+.copyableId:hover {
+    text-decoration: underline;
+    color: #007bff;
+}
+
+@media screen and (max-width: 1919px) {
+
+    .tabela th,
+    .tabela td {
+        padding: 8px 10px;
+        font-size: 14px;
+    }
+}
+
+@media screen and (max-width: 699px) {
+
+    /* Container permite rolagem horizontal */
+    .tabelaContainer {
+        overflow-x: auto;
+        border-radius: 5px;
+    }
+
+    /* A tabela ocupa no mínimo a largura da tela */
+    .tabela {
+        font-size: 12px;
+        min-width: 600px;
+        /* garante que as colunas não fiquem esmagadas */
+    }
+
+    .tabela th,
+    .tabela td {
+        padding: 6px 8px;
+        font-size: 12px;
+    }
+
+    /* Ajusta larguras das colunas para caber melhor */
+    .tabela th:nth-child(1),
+    .tabela td:nth-child(1) {
+        width: 80px;
+        /* ID menor */
+    }
+
+    .tabela th:nth-child(2),
+    .tabela td:nth-child(2) {
+        width: 120px;
+        /* Cliente */
+    }
+
+    .tabela th:nth-child(3),
+    .tabela td:nth-child(3) {
+        width: 150px;
+        /* Produto */
+    }
+
+    .tabela th:nth-child(4),
+    .tabela td:nth-child(4) {
+        width: 90px;
+        /* Data */
+    }
+
+    .tabela th:nth-child(5),
+    .tabela td:nth-child(5) {
+        width: 100px;
+        /* Total */
+    }
+
+    .tabela th:nth-child(6),
+    .tabela td:nth-child(6),
+    .tabela th:nth-child(7),
+    .tabela td:nth-child(7) {
+        width: 130px;
+        /* Status */
+    }
+
+    .tabela th:nth-child(8),
+    .tabela td:nth-child(8) {
+        width: 80px;
+        /* Botões menores */
+    }
+
+    /* Botão de ação reduzido */
+    .btnAcao {
+        padding: 6px 10px;
+        font-size: 12px;
+    }
+
+    /* Paginação compacta */
+    .pagination {
+        gap: 6px;
+        margin-top: 10px;
+        margin-bottom: 10px;
+    }
+
+    .pagination button {
+        padding: 6px 10px;
+        font-size: 12px;
+    }
+
+    /* Container da tabela */
+    .tabelaContainer {
+        background-color: #fff;
+        border-radius: 10px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        overflow-x: auto;
+        /* Adiciona scroll horizontal se a tabela for muito larga */
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+
+    /* Tabela em si */
+    .tabela {
+        width: 100%;
+        border-collapse: collapse;
+        table-layout: fixed;
+        /* Fixa o layout da tabela, permitindo definir larguras fixas para as colunas */
+    }
+
+    /* Cabeçalho e células da tabela */
+    .tabela th,
+    .tabela td {
+        padding: 1.1rem 1rem;
+        text-align: left;
+        border-bottom: 1px solid #eee;
+        /* Garante que o texto não quebre a linha */
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        /* Adiciona "..." no final do texto cortado */
+    }
+
+    .tabela th {
+        background-color: #fafafa;
+        font-weight: 600;
+        color: #555;
+        text-transform: uppercase;
+        font-size: 14px;
+    }
+
+    /* Definição das larguras das colunas */
+    .tabela th:nth-child(1),
+    /* Coluna do ID */
+    .tabela td:nth-child(1) {
+        width: 100px;
+        /* Limita o tamanho do ID */
+    }
+
+    .tabela th:nth-child(2),
+    /* Coluna do Cliente Nome */
+    .tabela td:nth-child(2) {
+        width: 150px;
+        /* Aumenta a largura do nome do cliente */
+    }
+
+    .tabela th:nth-child(3),
+    /* Coluna do Produto */
+    .tabela td:nth-child(3) {
+        width: 200px;
+        /* Limita o tamanho do produto */
+    }
+
+    .tabela th:nth-child(4),
+    /* Coluna de Data */
+    .tabela td:nth-child(4) {
+        width: 80px;
+    }
+
+    .tabela th:nth-child(5),
+    /* Coluna de Total */
+    .tabela td:nth-child(5) {
+        width: 100px;
+    }
+
+    .tabela th:nth-child(6),
+    /* Coluna de Pagamento Status */
+    .tabela td:nth-child(6) {
+        width: 120px;
+    }
+
+    .tabela th:nth-child(7),
+    /* Coluna de Pedido Status */
+    .tabela td:nth-child(7) {
+        width: 120px;
+    }
+
+    .tabela th:nth-child(8),
+    /* Coluna de Ações */
+    .tabela td:nth-child(8) {
+        width: 90px;
+    }
+
+    /* Estilização da tag de status */
+    .tagStatus {
+        padding: 5px 10px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: bold;
+        text-transform: capitalize;
+        display: inline-block;
+    }
+
+    .Pendente {
+        background-color: #fff3cd;
+        /* Amarelo */
+        color: #856404;
+    }
+
+    .Enviado {
+        background-color: #d4edda;
+        /* Verde */
+        color: #155724;
+    }
+
+    .Entregue {
+        background-color: #d1ecf1;
+        /* Azul claro */
+        color: #0c5460;
+    }
+
+    .Cancelado {
+        background-color: #f8d7da;
+        /* Vermelho */
+        color: #721c24;
+    }
+
+    /* Botão de ação */
+    .btnAcao {
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        padding: 8px 15px;
+        border-radius: 5px;
+        cursor: pointer;
+        white-space: nowrap;
+    }
+
+    /* Estilos da paginação */
+    .pagination {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: 20px;
+        margin-bottom: 20px;
+        gap: 10px;
+    }
+
+    .pagination button {
+        background-color: #f0f0f0;
+        border: 1px solid #ddd;
+        padding: 8px 16px;
+        cursor: pointer;
+        border-radius: 5px;
+    }
+
+    .pagination button:hover:not([disabled]) {
+        background-color: #e9e9e9;
+    }
+
+    .pagination button:disabled {
+        cursor: not-allowed;
+        opacity: 0.5;
+    }
+
+    .pagination .activePage {
+        background-color: #007bff;
+        color: #fff;
+        border-color: #007bff;
+    }
+
+    /* Estilos para a mensagem de erro */
+    .errorMessage {
+        text-align: center;
+        color: #e9071eff;
+        /* Vermelho vibrante para indicar erro técnico */
+        background-color: #f8d7da;
+        border: 1px solid #f5c6cb;
+        border-radius: 5px;
+        padding: 15px;
+        margin: 20px auto;
+        max-width: 500px;
+        font-weight: bold;
+    }
+
+    /* Estilos para a mensagem de informação (ex: "não encontrado") */
+    .infoMessage {
+        text-align: center;
+        color: #333;
+        /* Cor neutra para o texto */
+        background-color: #e9ecef;
+        /* Fundo cinza claro */
+        border: 1px solid #dcdcdc;
+        border-radius: 5px;
+        padding: 15px;
+        margin: 20px auto;
+        max-width: 500px;
+        font-weight: bold;
+    }
+
+    /* Estilo para o ID clicável */
+    .copyableId {
+        cursor: pointer;
+    }
+
+    .copyableId:hover {
+        text-decoration: underline;
+        color: #007bff;
+    }
+
+    @media screen and (max-width: 1919px) {
+
+        .tabela th,
+        .tabela td {
+            padding: 8px 10px;
+            font-size: 14px;
+        }
+    }
+
+    @media screen and (max-width: 699px) {
+
+        /* Container permite rolagem horizontal */
+        .tabelaContainer {
+            overflow-x: auto;
+            border-radius: 5px;
+        }
+
+        /* A tabela ocupa no mínimo a largura da tela */
+        .tabela {
+            font-size: 12px;
+            min-width: 600px;
+            /* garante que as colunas não fiquem esmagadas */
+        }
+
+        .tabela th,
+        .tabela td {
+            padding: 6px 8px;
+            font-size: 12px;
+        }
+
+        /* Ajusta larguras das colunas para caber melhor */
+        .tabela th:nth-child(1),
+        .tabela td:nth-child(1) {
+            width: 80px;
+            /* ID menor */
+        }
+
+        .tabela th:nth-child(2),
+        .tabela td:nth-child(2) {
+            width: 120px;
+            /* Cliente */
+        }
+
+        .tabela th:nth-child(3),
+        .tabela td:nth-child(3) {
+            width: 150px;
+            /* Produto */
+        }
+
+        .tabela th:nth-child(4),
+        .tabela td:nth-child(4) {
+            width: 90px;
+            /* Data */
+        }
+
+        .tabela th:nth-child(5),
+        .tabela td:nth-child(5) {
+            width: 100px;
+            /* Total */
+        }
+
+        .tabela th:nth-child(6),
+        .tabela td:nth-child(6),
+        .tabela th:nth-child(7),
+        .tabela td:nth-child(7) {
+            width: 130px;
+            /* Status */
+        }
+
+        .tabela th:nth-child(8),
+        .tabela td:nth-child(8) {
+            width: 80px;
+            /* Botões menores */
+        }
+
+        /* Botão de ação reduzido */
+        .btnAcao {
+            padding: 6px 10px;
+            font-size: 12px;
+        }
+
+        /* Paginação compacta */
+        .pagination {
+            gap: 6px;
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
+
+        .pagination button {
+            padding: 6px 10px;
+            font-size: 12px;
+        }
+    }
+}

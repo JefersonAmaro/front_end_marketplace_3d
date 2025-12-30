@@ -1,15 +1,41 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import styles from "./styles.module.css";
 
 function Filtro({ filters, setFilters }) {
+  const API_URL = import.meta.env.VITE_API_URL;
+
   const [open, setOpen] = useState(false);
+  const [backendData, setBackendData] = useState({
+    colors: [],
+    material: [],
+    category: [],
+    finishing: [],
+  });
+
   const navigate = useNavigate();
   const location = useLocation();
 
-  const categorias = ["Brinquedos", "Casa e Decoração", "Ferramentas", "Outros"];
-  const materiais = ["PLA", "PETG", "ABS", "TPU", "Nylon"];
-  const cores = ["red", "blue", "yellow"];
+  // 🔹 Buscar dados do backend
+  useEffect(() => {
+    const fetchFilters = async () => {
+      try {
+        const res = await fetch(`${API_URL}model-supplier/info`); // ajuste a rota conforme seu backend
+        const data = await res.json();
+
+        setBackendData({
+          colors: data.colors || [],
+          material: data.material || [],
+          category: data.category || [],
+          finishing: data.finishing || [],
+        });
+      } catch (err) {
+        console.error("Erro ao buscar filtros do backend:", err);
+      }
+    };
+
+    fetchFilters();
+  }, [API_URL]);
 
   const limparURL = () => navigate(location.pathname, { replace: true });
 
@@ -30,6 +56,7 @@ function Filtro({ filters, setFilters }) {
         ? prev.materiais.filter((m) => m !== material)
         : [...prev.materiais, material],
     }));
+
     limparURL();
   };
 
@@ -52,60 +79,80 @@ function Filtro({ filters, setFilters }) {
         Filtrar
       </button>
 
-      <div className={`${styles.overlay} ${open ? styles.show : ""}`} onClick={() => setOpen(false)} />
+      <div
+        className={`${styles.overlay} ${open ? styles.show : ""}`}
+        onClick={() => setOpen(false)}
+      />
 
       <div className={`${styles.container} ${open ? styles.open : ""}`}>
         <div className={styles.header}>
           <h3>Filtrar</h3>
-          <button onClick={() => setOpen(false)} className={styles.closeBtn}>×</button>
+          <button onClick={() => setOpen(false)} className={styles.closeBtn}>
+            ×
+          </button>
         </div>
 
         {/* Categorias */}
-        <div className={styles.contentSection}>
+        <div className={`${styles.contentSection}`}>
           <h4>Tipos de Produtos</h4>
-          {categorias.map((categoria, index) => (
-            <div className={styles.categoria} key={index}>
-              <input
-                type="checkbox"
-                id={`categoria-${index}`}
-                checked={filters.categorias.includes(categoria)}
-                onChange={() => handleCategoryChange(categoria)}
-              />
-              <label htmlFor={`categoria-${index}`}>{categoria}</label>
+          <div className={styles.categoriesSection}>
+            <div className={styles.categories}>
+              {backendData.category.map((categoria, index) => (
+                <div className={styles.categoria} key={index}>
+                  <input
+                    type="checkbox"
+                    id={`categoria-${index}`}
+                    checked={filters.categorias.includes(categoria)}
+                    onChange={() => handleCategoryChange(categoria)}
+                  />
+                  <label htmlFor={`categoria-${index}`}>{categoria}</label>
+                </div>
+              ))}
             </div>
-          ))}
+          </div>
         </div>
 
         {/* Materiais */}
         <div className={styles.contentSection}>
           <h4>Materiais</h4>
-          {materiais.map((material, index) => (
-            <div className={styles.material} key={index}>
-              <input
-                type="checkbox"
-                id={`material-${index}`}
-                checked={filters.materiais.includes(material)}
-                onChange={() => handleMaterialChange(material)}
-              />
-              <label htmlFor={`material-${index}`}>{material}</label>
+          <div className={styles.materialsSection}>
+            <div className={styles.materials}>
+              {backendData.material.map((material, index) => (
+                <div className={styles.material} key={index}>
+                  <input
+                    type="checkbox"
+                    id={`material-${index}`}
+                    checked={filters.materiais.includes(material)}
+                    onChange={() => handleMaterialChange(material)}
+                  />
+                  <label htmlFor={`material-${index}`}>{material}</label>
+                </div>
+              ))}
             </div>
-          ))}
+          </div>
         </div>
 
         {/* Cores */}
         <div className={styles.contentSection}>
           <h4>Cores</h4>
-          <div className={styles.colors}>
-            {cores.map((color, index) => (
-              <div
-                key={index}
-                className={`${styles.color} ${filters.cor === color ? styles.active : ""}`}
-                style={{ backgroundColor: color }}
-                onClick={() => handleColorChange(color)}
-                title={color}
-              />
-            ))}
-          </div>
+          <div className={styles.colorsWrapper}>
+            {" "}
+            {/* <-- Novo div */}
+            <div className={styles.colors}>
+              {backendData.colors.map((color, index) => (
+                <div
+                  key={index}
+                  className={`${styles.color} ${
+                    filters.cor === color ? styles.active : ""
+                  }`}
+                  style={{ backgroundColor: color.toLowerCase() }}
+                  onClick={() => handleColorChange(color)}
+                  title={color}
+                />
+              ))}
+            </div>
+          </div>{" "}
+          {/* <-- Feche o div aqui */}
         </div>
 
         {/* Preço */}
@@ -128,7 +175,9 @@ function Filtro({ filters, setFilters }) {
               <p>
                 {filters.preco === null || filters.preco === 0
                   ? "Sem limite de preço"
-                  : `Até R$ ${Number(filters.preco).toFixed(2).replace(".", ",")}`}
+                  : `Até R$ ${Number(filters.preco)
+                      .toFixed(2)
+                      .replace(".", ",")}`}
               </p>
             </div>
           </div>

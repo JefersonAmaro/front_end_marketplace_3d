@@ -1,15 +1,19 @@
 import { useEffect, useState, useMemo } from "react";
 import styles from "./styles.module.css";
+import axios from "axios";
 
 import { useNavigate } from "react-router-dom";
 
 import { useContext } from "react";
 import { DataContext } from "../../context/dataContext";
+import { AuthContext } from "../../context/authContext";
 
 import { FiTrash, FiShoppingCart } from "react-icons/fi";
 
 export function CartPreview() {
+  const API_URL = import.meta.env.VITE_API_URL;
   const { data, loading } = useContext(DataContext);
+  const { token, openLoginModal } = useContext(AuthContext);
   const [cart, setCart] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
   const navigate = useNavigate();
@@ -112,6 +116,42 @@ export function CartPreview() {
 
   if (!data || loading) return null;
 
+  const handleCheckout = async () => {
+    if (!token) {
+      openLoginModal();
+      return; // Para a execução se não estiver logado
+    }
+
+    try {
+      for (const item of cart) {
+        const body = {
+          color: item.cor,
+          material: item.material,
+          finishing: item.acabamento,
+          quantity: item.quantidade,
+        };
+
+        const response = await axios.post(
+          `${API_URL}budgets/${item.produto.id}`,
+          body,
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
+      }
+
+      // Limpa o carrinho após finalizar
+      setCart([]);
+      localStorage.removeItem("cart");
+      window.dispatchEvent(new Event("cartUpdated"));
+
+      alert("Orçamentos criados com sucesso!");
+    } catch (error) {
+      console.error("Erro ao criar orçamento:", error);
+      alert("Erro ao finalizar a compra. Tente novamente.");
+    }
+  };
+
   return (
     <>
       <div className={styles.floatingButton} onClick={toggleCart}>
@@ -142,8 +182,18 @@ export function CartPreview() {
                   }}
                 >
                   <div className={styles.cartItemImg}>
-                    <img src={item.produto?.img} alt={item.produto?.name} />
+                    <img
+                      src={
+                        item.produto?.file_paths
+                          ? `${API_URL}${item.produto.file_paths
+                              .split(",")[0]
+                              .replace(/\\/g, "/")}`
+                          : ""
+                      }
+                      alt={item.produto?.name}
+                    />
                   </div>
+
                   <div className={styles.cartItemInfo}>
                     <li className={styles.cartItem}>
                       <div className={styles.cartItemTitle}>
@@ -175,7 +225,10 @@ export function CartPreview() {
                       </div>
                       <div className={styles.cartItemDetails}>
                         <p className={styles.cartItemPrice}>
-                          R$ {item.produto?.price}
+                          R${" "}
+                          {Number(item.produto?.price).toLocaleString("pt-BR", {
+                            minimumFractionDigits: 2,
+                          })}
                         </p>
 
                         <div className={styles.quantidadeWrapper}>
@@ -221,14 +274,18 @@ export function CartPreview() {
 
                       const preco =
                         parseFloat(
-                          (produtoAtual?.price || "0").replace(",", ".")
+                          String(produtoAtual?.price ?? "0").replace(",", ".")
                         ) || 0;
+
                       return acc + preco * item.quantidade;
                     }, 0)
                   )}
                 </span>
               </div>
-              <button className={styles.cartCheckoutButton}>
+              <button
+                className={styles.cartCheckoutButton}
+                onClick={handleCheckout}
+              >
                 Finalizar Compra
               </button>
             </div>

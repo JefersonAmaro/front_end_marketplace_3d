@@ -1,4 +1,5 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useContext } from "react";
+import { OrcamentosUserContext } from "../../context/orcamentosUserContext";
 import { useNavigate } from "react-router-dom";
 import ReactDOM from "react-dom";
 import styles from "./styles.module.css";
@@ -12,6 +13,8 @@ function MenuPefil({ user, logout }) {
   const buttonRef = useRef(null);
   const menuRef = useRef(null);
   const [position, setPosition] = useState({ top: 0, left: 0 });
+
+  const { orcamentosRecebidos } = useContext(OrcamentosUserContext);
 
   const navigate = useNavigate();
 
@@ -76,6 +79,12 @@ function MenuPefil({ user, logout }) {
     }
   }, [isProfileMenuOpen]);
 
+  // Função para navegar + fechar menu
+  const handleNavigate = (path) => {
+    navigate(path);
+    setIsProfileMenuOpen(false);
+  };
+
   return (
     <>
       <div
@@ -84,6 +93,9 @@ function MenuPefil({ user, logout }) {
       >
         <button ref={buttonRef} className={styles.profileButton}>
           <img src={UserProfile} alt="Perfil" />
+          {orcamentosRecebidos.length > 0 && (
+            <div className={styles.badge}>{orcamentosRecebidos.length}</div>
+          )}
         </button>
         {/* Se o tamanho da tela for menor que 1024px, cria um <P>Meu Perfil</P> */}
         {window.innerWidth < 1024 && <p>Meu Perfil</p>}
@@ -109,9 +121,29 @@ function MenuPefil({ user, logout }) {
               <p className={styles.email}>{user?.email ?? ""}</p>
             </div>
             <div className={styles.profileOptions}>
-              <button className={styles.btn}>Minha conta</button>
-              <button className={styles.btn}>Meus Pedidos</button>
-              <button className={styles.btn}>Meus Orçamentos</button>
+              <button
+                className={styles.btn}
+                onClick={() => handleNavigate("/minha-conta")}
+              >
+                Minha conta
+              </button>
+              <button
+                className={styles.btn}
+                onClick={() => handleNavigate("/pedidos")}
+              >
+                Meus Pedidos
+              </button>
+              <button
+                className={`${styles.btn} ${styles.badgeContainer}`}
+                onClick={() => handleNavigate("/orcamentos")}
+              >
+                Meus Orçamentos{" "}
+                {orcamentosRecebidos.length > 0 && (
+                  <div className={styles.badge2}>
+                    {orcamentosRecebidos.length}
+                  </div>
+                )}
+              </button>
               <button
                 onClick={() => {
                   logout(), navigate("/marketplace");

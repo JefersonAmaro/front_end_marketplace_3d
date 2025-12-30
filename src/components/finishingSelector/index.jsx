@@ -2,12 +2,19 @@ import { useState, useEffect } from "react";
 import styles from "./styles.module.css";
 
 export default function FinishingSelector({ finishings = [], setAcabamento = () => {} }) {
-  const [selected, setSelected] = useState(finishings[0] || null);
+  // Se for string, converte em array separando por vírgula
+  const normalizedFinishings = Array.isArray(finishings)
+    ? finishings
+    : typeof finishings === "string"
+    ? finishings.split(",").map(f => f.trim())
+    : [];
+
+  const [selected, setSelected] = useState(normalizedFinishings[0] || null);
 
   useEffect(() => {
-    if (finishings[0]) {
-      setSelected(finishings[0]);
-      setAcabamento(finishings[0]);
+    if (normalizedFinishings[0]) {
+      setSelected(normalizedFinishings[0]);
+      setAcabamento(normalizedFinishings[0]);
     }
   }, [finishings, setAcabamento]);
 
@@ -15,12 +22,10 @@ export default function FinishingSelector({ finishings = [], setAcabamento = () 
     <div className={styles.container}>
       <p>Selecione um acabamento:</p>
       <div className={styles.finishingContainer}>
-        {finishings.map((option, index) => (
+        {normalizedFinishings.map((option, index) => (
           <button
             key={index}
-            className={`${styles.finishing} ${
-              selected === option ? styles.active : ""
-            }`}
+            className={`${styles.finishing} ${selected === option ? styles.active : ""}`}
             onClick={() => {
               setSelected(option);
               setAcabamento(option);

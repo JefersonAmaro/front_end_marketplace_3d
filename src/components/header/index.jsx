@@ -1,19 +1,24 @@
 import { useState, useEffect, useContext } from "react";
 import { AuthContext } from "../../context/authContext";
 import { DataContext } from "../../context/dataContext";
+import { useGeo } from "../../context/geoContext";
+
 import { useNavigate } from "react-router-dom";
 import styles from "./styles.module.css";
 
 import LoginModal from "../loginModal";
 import MenuPefil from "../menuPerfil";
-
 import SearchBox from "../searchBox";
 
-import { useGeolocation } from "../../hooks/useGeolocation";
-
 function Header() {
-  const { street, postalCode, error } = useGeolocation();
-
+  const {
+    latitude,
+    longitude,
+    street,
+    postalCode,
+    loading: geoLoading,
+    error: geoError,
+  } = useGeo(); // contexto
   const { token, user, logout } = useContext(AuthContext);
   const { data, loading } = useContext(DataContext);
 
@@ -22,7 +27,6 @@ function Header() {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const navigate = useNavigate();
-
   const isHome = window.location.pathname === "/";
 
   function scrollToWithOffset(id) {
@@ -46,7 +50,6 @@ function Header() {
       setIsDesktop(desktop);
       if (desktop) setMenuAberto(false); // fecha menu mobile no desktop
     }
-
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
@@ -54,29 +57,28 @@ function Header() {
   const abrirLogin = () => setIsModalOpen(true);
   const fecharLogin = () => setIsModalOpen(false);
 
-  if (loading || !data) return null;
+  const products = Object.values(data).flat();
 
-const products = Object.values(data).flat();
-
+  // Layout Desktop
   if (isDesktop) {
-    // Menu Desktop
     return (
       <header className={styles.header}>
         <div className={styles.container}>
           <h1 className={styles.title} onClick={() => navigate("/marketplace")}>
             Market3D
           </h1>
-          <div className={styles.locationContainer}>
-            {street && postalCode ? (
+          {latitude && longitude && street && postalCode && (
+            <div className={styles.locationContainer}>
               <div className={styles.location}>
                 <p className={styles.locationTitle}>Localização:</p>
                 <p className={styles.locationText}>
                   Rua {street}, {postalCode}
                 </p>
               </div>
-            ) : null}
-          </div>
+            </div>
+          )}
         </div>
+
         {isHome ? (
           <div className={styles.buttonsHome}>
             <button
@@ -113,7 +115,6 @@ const products = Object.values(data).flat();
               }
               setMenuAberto={setMenuAberto}
             />
-
             <button
               className={styles.button}
               onClick={() => navigate("/produtos")}
@@ -121,8 +122,8 @@ const products = Object.values(data).flat();
               Produtos
             </button>
             <button
-              className={styles.button + " " + styles.orcamentoButton}
-              onClick={() => navigate("/solicitar-orcamento")}
+              className={styles.button}
+              onClick={() => navigate("/novo-orcamento")}
             >
               Solicitar Orçamento
             </button>
@@ -135,13 +136,12 @@ const products = Object.values(data).flat();
           </div>
         )}
 
-        {/* Modal de login */}
         <LoginModal isOpen={isModalOpen} onRequestClose={fecharLogin} />
       </header>
     );
   }
 
-  // Menu Mobile com hamburger
+  // Layout Mobile
   return (
     <header className={styles.headerMobile}>
       <div className={styles.headerContent}>
@@ -150,18 +150,17 @@ const products = Object.values(data).flat();
             Market3D
           </h1>
           <div className={styles.locationContainer}>
-            {street && postalCode ? (
+            {/* {latitude && longitude && street && postalCode && (
               <div className={styles.location}>
                 <p className={styles.locationTitle}>Localização:</p>
                 <p className={styles.locationText}>
                   Rua {street}, {postalCode}
                 </p>
               </div>
-            ) : null}
+            )} */}
           </div>
         </div>
 
-        {/* Botão Hamburger */}
         <button
           className={styles.hamburgerButton}
           onClick={() => setMenuAberto((prev) => !prev)}
@@ -179,7 +178,7 @@ const products = Object.values(data).flat();
           />
         </button>
       </div>
-      {/* Menu que desce com animação */}
+
       <nav
         className={`${styles.mobileMenu} ${
           menuAberto ? styles.mobileMenuOpen : styles.mobileMenuClosed
@@ -217,7 +216,10 @@ const products = Object.values(data).flat();
             {!token && (
               <button
                 className={styles.loginButton}
-                onClick={() => (abrirLogin(), setMenuAberto(false))}
+                onClick={() => {
+                  abrirLogin();
+                  setMenuAberto(false);
+                }}
               >
                 Login
               </button>
@@ -233,18 +235,21 @@ const products = Object.values(data).flat();
               }
               setMenuAberto={setMenuAberto}
             />
-
             <button
               className={styles.button}
-              onClick={() => (navigate("/produtos"), setMenuAberto(false))}
+              onClick={() => {
+                navigate("/produtos");
+                setMenuAberto(false);
+              }}
             >
               Produtos
             </button>
             <button
               className={styles.button}
-              onClick={() => (
-                navigate("/solicitar-orcamento"), setMenuAberto(false)
-              )}
+              onClick={() => {
+                navigate("/novo-orcamento");
+                setMenuAberto(false);
+              }}
             >
               Solicitar Orçamento
             </button>
@@ -253,7 +258,7 @@ const products = Object.values(data).flat();
                 className={styles.loginButton}
                 onClick={() => {
                   abrirLogin();
-                  setMenuAberto(false); // fecha o menu após clicar
+                  setMenuAberto(false);
                 }}
               >
                 Login
@@ -263,7 +268,7 @@ const products = Object.values(data).flat();
           </div>
         )}
       </nav>
-      {/* Modal de login */}
+
       <LoginModal isOpen={isModalOpen} onRequestClose={fecharLogin} />
     </header>
   );

@@ -114,11 +114,13 @@ export default function LoginModal({ isOpen, onRequestClose }) {
     if (cadastroEtapa === "pessoal") {
       if (
         !formData.nome.trim() ||
-        (loginOptions === "fornecedor" && !formData.cpfCnpj.trim()) ||
+        !formData.cpfCnpj.trim() ||
         !formData.email.trim() ||
         !formData.tel.trim()
       ) {
-        setErrorMessage("Preencha todos os campos pessoais.");
+        setErrorMessage(
+          "Preencha todos os campos pessoais."
+        );
         return;
       }
     }
@@ -274,6 +276,40 @@ export default function LoginModal({ isOpen, onRequestClose }) {
           prev.cep
         ),
       }));
+
+      // Busca coordenadas com fallback
+      const buscarCoordenadas = async (enderecoBase) => {
+        const tentativas = [
+          enderecoBase,
+          enderecoBase.replace(/\d+/, ""),
+          `${endereco.logradouro}, ${endereco.localidade}, ${endereco.uf}`,
+        ];
+        for (const tentativa of tentativas) {
+          const url = `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(
+            tentativa
+          )}&format=json&limit=1`;
+
+          const resposta = await axios.get(url, {
+            headers: {
+              "User-Agent": "GNConnectSystem/1.0 (contato@gnconnect.com)",
+            },
+          });
+
+          if (resposta.data.length > 0) return resposta.data[0];
+        }
+        return null;
+      };
+
+      const coordenadas = await buscarCoordenadas(endereco.logradouro);
+
+      if (coordenadas) {
+        setFormData((prev) => ({
+          ...prev,
+          latitude: coordenadas.lat,
+          longitude: coordenadas.lon,
+        }));
+      }
+
     } catch (error) {
       console.error("Erro ao buscar CEP:", error.message);
     }
@@ -534,18 +570,18 @@ export default function LoginModal({ isOpen, onRequestClose }) {
                             onChange={handleChange}
                           />
                         </div>
-                        {loginOptions === "fornecedor" && (
-                          <div className={styles.inputContainer}>
-                            <label htmlFor="cpfCnpj">CPF / CNPJ</label>
-                            <input
-                              type="text"
-                              placeholder="Digite seu CPF / CNPJ"
-                              id="cpfCnpj"
-                              value={formData.cpfCnpj}
-                              onChange={handleCpfCnpjChange}
-                            />
-                          </div>
-                        )}
+
+                        <div className={styles.inputContainer}>
+                          <label htmlFor="cpfCnpj">CPF / CNPJ</label>
+                          <input
+                            type="text"
+                            placeholder="Digite seu CPF / CNPJ"
+                            id="cpfCnpj"
+                            value={formData.cpfCnpj}
+                            onChange={handleCpfCnpjChange}
+                          />
+                        </div>
+
                         <div className={styles.inputContainer}>
                           <label htmlFor="email">E-mail</label>
                           <input

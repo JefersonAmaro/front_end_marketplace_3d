@@ -1,0 +1,552 @@
+:root {
+    --bg: #f3f4f6;
+    --card: #ffffff;
+    --muted: #6b7280;
+    --accent: #4d00ff;
+    --accent-2: #7c3aed;
+    --success: #16a34a;
+    --shadow: 0 14px 35px rgba(15, 23, 42, 0.06);
+}
+
+/* PAGE LAYOUT */
+.page {
+    width: 100vw;
+    min-height: 100vh;
+    padding: 6.5% 5% 1% 5%;
+    box-sizing: border-box;
+    font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    color: #0f172a;
+}
+
+/* HEADER */
+.header {
+    max-width: 100%;
+    margin: 0 auto 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.header h4 {
+    font-weight: 600;
+    font-size: 28px;
+    color: #353535;
+    margin: 0;
+    position: relative;
+}
+
+.header h4::after {
+    content: "";
+    display: block;
+    width: 60px;
+    height: 3px;
+    background: #4D00FF;
+    border-radius: 2px;
+    margin-top: 6px;
+}
+
+.headerSubtitle {
+    margin: 0;
+    color: var(--muted);
+    font-size: 16px;
+}
+
+/* MAIN AREA */
+.main {
+    width: 100%;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 260px 1fr;
+    gap: 20px;
+    align-items: start;
+    box-sizing: border-box;
+}
+
+.mainSidebar {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.mainContent {
+    background: var(--card);
+    padding: 18px;
+    border-radius: 12px;
+    box-shadow: var(--shadow);
+    border: 1px solid #e6e9ef;
+    height: fit-content;
+    color: #374151;
+}
+
+.mainContent p {
+    font-size: 14px;
+}
+
+/* SIDEBAR / STEPPER CARD */
+.sidebar {
+    position: sticky;
+    top: 28px;
+    height: fit-content;
+}
+
+.stepperCard {
+    background: var(--card);
+    padding: 18px;
+    border-radius: 12px;
+    box-shadow: var(--shadow);
+    border: 1px solid #e6e9ef;
+}
+
+.stepperTop {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 8px;
+}
+
+.stepProgressBar {
+    width: 100%;
+    height: 8px;
+    background: #eef2ff;
+    border-radius: 999px;
+    overflow: hidden;
+}
+
+.stepProgressFill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent), var(--accent-2));
+    transition: width .25s ease;
+}
+
+.stepCount {
+    font-size: 13px;
+    color: var(--muted);
+    text-align: right;
+}
+
+.stepsList {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 6px;
+}
+
+.stepItem {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    padding: 8px;
+    border-radius: 8px;
+    color: #374151;
+    cursor: default;
+}
+
+.stepItem:hover {
+    background: rgba(0, 0, 0, 0.02);
+}
+
+.stepBullet {
+    width: 28px;
+    height: 28px;
+    border-radius: 999px;
+    background: #f3f4f6;
+    display: grid;
+    place-items: center;
+    font-weight: 700;
+    color: #111827;
+    border: 1px solid #e6e9ef;
+}
+
+.activeStep .stepBullet {
+    background: linear-gradient(90deg, var(--accent), var(--accent-2));
+    color: #fff;
+    box-shadow: 0 6px 18px rgba(76, 29, 149, 0.18);
+}
+
+.stepText {
+    font-size: 14px;
+}
+
+/* CARD WRAPPER */
+.cardWrapper {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.card {
+    background: var(--card);
+    padding: 22px;
+    border-radius: 14px;
+    box-shadow: var(--shadow);
+    border: 1px solid #e6e9ef;
+}
+
+/* CARD CONTENT */
+.cardTitle {
+    margin: 0 0 12px;
+    font-size: 18px;
+    font-weight: 700;
+    color: #353535;
+}
+
+/* LABELS & FIELDS */
+.label {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 14px;
+    font-weight: 600;
+    color: #353535;
+}
+
+.labelSmall {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    font-weight: 600;
+    color: #353535;
+}
+
+.label input,
+.label select,
+.label textarea,
+.labelSmall input,
+.labelSmall select {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 100%;
+    padding: 10px 12px;
+    border-radius: 10px;
+    border: 1px solid #d6d9e3;
+    background: #fff;
+    transition: box-shadow .18s, border-color .18s, transform .12s;
+    font-size: 14px;
+}
+
+.label textarea {
+    min-height: 90px;
+    resize: none;
+}
+
+.label select[multiple] {
+    min-height: 120px;
+}
+
+/* focus */
+.label input:focus,
+.label select:focus,
+.label textarea:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 8px 20px rgba(77, 0, 255, 0.08);
+    transform: translateY(-1px);
+}
+
+/* GRID FOR SIZES */
+.sizeGrid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-bottom: 12px;
+}
+
+.colorGrid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 6px;
+}
+
+.colorBtn {
+    padding: 6px 12px;
+    border: 1px solid #ccc;
+    background: #fafafa;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: 0.2s;
+    font-size: 0.9rem;
+}
+
+.colorBtn:hover {
+    background: #eaeaea;
+}
+
+.colorBtnActive {
+    background: #3b82f6;
+    color: white;
+    border-color: #3b82f6;
+}
+
+.radioRow {
+    display: flex;
+    gap: 1rem;
+    margin: 12px 0 6px;
+    align-items: center;
+}
+
+.radioRow label {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 1rem;
+    color: #333;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    font-weight: 500;
+}
+
+/* Estilo do radio */
+.radioRow input[type="radio"] {
+    appearance: none;
+    /* Remove estilo padrão */
+    width: 10px;
+    height: 10px;
+    border: 1px solid #3b82f6;
+    border-radius: 10%;
+    cursor: pointer;
+    position: relative;
+    transition: all 0.2s ease;
+}
+
+/* Quando selecionado — fica preenchido azul */
+.radioRow input[type="radio"]:checked {
+    background-color: #3b82f6;
+}
+
+.uploadButton {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 18px;
+    background: linear-gradient(135deg, #3b82f6, #2563eb);
+    color: white;
+    font-weight: 600;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: 0.3s ease;
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    font-size: 15px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.uploadButton:hover {
+    background: linear-gradient(135deg, #2563eb, #1e40af);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+}
+
+.uploadButton:active {
+    transform: translateY(0px);
+}
+
+.uploadButton input[type="file"] {
+    display: none;
+    /* esconde o input real */
+}
+
+/* PREVIEW CARD */
+.previewCard {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 18px;
+    border-radius: 12px;
+    background: #fbfdff;
+    border: 1px solid #e9eef8;
+    margin-top: 12px;
+}
+
+.previewInfo {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.previewSmall {
+    color: var(--muted);
+    font-size: 13px;
+}
+
+.previewViewer {
+    width: 100%;
+    height: 280px;
+}
+
+/* STL placeholders & canvas wrapper */
+.stlPlaceholder {
+    padding: 18px;
+    border-radius: 10px;
+    background: #f8fafc;
+    color: var(--muted);
+    text-align: center;
+}
+
+.stlCanvas {
+    width: 100%;
+    height: 100%;
+    min-height: 260px;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+/* ACTIONS / BUTTONS */
+.actionsRow {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    margin-top: 12px;
+    align-items: center;
+}
+
+.btn {
+    padding: 10px 18px;
+    border-radius: 10px;
+    border: none;
+    font-weight: 700;
+    font-size: 14px;
+    cursor: pointer;
+    transition: transform .12s ease, box-shadow .12s ease;
+}
+
+.btnPrimary {
+    background: linear-gradient(90deg, var(--accent), var(--accent-2));
+    color: #fff;
+    box-shadow: 0 8px 22px rgba(76, 29, 149, 0.18);
+}
+
+.btnPrimary:hover {
+    transform: translateY(-2px);
+}
+
+.btnGhost {
+    background: transparent;
+    border: 1px solid #e6e9ef;
+    color: #374151;
+}
+
+.btnGhost:hover {
+    transform: translateY(-2px);
+}
+
+.btnSuccess {
+    background: linear-gradient(90deg, var(--success), #10b981);
+    color: white;
+    box-shadow: 0 8px 22px rgba(16, 185, 129, 0.16);
+}
+
+/* REVIEW BOX */
+.reviewBox {
+    margin-top: 8px;
+    border-radius: 10px;
+    padding: 12px;
+    border: 1px solid #eef2ff;
+    background: #fff;
+}
+
+.reviewRow {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 8px 0;
+    border-bottom: 1px dashed #f1f5f9;
+}
+
+/* Agora cada coluna sabe seu tamanho */
+.reviewKey {
+    flex-shrink: 0; /* nunca encolhe */
+    color: #6b7280;
+    font-size: 13px;
+    text-transform: capitalize;
+    white-space: nowrap;
+}
+
+/* O valor ocupa o espaço restante */
+.reviewValue {
+    flex: 1;                 /* pega o restante */
+    min-width: 0;
+    max-width: 1200px;            /* ESSENCIAL p/ ellipsis funcionar */
+    text-align: right;       /* mantém alinhado à direita */
+    color: #111827;
+    font-weight: 500;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+
+/* UPLOAD BAR */
+.uploadBar {
+    width: 100%;
+    height: 10px;
+    background: #f1f5f9;
+    border-radius: 999px;
+    overflow: hidden;
+    margin-top: 10px;
+}
+
+.uploadFill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--success), #34d399);
+    transition: width .2s linear;
+}
+
+/* HELPERS */
+.helperText {
+    color: var(--muted);
+    font-size: 12px;
+    margin-top: 6px;
+}
+
+.error {
+    color: #ff4d4f;
+    font-size: 0.75rem;
+    margin-top: 4px;
+    display: block;
+}
+
+
+/* RESPONSIVE */
+@media (max-width: 980px) {
+    .main {
+        grid-template-columns: 1fr;
+    }
+
+    .sidebar {
+        position: relative;
+        top: 0;
+    }
+
+    .previewCard {
+        grid-template-columns: 1fr;
+    }
+
+    .previewViewer {
+        height: 260px;
+    }
+
+    .sizeGrid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (max-width: 560px) {
+    .sizeGrid {
+        grid-template-columns: 1fr;
+    }
+
+    .card {
+        padding: 18px;
+    }
+
+    .headerTitle {
+        font-size: 18px;
+    }
+}

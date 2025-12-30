@@ -1,0 +1,118 @@
+.barraFiltros {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #fff;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    overflow-y: hidden;
+}
+
+.secaoPesquisa {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.secaoPesquisa input {
+    padding: 8px 12px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+
+.secaoBotoes {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.btnFiltro,
+.btnAcoes {
+    background-color: #f0f0f0;
+    border: 1px solid #ddd;
+    padding: 8px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.btnLimpar {
+    background-color: #007bff;
+    color: #fff;
+    border: 1px solid #ddd;
+    padding: 8px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+@media screen and (max-width: 1919px) {
+    .secaoPesquisa input {
+        font-size: 12px;
+    }
+
+    .btnFiltro,
+    .btnAcoes,
+    .btnLimpar {
+        font-size: 12px;
+    }
+}
+
+@media screen and (max-width: 699px) {
+    .barraFiltros {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .secaoPesquisa {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        /* duas colunas */
+        gap: 10px;
+        /* opcional, espaçamento entre inputs */
+        width: 100%;
+        height: 150px;
+        overflow: hidden;
+    }
+
+    .secaoPesquisa input {
+        width: 100%;
+    }
+
+    /* Faz o primeiro input ocupar as duas colunas */
+    .secaoPesquisa input:nth-child(1) {
+        grid-column: span 2;
+    }
+
+    .secaoBotoes {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        /* 3 colunas iguais */
+        gap: 10px;
+        /* opcional, espaçamento entre botões */
+        width: 100%;
+        height: 150px;
+        overflow: hidden;
+    }
+
+    .secaoBotoes button:nth-child(2) {
+        grid-column: span 2;
+    }
+
+    /* Faz o último botão ocupar todas as colunas */
+    .secaoBotoes button:nth-child(4) {
+        grid-column: span 4;
+    }
+
+    .btnLimpar {
+        width: 100%;
+        justify-content: center;
+    }
+
+}

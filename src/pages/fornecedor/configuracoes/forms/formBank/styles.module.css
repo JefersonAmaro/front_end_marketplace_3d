@@ -1,0 +1,149 @@
+.naoTemBanco {
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    padding: 15px;
+    border-radius: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.naoTemBanco p {
+    font-weight: 500;
+    font-size: 16px;
+    color: #fc0000;
+}
+
+.naoTemBanco button {
+    background-color: #007bff;
+    color: #fff;
+    border: 1px solid #ddd;
+    padding: 8px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.formContainer {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.title {
+  font-size: 18px;
+  font-weight: 600;
+  color: #333;
+}
+
+/* Inputs + Labels */
+.fieldGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.label {
+  font-size: 16px;
+  font-weight: 500;
+  color: #444;
+}
+
+.input {
+  padding: 12px 14px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  background-color: #f5f6fa;
+  font-size: 14px;
+  outline: none;
+  transition: all 0.2s ease-in-out;
+}
+
+.input:focus {
+  border-color: #007bff;
+  background-color: #ffffff;
+  box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.15);
+}
+
+/* faz as classes do react-select serem globais */
+:global(.react-select__control) {
+    padding: 2px;
+    border: 1px solid #ccc !important;
+    border-radius: 6px !important;
+    background-color: #f5f6fa !important;
+    min-height: 45px;
+    box-shadow: none !important;
+    cursor: pointer;
+}
+
+:global(.react-select__control--is-focused) {
+    border-color: #007bff !important;
+    box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.15) !important;
+    background-color: #fff !important;
+}
+
+:global(.react-select__placeholder) {
+    color: #666;
+    font-size: 14px;
+}
+
+:global(.react-select__single-value) {
+    color: #333;
+    font-size: 14px;
+}
+
+:global(.react-select__menu) {
+    background-color: #fff;
+    border-radius: 6px;
+    padding: 5px 0;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
+    z-index: 9999;
+}
+
+:global(.react-select__option) {
+    padding: 10px 14px;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+:global(.react-select__option--is-focused) {
+    background: #eef4ff;
+}
+
+:global(.react-select__option--is-selected) {
+    background: #007bff !important;
+    color: #fff !important;
+}
+
+:global(.react-select__indicator) {
+    color: #666;
+}
+
+:global(.react-select__indicator-separator) {
+    display: none;
+}
+
+.saveBtn {
+  background-color: #007bff;
+  color: #fff;
+  border: 1px solid #ddd;
+  padding: 8px 12px;
+  border-radius: 5px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.errorText{
+    color: red;
+    font-size: 12px;
+    margin-top: 5px;
+}

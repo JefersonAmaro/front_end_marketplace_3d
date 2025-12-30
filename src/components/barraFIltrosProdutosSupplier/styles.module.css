@@ -1,0 +1,88 @@
+.barraFiltros {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #fff;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    overflow-y: hidden;
+}
+
+.secaoPesquisa {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 40%;
+}
+
+.secaoPesquisa input {
+    padding: 8px 12px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 100%;
+}
+
+.secaoBotoes {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.btnFiltro {
+    background-color: #f0f0f0;
+    border: 1px solid #ddd;
+    padding: 8px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.btnAcoes {
+    background-color: #007bff;
+    color: #fff;
+    border: 1px solid #ddd;
+    padding: 8px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+@media screen and (max-width: 1919px) {
+    .secaoPesquisa input {
+        font-size: 12px;
+    }
+
+    .btnFiltro,
+    .btnAcoes {
+        font-size: 12px;
+    }
+}
+
+@media screen and (max-width: 699px) {
+    .barraFiltros {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .secaoPesquisa {
+        width: 100%;
+        height: 50px;
+        overflow: hidden;
+    }
+
+    .secaoBotoes {
+        width: 100%;
+        height: 50px;
+        overflow: hidden;
+    }
+
+    .btnAcoes {
+        width: 100%;
+        justify-content: center;
+    }
+}

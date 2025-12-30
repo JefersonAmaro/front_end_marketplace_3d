@@ -1,6 +1,6 @@
 import { useContext } from "react";
 import { DataContext } from "../../../context/dataContext";
-import { useGeolocation } from "../../../hooks/useGeolocation";
+import { useGeo } from "../../../context/geoContext"; // ✅ usar o contexto
 import CardsComponent from "../../cardsComponent";
 import LoadingCards from "../../loadingCards";
 import { useNavigate } from "react-router-dom";
@@ -22,36 +22,43 @@ function getDistance(lat1, lon1, lat2, lon2) {
 }
 
 function SectionTwo() {
-  const { data, loading, filters, setFilters } = useContext(DataContext);
-  const userLocation = useGeolocation(); // { latitude, longitude, error }
+  const { data, loading, filters, setFilters, status } =
+    useContext(DataContext);
+  const { latitude, longitude, loading: geoLoading, skipped } = useGeo();
 
   const navigate = useNavigate();
 
-  if (loading || !data || !userLocation.latitude) {
-    return <LoadingCards />;
+  if (loading || !data || geoLoading) {
+    return <LoadingCards />; // mostra loading
   }
 
   // Unifica todos os produtos em um único array
   const allProducts = Object.values(data).flat();
 
+  // 🔹 Se não houver produtos, não renderiza nada
+  if (!allProducts.length) {
+    return null;
+  }
+
+  // Adiciona a distância sem ordenar por ela
   const cardsWithDistance = allProducts.map((produto) => {
     const supplier = produto.supplier;
+    // Se o usuário skipou, não calcula a distância
     const distance =
-      supplier?.latitude && supplier?.longitude
+      !skipped && supplier?.latitude && supplier?.longitude
         ? getDistance(
-            userLocation.latitude,
-            userLocation.longitude,
+            latitude,
+            longitude,
             supplier.latitude,
             supplier.longitude
           )
-        : Infinity;
-
+        : null;
     return { ...produto, distance };
   });
 
-  // Ordena do mais próximo ao mais distante e pega os 4 primeiros
+  // Ordena pelo campo de data de cadastro
   const sortedCards = cardsWithDistance
-    .sort((a, b) => a.distance - b.distance)
+    .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
     .slice(0, 4);
 
   return (
@@ -64,6 +71,7 @@ function SectionTwo() {
         navigate("/produtos");
       }}
       cards={sortedCards}
+      status={status}
     />
   );
 }

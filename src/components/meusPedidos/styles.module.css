@@ -1,0 +1,30 @@
+.containerCards {
+  -webkit-overflow-scrolling: touch;
+  /* Suaviza rolagem em iOS */
+
+  /* Personalização para WebKit (Chrome, Safari, etc.) */
+  &::-webkit-scrollbar {
+    width: 8px;
+    /* Largura da barra de rolagem */
+  }
+
+  &::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    /* Cor de fundo da área de rolagem */
+    border-radius: 4px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: #A44DFF;
+    /* Cor da "alça" da barra de rolagem */
+    border-radius: 4px;
+    /* Arredonda as bordas da alça */
+    border: 2px solid #f1f1f1;
+    /* Cria uma margem de segurança */
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background-color: #6C00FF;
+    /* Cor da alça ao passar o mouse */
+  }
+}

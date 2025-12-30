@@ -5,6 +5,8 @@ import styles from "./styles.module.css";
 import Busca from "../../assets/header/busca.png";
 
 function SearchBox({ products, setMenuAberto }) {
+  const API_URL = import.meta.env.VITE_API_URL;
+
   const [searchTerm, setSearchTerm] = useState("");
   const [isOpen, setIsOpen] = useState(false);
   const [dropdownCoords, setDropdownCoords] = useState({
@@ -62,7 +64,7 @@ function SearchBox({ products, setMenuAberto }) {
 
         const precoMatch =
           !isNaN(Number(termo.replace(",", "."))) &&
-          Number(p.price.replace(",", ".")) <= Number(termo.replace(",", "."));
+          p.price <= Number(termo.replace(",", "."));
 
         return (
           nameMatch ||
@@ -164,7 +166,11 @@ function SearchBox({ products, setMenuAberto }) {
                 onClick={() => handleSelectProduct(p.id)}
               >
                 <div className={styles.imgContainer}>
-                  <img src={p.img} alt={p.name} className={styles.img} />
+                  <img
+                    src={`${API_URL}${p.file_paths.split(",")[0]}`}
+                    alt={p.name}
+                    className={styles.img}
+                  />
                 </div>
                 <p>{p.name}</p>
               </div>
